@@ -63,12 +63,12 @@ class _ProfileState extends State<Profile> {
       ["Paramètres", "/personal"],
     ];
     final List _list2 = [
-      ["Paiment et Transaction", "/paiement"],
+      ["Paiement et transactions", "/paiement"],
       ["Détails du forfait", "/formules"],
     ];
     final List _list3 = [
       ["Aide", "/paiement"],
-      ["Donnée et confidentialité", "/personal"],
+      ["Données et confidentialité", "/personal"],
     ];
     return Scaffold(
       appBar: AppBar(

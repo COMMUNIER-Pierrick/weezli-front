@@ -1,11 +1,14 @@
-  import 'package:flutter/material.dart';
-  import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path/path.dart';
+
+import 'announce/announce_detail.dart';
 
 class SearchResults {
 
   bool sendBool = false;
   
-  Widget allResults(){
+  Widget allResults(BuildContext context){
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -22,20 +25,23 @@ class SearchResults {
             ),
           ),
           Divider(thickness: 2,),
-          oneResult(),
-          oneResult(),
-          oneResult(),
-          oneResult(),
-          oneResult(),
-          oneResult(),
+          oneResult(context),
+          oneResult(context),
+          oneResult(context),
+          oneResult(context),
+          oneResult(context),
+          oneResult(context),
           Divider(color: Colors.blue, thickness: 2,),
         ],
       ),
     );
   }
 
-  Widget oneResult() {
-    return Container(
+  Widget oneResult(BuildContext context) {
+    return GestureDetector(
+        onTap: (){
+      Navigator.pushNamed(context, AnnounceDetail.routeName);
+    },child : Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: EdgeInsets.all(10), 
       width: 1000, //MediaQuery.of(context).size.width, 
@@ -55,6 +61,7 @@ class SearchResults {
           price(),
         ],
       ),
+    ),
     );
   }
 

@@ -92,7 +92,7 @@ class _EmailVerificationState extends State<EmailVerification> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const Text(
-                  "Information personnel",
+                  "Informations personnelles",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

@@ -176,7 +176,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                             field: 'weight',
                           ),
                           Row(children: [
-                            Text("Commision",
+                            Text("Commission",
                                 style: Theme.of(context).textTheme.headline5),
                             _buildTooltip(
                               "Vous pouvez choisir un prix par kilo ou pour un ensemble. Vous pouvez aussi de ne pas renseigner un prix et attendre qu'un expéditeur fasse une proposition",
@@ -205,7 +205,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                               ),
                             ],
                           ),
-                          Text("Votre propposition est-il négociable?",
+                          Text("Votre proposition est-elle négociable?",
                               style: Theme.of(context).textTheme.headline5),
                           Row(
                             children: [

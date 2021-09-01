@@ -71,7 +71,7 @@ class _PersonalState extends State<Personal> {
                     color: WeezlyColors.black,
                   ),
                   const Text(
-                    " Modifier photo",
+                    "Modifier photo",
                     style: TextStyle(
                       color: WeezlyColors.black,
                       fontSize: 12,
@@ -157,7 +157,9 @@ class _PersonalState extends State<Personal> {
       if (!isValid) {
         return;
       }
-      _formPersonalKey.currentState!.save();
+      else {
+        _formPersonalKey.currentState!.save();
+      }
     }
 
     final List<TextFormField> _fieldList = [
@@ -211,7 +213,7 @@ class _PersonalState extends State<Personal> {
                   height: _separator,
                 ),
                 const Text(
-                  "Information personnel",
+                  "Informations personnelles",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -235,14 +237,14 @@ class _PersonalState extends State<Personal> {
                           Navigator.pushNamed(
                               context, EmailVerification.routeName);
                         },
-                        child: const Text('Vérification email'),
+                        child: const Text("Vérification de l'email"),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(
                               context, PhoneVerification.routeName);
                         },
-                        child: const Text('Vérification de téléphone'),
+                        child: const Text("Vérification du téléphone"),
                       ),
                     ],
                   ),
