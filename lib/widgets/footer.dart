@@ -1,18 +1,18 @@
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';
 
+import 'custom_title.dart';
+
 class Footer extends StatelessWidget {
   final num height;
   final Widget childLeft;
   final String childRight;
   final VoidCallback saveForm;
 
-
-  Footer(
-      {required this.height,
-      required this.childLeft,
-      required this.childRight,
-      required this.saveForm});
+  Footer({required this.height,
+    required this.childLeft,
+    required this.childRight,
+    required this.saveForm});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,9 @@ class Footer extends StatelessWidget {
             ),
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: 50),
-              primary: Theme.of(context).buttonColor,
+              primary: Theme
+                  .of(context)
+                  .buttonColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25)),
             ),
@@ -55,3 +57,4 @@ class Footer extends StatelessWidget {
     );
   }
 }
+

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:baloogo/commons/weezly_icon_icons.dart';
 import 'package:baloogo/views/announce/create_carrier_announce.dart';
+import 'package:baloogo/widgets/custom_title.dart';
 import 'package:baloogo/widgets/footer.dart';
 import 'package:baloogo/widgets/image_input.dart';
 import 'package:baloogo/widgets/sizes.dart';
@@ -34,11 +35,16 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
   }
 
   Future<void> _saveSenderAnnounce() async {
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    _formKey.currentState!.save();
+    //final isValid = _formKey.currentState!.validate();
+    //if (!isValid) {
+    //return;
+    //}
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+          _buildPopupSavedSenderAnnounce(context),
+    );
+    //_formKey.currentState!.save();
   }
 
   @override
@@ -157,7 +163,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
       ),
       validator: (value) {
         if (value == null || value.isEmpty || controller!.text.isEmpty) {
-          return "Veuillez renseigner Une valeur";
+          return "Veuillez renseigner une valeur";
         }
         return null;
       },
@@ -206,10 +212,75 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "Veuillez renseigner Une valeur";
+          return "Veuillez renseigner une valeur";
         }
         return null;
       },
     );
   }
+}
+
+Widget _buildPopupSavedSenderAnnounce(BuildContext context) {
+  return new Dialog(
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width * 0.7,
+      padding: EdgeInsets.all(10),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Icon(
+                  WeezlyIcon.check_circle,
+                size: 60,
+                color: Colors.green,
+              )],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [CustomTitle("ANNONCE ENREGISTRÉE")],
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 40,
+                child: RawMaterialButton(
+                  fillColor: WeezlyColors.white,
+                  textStyle: TextStyle(
+                    color: WeezlyColors.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                      side: BorderSide(color: WeezlyColors.primary)),
+                  onPressed: null,
+                  child: const Text("VOIR L'ANNONCE"),
+                ),
+              ),
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 40,
+                child: RawMaterialButton(
+                  fillColor: WeezlyColors.primary,
+                  textStyle: TextStyle(
+                    color: WeezlyColors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(22.5),
+                  ),
+                  onPressed: null,
+                  child: const Text("TROUVER UN COLIS"),
+                ),
+              ),
+            ]),
+          ]),
+    ),
+  );
 }
