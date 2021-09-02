@@ -284,7 +284,7 @@ Widget _buildPopupSavedSenderAnnounce(BuildContext context) {
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width * 0.6,
+                    .width * 0.7,
                 height: 40,
                 child: RawMaterialButton(
                   fillColor: WeezlyColors.primary,
@@ -297,7 +297,7 @@ Widget _buildPopupSavedSenderAnnounce(BuildContext context) {
                     borderRadius: BorderRadius.circular(22.5),
                   ),
                   onPressed: null,
-                  child: const Text("TROUVER UN COLIS"),
+                  child: const Text("TROUVER UN TRANSPORTEUR"),
                 ),
               ),
             ]),

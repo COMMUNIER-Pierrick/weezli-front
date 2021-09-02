@@ -1,4 +1,7 @@
+import 'package:baloogo/commons/weezly_icon_icons.dart';
+import 'package:baloogo/widgets/custom_title.dart';
 import 'package:baloogo/widgets/footer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../widgets/sizes.dart';
@@ -71,6 +74,11 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
     if (!isValid) {
       return;
     }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+          _buildPopupSavedCarrierAnnounce(context),
+    );
     _formKey.currentState!.save();
   }
 
@@ -86,7 +94,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          children: <Widget>[
             Container(
               color: Color(0xE5E5E5),
               height: height * 0.9,
@@ -102,6 +110,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           _field('text', 'Ville ou pays de départ'),
                           Container(
@@ -129,17 +138,20 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                             ),
                             height: 80,
                           ),
-                          _field(
-                            'text',
-                            'Ville ou pays destination',
-                          ),
+                          Row(children: [
+                            Expanded(
+                                child: _field(
+                              'text',
+                              'Ville ou pays destination',
+                            ))
+                          ]),
                           Container(
                             margin: EdgeInsets.only(top: 20),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: _buildDateOrTime(
-                                      'Date de d\'arrivée*',
+                                      'Date d\'arrivée*',
                                       _dateArrivalCtrl,
                                       'Choisir une date',
                                       'date',
@@ -163,7 +175,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           TravelMode(Colors.white, WeezlyColors.blue4, 0.35),
                           Row(
                             children: [
-                              Text("Dimension",
+                              Text("Dimensions",
                                   style: Theme.of(context).textTheme.headline5),
                               _buildTooltip(
                                   'Vous pouvez choisir 1 ou plusieurs choix'),
@@ -171,10 +183,11 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           ),
                           Sizes(),
                           _field(
-                            'number',
-                            'Poids approximatif en kg: disponible*',
-                            field: 'weight',
-                          ),
+                                'number',
+                                'Poids approximatif disponible (en kg)*',
+                                field: 'weight',
+                              ),
+                          SizedBox(height: 15),
                           Row(children: [
                             Text("Commission",
                                 style: Theme.of(context).textTheme.headline5),
@@ -182,8 +195,9 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                               "Vous pouvez choisir un prix par kilo ou pour un ensemble. Vous pouvez aussi de ne pas renseigner un prix et attendre qu'un expéditeur fasse une proposition",
                             ),
                           ]),
+                          SizedBox(height: 5),
                           Row(
-                            // crossAxisAlignment: CrossAxisAlignment.end,
+                            //crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Expanded(
                                   child: _field('number', 'Proposition en €',
@@ -205,7 +219,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                               ),
                             ],
                           ),
-                          Text("Votre proposition est-elle négociable?",
+                          SizedBox(height: 15),
+                          Text("Votre proposition est-elle négociable ?",
                               style: Theme.of(context).textTheme.headline5),
                           Row(
                             children: [
@@ -214,6 +229,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                               Spacer(),
                             ],
                           ),
+                          SizedBox(height: 15),
                           _field('textarea', 'Description'),
                         ],
                       ),
@@ -264,8 +280,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                 ),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty || controller.text.isEmpty) {
-                  return "Veuillez renseigner Une valeur";
+                if (value == null || value.isEmpty) {
+                  return "Veuillez renseigner une valeur";
                 }
                 return null;
               },
@@ -335,14 +351,9 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
           ? TextInputAction.next
           : TextInputAction.newline,
       minLines: 1,
-      maxLines: 3,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
         labelText: label,
-        labelStyle: TextStyle(
-          color: WeezlyColors.grey3,
-          fontSize: 14,
-        ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: WeezlyColors.blue3),
         ),
@@ -357,7 +368,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
             (travelMode.value == 'Avion' &&
                 field == 'weight' &&
                 (value == null || value.isEmpty))) {
-          return "Veuillez renseigner Une valeur";
+          return "Veuillez renseigner une valeur";
         }
         return null;
       },
@@ -380,7 +391,7 @@ class FooterChildLeft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {Navigator.pop (context);},
       child: Text(
         "Annuler".toUpperCase(),
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -392,4 +403,71 @@ class FooterChildLeft extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildPopupSavedCarrierAnnounce(BuildContext context) {
+  return new Dialog(
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width * 0.7,
+      padding: EdgeInsets.all(10),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  WeezlyIcon.check_circle,
+                  size: 60,
+                  color: Colors.green,
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [CustomTitle("ANNONCE ENREGISTRÉE")],
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 40,
+                child: RawMaterialButton(
+                  fillColor: WeezlyColors.white,
+                  textStyle: TextStyle(
+                    color: WeezlyColors.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                      side: BorderSide(color: WeezlyColors.primary)),
+                  onPressed: null,
+                  child: const Text("VOIR L'ANNONCE"),
+                ),
+              ),
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 40,
+                child: RawMaterialButton(
+                  fillColor: WeezlyColors.primary,
+                  textStyle: TextStyle(
+                    color: WeezlyColors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(22.5),
+                  ),
+                  onPressed: null,
+                  child: const Text("TROUVER UN COLIS"),
+                ),
+              ),
+            ]),
+          ]),
+    ),
+  );
 }
