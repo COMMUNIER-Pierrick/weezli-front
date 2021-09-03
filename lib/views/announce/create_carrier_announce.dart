@@ -391,7 +391,7 @@ class FooterChildLeft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {Navigator.pop (context);},
+      onPressed: () {Navigator.pushNamed(context, '/');},
       child: Text(
         "Annuler".toUpperCase(),
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),

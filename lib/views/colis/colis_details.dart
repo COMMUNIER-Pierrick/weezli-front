@@ -20,8 +20,6 @@ class ColisDetailState extends State<ColisDetail>{
   late Future<Colis> colisFuture;
   late Colis thisColis;
 
-  
-
   @override
   void initState() {
     // TODO: implement initState
@@ -148,7 +146,7 @@ class ColisDetailState extends State<ColisDetail>{
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Code de validation livraison"),
+                      Text("Code de validation de livraison"),
                       Text(
                         thisColis.validationCode,
                         style: Theme.of(context).textTheme.headline5,
@@ -163,7 +161,7 @@ class ColisDetailState extends State<ColisDetail>{
                 height: _separator,
               ),
               Text("Copier et partager ce code au destinataire de votre colis,"
-                  " mais attention ne communiquer pas ce code "
+                  " mais attention ne communiquez pas ce code "
                   "au transporteur du colis"),
               SizedBox(
                 height: _separator,
@@ -187,8 +185,8 @@ class ColisDetailState extends State<ColisDetail>{
               ),
               Row(
                 children: [
-                  Text("Status : "),
-                  thisColis.status == false ? Text("En cours") : Text("Terminer"),
+                  Text("Statut : "),
+                  thisColis.status == false ? Text("En cours") : Text("Terminé"),
                   thisColis.status == false
                       ? Icon(
                           Icons.circle,

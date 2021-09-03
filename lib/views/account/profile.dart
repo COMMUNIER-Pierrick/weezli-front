@@ -1,6 +1,7 @@
 import 'package:baloogo/commons/disconnect.dart';
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:baloogo/commons/weezly_icon_icons.dart';
+import 'package:baloogo/views/announce/seller_announces.dart';
 import 'package:baloogo/views/colis/search_colis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -59,7 +60,7 @@ class _ProfileState extends State<Profile> {
     final List _list1 = [
       ["Profil personnel", "/personal"],
       ["Mes colis", SearchColis.routeName],
-      ["Mes livraisons", "/personal"],
+      ["Mes livraisons", SellerAnnounces.routeName],
       ["Paramètres", "/personal"],
     ];
     final List _list2 = [

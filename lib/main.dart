@@ -1,3 +1,5 @@
+import 'package:baloogo/views/announce/seller_announce_detail.dart';
+import 'package:baloogo/views/announce/seller_announces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,7 +75,9 @@ void main() {
         ColisAvis.routeName: (context) => ColisAvis(),
         EmailVerification.routeName: (context) => EmailVerification(),
         PhoneVerification.routeName: (context) => PhoneVerification(),
-      },
+        SellerAnnounces.routeName : (context) => SellerAnnounces(),
+        SellerAnnounceDetail.routeName : (context) => SellerAnnounceDetail (),
+       },
     ),
   );
 }

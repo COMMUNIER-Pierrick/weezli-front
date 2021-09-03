@@ -1,72 +1,54 @@
-import 'dart:developer';
-
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/colis.dart';
-import 'package:baloogo/service/colis/read_all.dart';
-import 'package:baloogo/views/colis/colis_details.dart';
+import 'package:baloogo/model/announce.dart';
+import 'package:baloogo/views/announce/seller_announce_detail.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class SearchColis extends StatefulWidget {
-  const SearchColis({Key? key}) : super(key: key);
-  static const String routeName = "/search-colis";
-
+class SellerAnnounces extends StatefulWidget {
   @override
-  _SearchColisState createState() => _SearchColisState();
+  SellerAnnouncesState createState() => SellerAnnouncesState();
+
+  static const routeName = '/mes_annonces';
 }
 
-class _SearchColisState extends State<SearchColis> {
+class SellerAnnouncesState extends State<SellerAnnounces> {
   final TextEditingController _searchController = TextEditingController();
-  late Future<List<Colis>> colisFuture;
-  List<Colis> colisList = [];
+
+  /*late Future<List<Announce>> announceFuture;
+  List<Announce> announceList = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    colisFuture = readAllColis();
-    inspect(colisFuture);
-    ColisFutureToList();
+    announceFuture = readAllAnnounces();
+    inspect(announceFuture);
+    announceFutureToList();
   }
-  ColisFutureToList(){
-    colisFuture.then((value) {
-      value.forEach((colis) { 
+  announceFutureToList(){
+    announceFuture.then((value) {
+      value.forEach((announce) {
         setState(() {
-          colisList.add(colis);
+          announceList.add(announce);
         });
       });
     });
-  }
+  }*/
   //----------------------  Début brut  ----------------------------------------
-  final List<Colis> _listColis = [
-    Colis(
+  final List<Announce> _listAnnounces = [
+    Announce(
       id: 215545454,
       commandDate: '01-07-2021   15:21',
       departure: 'France',
       arrival: 'Madagascar',
-      departureDate: DateTime.parse('1969-07-20 20:18:04Z'),
+      departureDate: DateTime.parse('2021-07-30 20:18:04Z'),
+      arrivalDate: DateTime.parse('2021-07-30 22:18:04Z'),
       dimension: 'Petit',
-      poids: 0,
-      montant: 20,
-      deliverName: 'Melinda Rochel',
-      validationCode: '25456',
-      description: 'Lorem ipsum dolor sit amet, consectetur '
-          'adipiscing elit. Sed non risus. Suspendisse lectus '
-          'tortor, dignissim sit amet, adipiscing nec, '
-          'ultricies sed, dolor. Cras '
-          'elementum ultrices diam. Maecenas ligula massa, ',
-      status: false,
-    ),
-    Colis(
-      id: 215545455,
-      commandDate: '01-07-2021   15:21',
-      departure: 'France',
-      arrival: 'Italie',
-      departureDate: DateTime.parse('1969-07-20 20:18:04Z'),
-      dimension: 'Petit',
-      poids: 0,
-      montant: 17,
-      deliverName: 'Melinda Rochel',
-      validationCode: '25456',
+      travelMode: 'Avion',
+      poids: 0.7,
+      montant: 70,
+      views: 15,
       description: 'Lorem ipsum dolor sit amet, consectetur '
           'adipiscing elit. Sed non risus. Suspendisse lectus '
           'tortor, dignissim sit amet, adipiscing nec, '
@@ -74,17 +56,37 @@ class _SearchColisState extends State<SearchColis> {
           'elementum ultrices diam. Maecenas ligula massa, ',
       status: true,
     ),
-    Colis(
+    Announce(
+      id: 215545455,
+      commandDate: '01-07-2021   15:21',
+      departure: 'France',
+      arrival: 'Italie',
+      departureDate: DateTime.parse('2021-08-20 17:30:04Z'),
+      arrivalDate: DateTime.parse('2021-08-21 08:30:04Z'),
+      dimension: 'Grand',
+      travelMode: 'Avion',
+      poids: 1.5,
+      montant: 17,
+      description: 'Lorem ipsum dolor sit amet, consectetur '
+          'adipiscing elit. Sed non risus. Suspendisse lectus '
+          'tortor, dignissim sit amet, adipiscing nec, '
+          'ultricies sed, dolor. Cras '
+          'elementum ultrices diam. Maecenas ligula massa, ',
+      views: 12,
+      status: true,
+    ),
+    Announce(
       id: 215545456,
       commandDate: '01-07-2021   15:21',
       departure: 'France',
       arrival: 'Italie',
-      departureDate: DateTime.parse('1969-07-20 20:18:04Z'),
+      departureDate: DateTime.parse('2021-09-15 11:15:04Z'),
+      arrivalDate: DateTime.parse('2021-09-15 14:00:04Z'),
       dimension: 'Petit',
-      poids: 0,
-      montant: 17,
-      deliverName: 'Melinda Rochel',
-      validationCode: '25456',
+      travelMode: 'Avion',
+      poids: 0.3,
+      montant: 40,
+      views: 5,
       description: 'Lorem ipsum dolor sit amet, consectetur '
           'adipiscing elit. Sed non risus. Suspendisse lectus '
           'tortor, dignissim sit amet, adipiscing nec, '
@@ -93,10 +95,17 @@ class _SearchColisState extends State<SearchColis> {
       status: true,
     ),
   ];
+
+  String format(date) {
+    String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
+        ' - ' +
+        DateFormat.Hm('fr_fr').format(date);
+    return formattedDate;
+  }
+
   //----------------------  Fin   brut  ----------------------------------------
   @override
   Widget build(BuildContext context) {
-    
     final Size _mediaQuery = MediaQuery.of(context).size;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
@@ -134,9 +143,9 @@ class _SearchColisState extends State<SearchColis> {
       ),
     );
 
-    GestureDetector _cardColis(Colis colis) {
+    GestureDetector _cardAnnounce(Announce announce) {
       return GestureDetector(
-        onTap: () => Navigator.pushNamed(context, ColisDetail.routeName),
+        onTap: () => Navigator.pushNamed(context, SellerAnnounceDetail.routeName, arguments: announce),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
           padding: EdgeInsets.all(10),
@@ -148,73 +157,49 @@ class _SearchColisState extends State<SearchColis> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(colis.departure),
-                  Icon(Icons.arrow_right_alt),
-                  Text(colis.arrival),
-                  Spacer(),
-                  Icon(
-                    WeezlyIcon.arrow_right_square,
-                    color: WeezlyColors.primary,
-                  ),
-                ],
-              ),
+              Row(children: [
+                Text(announce.departure,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Icon(Icons.arrow_right_alt),
+                Text(announce.arrival,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Spacer(),
+                Icon(
+                  WeezlyIcon.arrow_right_square,
+                  color: WeezlyColors.primary,
+                ),
+              ]),
               Divider(
                 color: WeezlyColors.black,
               ),
-              Text(
-                "Description:",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              Text(
-                colis.description,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+              Row(children: [
+                Icon(WeezlyIcon.calendar2, size: 15),
+                SizedBox(width: 5),
+                Text("Date de départ : "),
+                Text(format(announce.departureDate),
+                    style: TextStyle(fontWeight: FontWeight.bold))
+              ]),
               Row(
                 children: [
-                  Icon(
-                    WeezlyIcon.calendar2,
-                    color: WeezlyColors.primary,
-                  ),
-                  Text(colis.commandDate),
+                  Text("Moyen de transport : ", style: TextStyle(fontSize: 15)),
+                  Text(announce.travelMode,
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              Row(children: [
+                Text("Dimensions : ", style: TextStyle(fontSize: 15)),
+                Text(announce.dimension,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+              ]),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text("Montant: ",
-                          style: Theme.of(context).textTheme.headline5),
-                      Text(colis.montant.toString() + "€",),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      colis.status == false
-                          ? Text("En cours")
-                          : Text("Terminé"),
-                      colis.status == false
-                          ? Icon(
-                              Icons.circle,
-                              color: WeezlyColors.yellow,
-                            )
-                          : Icon(
-                              WeezlyIcon.check_circle,
-                              color: WeezlyColors.green,
-                            ),
-                    ],
-                  ),
+                  Text("Commission : ", style: TextStyle(fontSize: 15)),
+                  Text(announce.montant.toStringAsFixed(0) + " €",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
                 ],
-              ),
+              )
             ],
           ),
         ),
@@ -223,7 +208,7 @@ class _SearchColisState extends State<SearchColis> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mes colis"),
+        title: Text("Mes annonces"),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(70),
           child: _searchBar,
@@ -236,8 +221,9 @@ class _SearchColisState extends State<SearchColis> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  for (Colis item in _listColis) _cardColis(item), //Version Brut
-                  //for (Colis item in colisList) _cardColis(item),
+                  for (Announce item in _listAnnounces)
+                    _cardAnnounce(item), //Version Brut
+                  //for (Colis item in announceList) _cardColis(item),
                 ],
               ),
             ),
