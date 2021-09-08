@@ -1,4 +1,6 @@
-import 'package:baloogo/model/announce.dart';
+import 'dart:ffi';
+
+import 'package:baloogo/model/Announce.dart';
 import 'package:baloogo/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
                 Icon(WeezlyIcon.card_plane, color: WeezlyColors.blue3),
                 SizedBox(width: 20),
                 Text(
-                  announce.departure,
+                  announce.package.addressDeparture.city,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -58,7 +60,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
                 ),
                 Icon(Icons.arrow_right_alt),
                 Text(
-                  announce.arrival,
+                  announce.package.addressArrival.city,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -68,7 +70,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
             ),
             Row(children: [
               Text("Moyen de transport : "),
-              Text(announce.travelMode,
+              Text(announce.package.transportation.name,
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ]),
             Divider(
@@ -78,7 +80,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
               Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: 5),
               Text("Date de départ : "),
-              Text(format(announce.departureDate),
+              Text(format(announce.package.datetimeDeparture),
                   style: TextStyle(fontWeight: FontWeight.bold))
             ]),
             SizedBox(height: 10),
@@ -86,7 +88,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
               Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: 5),
               Text("Date d'arrivée : "),
-              Text(format(announce.arrivalDate),
+              Text(format(announce.package.dateTimeArrival),
                   style: TextStyle(fontWeight: FontWeight.bold))
             ]),
             SizedBox(height: 10),
@@ -94,7 +96,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
               Icon(WeezlyIcon.box, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: 5),
               Text("Dimensions : "),
-              Text(announce.dimension,
+              Text(announce.package.size.name,
                   style: TextStyle(fontWeight: FontWeight.bold))
             ]),
             SizedBox(height: 10),
@@ -102,7 +104,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
               Icon(WeezlyIcon.kg, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: 5),
               Text("Poids : "),
-              Text(weight(announce.poids),
+              Text(weight(announce.package.kgAvailable),
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
             ]),
             SizedBox(height: 10),
@@ -111,18 +113,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
                 Icon(WeezlyIcon.ticket, size: 20, color: WeezlyColors.blue3),
                 SizedBox(width: 5),
                 Text("Commission : "),
-                Text(announce.montant.toStringAsFixed(0) + " €",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(Icons.remove_red_eye_outlined,
-                    size: 20, color: WeezlyColors.blue3),
-                SizedBox(width: 5),
-                Text("Nombre de vues : "),
-                Text(announce.views.toStringAsFixed(0),
+                Text(announce.propositionPrice.proposition.toStringAsFixed(0) + " €",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
               ],
             ),
@@ -135,7 +126,7 @@ class _SellerAnnounceDetail extends State<SellerAnnounceDetail> {
             Row(children: [
               Flexible(
                   child:
-                      Text(announce.description, textAlign: TextAlign.justify))
+                      Text(announce.package.description, textAlign: TextAlign.justify))
             ])
           ],
         ),

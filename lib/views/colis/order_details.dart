@@ -1,60 +1,50 @@
-
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/colis.dart';
+import 'package:baloogo/model/Address.dart';
+import 'package:baloogo/model/Announce.dart';
+import 'package:baloogo/model/Formule.dart';
+import 'package:baloogo/model/Order.dart';
+import 'package:baloogo/model/Package.dart';
+import 'package:baloogo/model/PackageSize.dart';
+import 'package:baloogo/model/Price.dart';
+import 'package:baloogo/model/PropositionPrice.dart';
+import 'package:baloogo/model/RIB.dart';
+import 'package:baloogo/model/Status.dart';
+import 'package:baloogo/model/Transportation.dart';
+import 'package:baloogo/model/Check.dart';
+import 'package:baloogo/model/user.dart';
 import 'package:baloogo/service/colis/read_one.dart';
 import 'package:flutter/material.dart';
 
 import 'colis_avis.dart';
 
-class ColisDetail extends StatefulWidget{
-  
+class OrderDetail extends StatefulWidget {
   @override
-  ColisDetailState createState () => ColisDetailState();
+  OrderDetailState createState() => OrderDetailState();
 
   static const routeName = '/colis-details';
 }
-class ColisDetailState extends State<ColisDetail>{
 
-  
-  late Future<Colis> colisFuture;
-  late Colis thisColis;
+class OrderDetailState extends State<OrderDetail> {
+  late Future<Package> colisFuture;
+  late Package thisColis;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    colisFuture = readOneColis(2);
+    colisFuture = readOnePackage(2);
     colisFuture.then((value) {
       setState(() => thisColis = value);
     });
   }
 
- //----------------------  Début brut  ----------------------------------------
-  Colis colis = Colis(
-      id: 215545454,
-      commandDate: '01-07-2021   15:21',
-      departure: 'France',
-      arrival: 'Madagascar',
-      departureDate: DateTime.parse('1969-07-20 20:18:04Z'),
-      dimension: 'Petit',
-      poids: 0,
-      montant: 20,
-      deliverName: 'Melinda Rochel',
-      validationCode: '25456',
-      description: 'Lorem ipsum dolor sit amet, consectetur '
-          'adipiscing elit. Sed non risus. Suspendisse lectus '
-          'tortor, dignissim sit amet, adipiscing nec, '
-          'ultricies sed, dolor. Cras '
-          'elementum ultrices diam. Maecenas ligula massa, ',
-      status: false);
-   //----------------------  Fin brut  ----------------------------------------
   double _separator = 10;
 
   @override
   Widget build(BuildContext context) {
-    
     final Size _mediaQuery = MediaQuery.of(context).size;
+    final order = ModalRoute.of(context)!.settings.arguments as Order;
 
     Row mix(IconData icon, String key, String value) {
       return Row(
@@ -85,11 +75,11 @@ class ColisDetailState extends State<ColisDetail>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("N° de commande : " + thisColis.id.toString()),
-              Text("Du : " + thisColis.commandDate
-                .replaceFirst("T", " à ")
-                .substring(0,21)
-              ),
+              Text("N° de commande : " + order.id.toString()),
+              //Text("Du : " +
+              //order.package.datetimeDeparture
+              //.replaceFirst("T", " à ")
+              //.substring(0, 21)),
               Image(
                 image: AssetImage('assets/images/comment.png'),
                 width: _mediaQuery.width * 0.8,
@@ -111,33 +101,35 @@ class ColisDetailState extends State<ColisDetail>{
                   SizedBox(
                     width: 20,
                   ),
-                  Text(thisColis.departure),
+                  Text(order.announce.package.addressDeparture.city),
                   Icon(Icons.arrow_right_alt),
-                  Text(thisColis.arrival),
+                  Text(order.announce.package.addressArrival.city),
                 ],
               ),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.calendar2, "Date de départ : ",
-                  thisColis.departureDate.toString().substring(0,10)),
+                  order.announce.package.datetimeDeparture.toString().substring(0, 10)),
               SizedBox(
                 height: _separator,
               ),
-              mix(WeezlyIcon.box, "Dimension : ", thisColis.dimension),
+              mix(WeezlyIcon.box, "Dimension : ", order.announce.package.size.name),
               SizedBox(
                 height: _separator,
               ),
-              mix(WeezlyIcon.kg, "Poids : ", thisColis.poids.toString()),
+              mix(WeezlyIcon.kg, "Poids : ",
+                  order.announce.package.kgAvailable.toString()),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  thisColis.montant.toString() + "€"),
+                  order.announce.package.price.kgPrice.toString() + "€"),
               SizedBox(
                 height: _separator,
               ),
-              mix(WeezlyIcon.delivery, "Transporteur : ", thisColis.deliverName),
+              mix(WeezlyIcon.delivery, "Transporteur : ",
+                  order.announce.user.username),
               SizedBox(
                 height: _separator,
               ),
@@ -148,7 +140,7 @@ class ColisDetailState extends State<ColisDetail>{
                     children: [
                       Text("Code de validation de livraison"),
                       Text(
-                        thisColis.validationCode,
+                        order.validationCode.toString(),
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ],
@@ -157,12 +149,10 @@ class ColisDetailState extends State<ColisDetail>{
                   Icon(WeezlyIcon.copy),
                 ],
               ),
+              Text ("Code à transmettre au destinaire du colis uniquement"),
               SizedBox(
                 height: _separator,
               ),
-              Text("Copier et partager ce code au destinataire de votre colis,"
-                  " mais attention ne communiquez pas ce code "
-                  "au transporteur du colis"),
               SizedBox(
                 height: _separator,
               ),
@@ -179,15 +169,17 @@ class ColisDetailState extends State<ColisDetail>{
               SizedBox(
                 height: _separator,
               ),
-              Text(thisColis.description),
+              Text(order.announce.package.description),
               SizedBox(
                 height: _separator,
               ),
               Row(
                 children: [
                   Text("Statut : "),
-                  thisColis.status == false ? Text("En cours") : Text("Terminé"),
-                  thisColis.status == false
+                  order.status.name == 'En cours'
+                      ? Text("En cours")
+                      : Text("Terminé"),
+                  order.status.name == 'En cours'
                       ? Icon(
                           Icons.circle,
                           color: WeezlyColors.yellow,

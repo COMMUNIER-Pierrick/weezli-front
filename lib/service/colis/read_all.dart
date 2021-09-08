@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:baloogo/model/colis.dart';
+import 'package:baloogo/model/Package.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Colis>> readAllColis() async {
+Future<List<Package>> readAllPackages() async {
  
   final Response response = await http.get(
     Uri.parse("http://10.0.2.2:5000/colis/all-colis"),
@@ -14,9 +14,9 @@ Future<List<Colis>> readAllColis() async {
     },
   );
 
-  List<Colis> recupAll;
+  List<Package> recupAll;
   final parsed = jsonDecode(response.body);
-  recupAll = parsed.map<Colis>((json) => Colis.fromJson(json)).toList();
+  recupAll = parsed.map<Package>((json) => Package.fromJson(json)).toList();
   inspect(recupAll);
   return recupAll;
 

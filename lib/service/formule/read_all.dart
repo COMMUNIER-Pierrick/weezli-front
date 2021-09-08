@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:baloogo/model/formules.dart';
+import 'package:baloogo/model/Formule.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Formules>> readAllFormules() async {
+Future<List<Formule>> readAllFormules() async {
  
   final Response response = await http.get(
     Uri.parse("http://10.0.2.2:5000/formule/all-formules"),
@@ -14,9 +14,9 @@ Future<List<Formules>> readAllFormules() async {
     },
   );
 
-  List<Formules> recupAll;
+  List<Formule> recupAll;
   final parsed = jsonDecode(response.body);
-  recupAll = parsed.map<Formules>((json) => Formules.fromJson(json)).toList();
+  recupAll = parsed.map<Formule>((json) => Formule.fromJson(json)).toList();
   inspect(recupAll);
   return recupAll;
 

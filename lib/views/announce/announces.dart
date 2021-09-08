@@ -1,19 +1,29 @@
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/announce.dart';
+import 'package:baloogo/model/Address.dart';
+import 'package:baloogo/model/Announce.dart';
+import 'package:baloogo/model/Formule.dart';
+import 'package:baloogo/model/Package.dart';
+import 'package:baloogo/model/Price.dart';
+import 'package:baloogo/model/PropositionPrice.dart';
+import 'package:baloogo/model/RIB.dart';
+import 'package:baloogo/model/PackageSize.dart';
+import 'package:baloogo/model/Transportation.dart';
+import 'package:baloogo/model/Check.dart';
+import 'package:baloogo/model/user.dart';
 import 'package:baloogo/views/announce/seller_announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class SellerAnnounces extends StatefulWidget {
+class Announces extends StatefulWidget {
   @override
-  SellerAnnouncesState createState() => SellerAnnouncesState();
+  AnnouncesState createState() => AnnouncesState();
 
   static const routeName = '/mes_annonces';
 }
 
-class SellerAnnouncesState extends State<SellerAnnounces> {
+class AnnouncesState extends State<Announces> {
   final TextEditingController _searchController = TextEditingController();
 
   /*late Future<List<Announce>> announceFuture;
@@ -36,64 +46,74 @@ class SellerAnnouncesState extends State<SellerAnnounces> {
     });
   }*/
   //----------------------  Début brut  ----------------------------------------
-  final List<Announce> _listAnnounces = [
+  final List<Announce> _listTransporterAnnounce = [
     Announce(
       id: 215545454,
-      commandDate: '01-07-2021   15:21',
-      departure: 'France',
-      arrival: 'Madagascar',
-      departureDate: DateTime.parse('2021-07-30 20:18:04Z'),
-      arrivalDate: DateTime.parse('2021-07-30 22:18:04Z'),
-      dimension: 'Petit',
-      travelMode: 'Avion',
-      poids: 0.7,
-      montant: 70,
+      package: Package(
+          id: 132565,
+          addressDeparture: Address(
+              id: 12,
+              number: 2,
+              street: 'rue de Merville',
+              zipCode: '59160',
+              city: 'Tourcoing'),
+          addressArrival: Address(
+              id: 45,
+              number: 3,
+              street: 'allée de la cour baleine',
+              zipCode: '95500',
+              city: 'Gonesse'),
+          datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
+          dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
+          kgAvailable: 0.8,
+          transportation: Transportation(id: 2, name: 'Avion'),
+          description:
+              "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          size: PackageSize(id: 1, name: 'Petit'),
+          price: Price(
+            id: 2,
+            kgPrice: 50.0,
+          )),
+      propositionPrice: PropositionPrice(
+          id: 2,
+          proposition: 45,
+          accept: true,
+          sender: User(
+              id: 2,
+              firstname: 'Marie',
+              lastname: "Corrales",
+              username: 'Nino',
+              email: 'noemie.contant@gmail.com',
+              phone: '0627155307',
+              active: true,
+              rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
+              urlProfilPicture: 'oiogdfpogkfdiojo',
+              formule: Formule(
+                  id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+              check: Check(
+                  id: 1,
+                  statusIdentity: true,
+                  statusPhone: true,
+                  imgIdCard: 'lkjgfùdfgùjdfg'))),
       views: 15,
-      description: 'Lorem ipsum dolor sit amet, consectetur '
-          'adipiscing elit. Sed non risus. Suspendisse lectus '
-          'tortor, dignissim sit amet, adipiscing nec, '
-          'ultricies sed, dolor. Cras '
-          'elementum ultrices diam. Maecenas ligula massa, ',
-      status: true,
-    ),
-    Announce(
-      id: 215545455,
-      commandDate: '01-07-2021   15:21',
-      departure: 'France',
-      arrival: 'Italie',
-      departureDate: DateTime.parse('2021-08-20 17:30:04Z'),
-      arrivalDate: DateTime.parse('2021-08-21 08:30:04Z'),
-      dimension: 'Grand',
-      travelMode: 'Avion',
-      poids: 1.5,
-      montant: 17,
-      description: 'Lorem ipsum dolor sit amet, consectetur '
-          'adipiscing elit. Sed non risus. Suspendisse lectus '
-          'tortor, dignissim sit amet, adipiscing nec, '
-          'ultricies sed, dolor. Cras '
-          'elementum ultrices diam. Maecenas ligula massa, ',
-      views: 12,
-      status: true,
-    ),
-    Announce(
-      id: 215545456,
-      commandDate: '01-07-2021   15:21',
-      departure: 'France',
-      arrival: 'Italie',
-      departureDate: DateTime.parse('2021-09-15 11:15:04Z'),
-      arrivalDate: DateTime.parse('2021-09-15 14:00:04Z'),
-      dimension: 'Petit',
-      travelMode: 'Avion',
-      poids: 0.3,
-      montant: 40,
-      views: 5,
-      description: 'Lorem ipsum dolor sit amet, consectetur '
-          'adipiscing elit. Sed non risus. Suspendisse lectus '
-          'tortor, dignissim sit amet, adipiscing nec, '
-          'ultricies sed, dolor. Cras '
-          'elementum ultrices diam. Maecenas ligula massa, ',
-      status: true,
-    ),
+      user: User(
+          id: 1,
+          firstname: 'Noémie',
+          lastname: "Contant",
+          username: 'STid',
+          email: 'noemie.contant@gmail.com',
+          phone: '0627155307',
+          active: true,
+          rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
+          urlProfilPicture: 'oiogdfpogkfdiojo',
+          formule: Formule(
+              id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+          check: Check(
+              id: 1,
+              statusIdentity: true,
+              statusPhone: true,
+              imgIdCard: 'lkjgfùdfgùjdfg')),
+    )
   ];
 
   String format(date) {
@@ -143,9 +163,11 @@ class SellerAnnouncesState extends State<SellerAnnounces> {
       ),
     );
 
-    GestureDetector _cardAnnounce(Announce announce) {
+    GestureDetector _cardannounce(Announce announce) {
       return GestureDetector(
-        onTap: () => Navigator.pushNamed(context, SellerAnnounceDetail.routeName, arguments: announce),
+        onTap: () => Navigator.pushNamed(
+            context, SellerAnnounceDetail.routeName,
+            arguments: announce),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
           padding: EdgeInsets.all(10),
@@ -158,10 +180,10 @@ class SellerAnnouncesState extends State<SellerAnnounces> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
-                Text(announce.departure,
+                Text(announce.package.addressDeparture.city,
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 Icon(Icons.arrow_right_alt),
-                Text(announce.arrival,
+                Text(announce.package.addressArrival.city,
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 Spacer(),
                 Icon(
@@ -176,26 +198,28 @@ class SellerAnnouncesState extends State<SellerAnnounces> {
                 Icon(WeezlyIcon.calendar2, size: 15),
                 SizedBox(width: 5),
                 Text("Date de départ : "),
-                Text(format(announce.departureDate),
+                Text(format(announce.package.datetimeDeparture),
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
               Row(
                 children: [
                   Text("Moyen de transport : ", style: TextStyle(fontSize: 15)),
-                  Text(announce.travelMode,
+                  Text(announce.package.transportation.name,
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ],
               ),
               Row(children: [
                 Text("Dimensions : ", style: TextStyle(fontSize: 15)),
-                Text(announce.dimension,
+                Text(announce.package.size.name,
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
               ]),
               Row(
                 children: [
                   Text("Commission : ", style: TextStyle(fontSize: 15)),
-                  Text(announce.montant.toStringAsFixed(0) + " €",
+                  Text(
+                      announce.propositionPrice.proposition.toStringAsFixed(0) +
+                          " €",
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
                 ],
@@ -221,8 +245,8 @@ class SellerAnnouncesState extends State<SellerAnnounces> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  for (Announce item in _listAnnounces)
-                    _cardAnnounce(item), //Version Brut
+                  for (Announce item in _listTransporterAnnounce)
+                    _cardannounce(item), //Version Brut
                   //for (Colis item in announceList) _cardColis(item),
                 ],
               ),

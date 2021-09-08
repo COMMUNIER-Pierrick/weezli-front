@@ -1,39 +1,39 @@
 
-import 'package:baloogo/service/formule/read_one.dart';
+import 'package:baloogo/service/Formule/read_one.dart';
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:baloogo/model/formules.dart';
-import 'package:baloogo/service/formule/create_formule.dart';
-import 'package:baloogo/service/formule/read_all.dart';
+import 'package:baloogo/model/Formule.dart';
+import 'package:baloogo/service/Formule/create_Formule.dart';
+import 'package:baloogo/service/Formule/read_all.dart';
 
-class FormulesView extends StatefulWidget{
+class FormuleView extends StatefulWidget{
   
   @override
-  FormulesViewState createState () => FormulesViewState();
+  FormuleViewState createState () => FormuleViewState();
 
 }
-class FormulesViewState extends State<FormulesView>{
+class FormuleViewState extends State<FormuleView>{
 
 //-------------------------------------   Début Brut pour apk sans DB   --------------------------------------------------------------------
-Formules formule_1 = Formules(
+Formule Formule_1 = Formule(
     id: 1, 
     name: "un",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esseillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     price: 5.0
   );
-  Formules formule_2 = Formules(
+  Formule Formule_2 = Formule(
     id: 2, 
     name: "deux",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esseillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     price: 15.0
   );
-  Formules formule_3 = Formules(
+  Formule Formule_3 = Formule(
     id: 3, 
     name: "trois",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esseillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     price: 30.0
   );
-  Formules formule_4 = Formules(
+  Formule Formule_4 = Formule(
     id: 4, 
     name: "quatre",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esseillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -41,29 +41,29 @@ Formules formule_1 = Formules(
   );
 //-------------------------------------   Fin Brut pour apk sans DB   --------------------------------------------------------------------
   
-  List<Formules> formulesList = [];
-  late Future<List<Formules>> formulesListe;
+  List<Formule> FormuleList = [];
+  late Future<List<Formule>> FormuleListe;
   var status_code = null;
 
-  List<Widget> formulesListWidget = [];
+  List<Widget> FormuleListWidget = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    formulesListe = readAllFormules();
-    print(formulesListe);
+    FormuleListe = readAllFormules();
+    print(FormuleListe);
   }
 
   @override
   Widget build(BuildContext context) {
     //-------------------------------------   Début Brut pour apk sans DB   --------------------------------------------------------------------
-    formulesList = [formule_1, formule_2, formule_3, formule_4];
-    if(formulesListWidget.isEmpty) {allFormulesBrut();}
+    FormuleList = [Formule_1, Formule_2, Formule_3, Formule_4];
+    if(FormuleListWidget.isEmpty) {allFormuleBrut();}
     //-------------------------------------   Fin Brut pour apk sans DB   --------------------------------------------------------------------
-    if(formulesListWidget.isEmpty) {allFormules();}
+    if(FormuleListWidget.isEmpty) {allFormule();}
     return Scaffold(
-      appBar: AppBar(title: Text("Formules"), backgroundColor: WeezlyColors.green,),
+      appBar: AppBar(title: Text("Formule"), backgroundColor: WeezlyColors.green,),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -74,30 +74,30 @@ Formules formule_1 = Formules(
                 }, 
                 child: Text("Ajouter Formule DB")
               ),
-              ...formulesListWidget,
+              ...FormuleListWidget,
             ],
           ),
         ),
     );
   }
   //-------------------------------------   Début Brut pour apk sans DB   --------------------------------------------------------------------
-allFormulesBrut(){
-    formulesList.forEach((formule) { 
-      formulesListWidget.add(cardFormule(formule));
+allFormuleBrut(){
+    FormuleList.forEach((Formule) { 
+      FormuleListWidget.add(cardFormule(Formule));
     });
   }
 //-------------------------------------   Fin Brut pour apk sans DB   --------------------------------------------------------------------
-  allFormules(){
-    formulesListe.then((value) {
-      value.forEach((formule) { 
+  allFormule(){
+    FormuleListe.then((value) {
+      value.forEach((Formule) { 
         setState(() {
-          formulesListWidget.add(cardFormule(formule));
+          FormuleListWidget.add(cardFormule(Formule));
         });
       });
     });
   }
 
-  Widget cardFormule(Formules formule){
+  Widget cardFormule(Formule Formule){
     return Card(
       elevation: 5,
       margin: EdgeInsets.all(20),
@@ -108,12 +108,12 @@ allFormulesBrut(){
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Formule ${formule.name}",
+              "Formule ${Formule.name}",
               style: TextStyle(color: Theme.of(context).buttonColor, fontSize: 25, fontWeight: FontWeight.bold,)
               ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(formule.description),
+              child: Text(Formule.description),
             ),
             /*Row(
               mainAxisSize: MainAxisSize.max,
@@ -121,7 +121,7 @@ allFormulesBrut(){
               children: [*/
                 Text.rich( 
                   TextSpan(
-                    text: "${formule.price}€",
+                    text: "${Formule.price}€",
                     style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
                     children: [
                       TextSpan(

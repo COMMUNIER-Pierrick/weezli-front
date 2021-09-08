@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:baloogo/model/formules.dart';
+import 'package:baloogo/model/Formule.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
-Future<Formules> readOneFormule(int id) async {
+Future<Formule> readOneFormule(int id) async {
   print("object");
   final Response response = await http.get(
     Uri.parse("http://10.0.2.2:5000/formule/formule/$id"),
@@ -12,6 +12,6 @@ Future<Formules> readOneFormule(int id) async {
       "Accept": "application/json",
     },
   );
-  final Formules formule = Formules.fromJson(json.decode(response.body));
+  final Formule formule = Formule.fromJson(json.decode(response.body));
   return formule;
 }
