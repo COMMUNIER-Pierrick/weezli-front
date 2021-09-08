@@ -1,5 +1,5 @@
 import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/views/colis/colis_details.dart';
+import 'package:baloogo/views/colis/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -100,7 +100,7 @@ class _ColisAvisState extends State<ColisAvis> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, ColisDetail.routeName);
+                        Navigator.pushNamed(context, OrderDetail.routeName);
                       },
                       child: Text(
                         "ANNULER",
@@ -123,7 +123,7 @@ class _ColisAvisState extends State<ColisAvis> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22.5)),
                       onPressed: () {
-                        Navigator.pushNamed(context, ColisDetail.routeName);
+                        Navigator.pushNamed(context, OrderDetail.routeName);
                       },
                       child: const Text(
                         "NOTER",

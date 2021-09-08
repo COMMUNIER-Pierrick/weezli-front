@@ -1,19 +1,19 @@
-class Formules {
+class Formule {
 
   int id;
   String name;
   String description;
   double price;
 
-  Formules({
+  Formule({
     required this.id,
     required this.name,
     required this.description,
     required this.price,
   });
 
-  factory Formules.fromJson(Map<String, dynamic> json) {
-    return Formules(
+  factory Formule.fromJson(Map<String, dynamic> json) {
+    return Formule(
       id: json['id'] as int,
       name: json['name'] as String,
       description: json['description'] as String,

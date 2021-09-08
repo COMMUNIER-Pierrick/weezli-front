@@ -1,3 +1,5 @@
+import 'package:baloogo/views/announce/seller_announce_detail.dart';
+import 'package:baloogo/views/announce/announces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,8 +10,8 @@ import 'package:baloogo/views/account/email_verification.dart';
 import 'package:baloogo/views/account/personal.dart';
 import 'package:baloogo/views/account/phone_verification.dart';
 import 'package:baloogo/views/colis/colis_avis.dart';
-import 'package:baloogo/views/colis/colis_details.dart';
-import 'package:baloogo/views/colis/search_colis.dart';
+import 'package:baloogo/views/colis/order_details.dart';
+import 'package:baloogo/views/colis/search_orders.dart';
 import 'package:baloogo/views/paiement/paiement_view.dart';
 import './commons/weezly_colors.dart';
 import './views/announce/announce_detail.dart';
@@ -62,18 +64,20 @@ void main() {
         Search.routeName: (context) => Search(),
         MessageView.routeName: (context) => MessageView(),
         '/paiement': (context) => PaiementView(),
-        '/formules': (context) => FormulesView(),
-        '/users': (context) => FormulesView(),
+        '/formules': (context) => FormuleView(),
+        '/users': (context) => FormuleView(),
         AnnounceDetail.routeName: (context) => AnnounceDetail(),
         '/avis': (context) => Avis(),
         CreateCarrierAnnounce.routeName: (context) => CreateCarrierAnnounce(),
         CreateSenderAnnounce.routeName: (context) => CreateSenderAnnounce(),
-        ColisDetail.routeName: (context) => ColisDetail(),
-        SearchColis.routeName: (context) => SearchColis(),
+        OrderDetail.routeName: (context) => OrderDetail(),
+        SearchOrders.routeName: (context) => SearchOrders(),
         ColisAvis.routeName: (context) => ColisAvis(),
         EmailVerification.routeName: (context) => EmailVerification(),
         PhoneVerification.routeName: (context) => PhoneVerification(),
-      },
+        Announces.routeName : (context) => Announces(),
+        SellerAnnounceDetail.routeName : (context) => SellerAnnounceDetail (),
+       },
     ),
   );
 }

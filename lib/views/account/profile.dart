@@ -1,7 +1,8 @@
 import 'package:baloogo/commons/disconnect.dart';
 import 'package:baloogo/commons/weezly_colors.dart';
 import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/views/colis/search_colis.dart';
+import 'package:baloogo/views/announce/announces.dart';
+import 'package:baloogo/views/colis/search_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -58,17 +59,17 @@ class _ProfileState extends State<Profile> {
 
     final List _list1 = [
       ["Profil personnel", "/personal"],
-      ["Mes colis", SearchColis.routeName],
-      ["Mes livraisons", "/personal"],
+      ["Mes commandes", SearchOrders.routeName],
+      ["Mes annonces", Announces.routeName],
       ["Paramètres", "/personal"],
     ];
     final List _list2 = [
-      ["Paiment et Transaction", "/paiement"],
+      ["Paiement et transactions", "/paiement"],
       ["Détails du forfait", "/formules"],
     ];
     final List _list3 = [
       ["Aide", "/paiement"],
-      ["Donnée et confidentialité", "/personal"],
+      ["Données et confidentialité", "/personal"],
     ];
     return Scaffold(
       appBar: AppBar(

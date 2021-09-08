@@ -37,7 +37,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
               color: WeezlyColors.blue3,
             ),
           ),
-          labelText: "Numéro téléphone",
+          labelText: "Numéro de téléphone",
           labelStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
@@ -90,7 +90,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const Text(
-                  "Information personnel",
+                  "Informations personnelles",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

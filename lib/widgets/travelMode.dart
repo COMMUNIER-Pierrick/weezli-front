@@ -39,7 +39,7 @@ class TravelModeState extends State<TravelMode> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * widget.heightPerCentage!,
+      height: MediaQuery.of(context).size.height * widget.heightPerCentage! * 0.8,
       child: MediaQuery.removePadding(
         context: context,
         removeTop: true,

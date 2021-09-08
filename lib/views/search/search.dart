@@ -98,38 +98,38 @@ class _SearchState extends State<Search> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(30),
-              decoration: BoxDecoration(
+              Container(
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
                 /*gradient: LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.bottomCenter,
                   colors: //Theme.of(context).primaryColor,
                     searchType == "sending" ? [WeezlyColors.blue3,  WeezlyColors.yellow,] : [WeezlyColors.yellow,  WeezlyColors.blue2,]
                 ),*/
-                color: /*searchType == "sending" ? WeezlyColors.yellowgreen:*/ WeezlyColors.blue6,
-              ),
+                  color: /*searchType == "sending" ? WeezlyColors.yellowgreen:*/ WeezlyColors.blue6,
+                ),
               // color: Gradient() Theme.of(context).primaryColor,
-              height: 320,
-              child: Form(
-                key: _form,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        decoration:
-                            _textFieldDecoration('Ville ou pays de départ'),
-                        style: TextStyle(color: WeezlyColors.blue5 ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please provide a value';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) => _search = {
+                height: 320,
+                child: Form(
+                  key: _form,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          decoration:
+                              _textFieldDecoration('Ville ou pays de départ'),
+                          style: TextStyle(color: WeezlyColors.blue5 ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please provide a value';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) => _search = {
                           'start': value,
                           'landing': _search['landing'],
                           'date': _search['date'],
@@ -245,11 +245,11 @@ class _SearchState extends State<Search> {
                 Spacer(),
               ],
             ),
-            SearchResults().oneResult(),
-            SearchResults().oneResult(),
-            SearchResults().oneResult(),
-            SearchResults().oneResult(),
-            SearchResults().oneResult(),
+            SearchResults().oneResult(context),
+            SearchResults().oneResult(context),
+            SearchResults().oneResult(context),
+            SearchResults().oneResult(context),
+            SearchResults().oneResult(context),
           ],
         ),
       ),
