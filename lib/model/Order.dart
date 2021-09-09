@@ -22,6 +22,7 @@ class Order {
     required this.announce,
     required this.status,
     required this.validationCode,
+    required this.dateOrder,
     this.opinions,
 
   });
@@ -30,6 +31,7 @@ class Order {
   Announce announce;
   Status status;
   int validationCode;
+  DateTime dateOrder;
   List <Opinion>? opinions;
 
 
@@ -38,6 +40,7 @@ class Order {
     announce : json ["id_announce"],
     status : json ["id_status"],
     validationCode: json ["validation_code"],
+    dateOrder: DateTime.parse(json["date_order"]),
     opinions: json ["id_opinion"],
   );
 
@@ -46,6 +49,7 @@ class Order {
     "id_status": status,
     "validation_code": validationCode,
     "id_opinions": opinions,
+    "date_order" : dateOrder,
     "id_announce" : announce,
   };
 }

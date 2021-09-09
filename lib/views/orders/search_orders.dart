@@ -16,12 +16,13 @@ import 'package:baloogo/model/Status.dart';
 import 'package:baloogo/model/Transportation.dart';
 import 'package:baloogo/model/user.dart';
 import 'package:baloogo/service/colis/read_all.dart';
-import 'package:baloogo/views/colis/order_details.dart';
+import 'package:baloogo/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SearchOrders extends StatefulWidget {
   const SearchOrders({Key? key}) : super(key: key);
-  static const String routeName = "/search-announce";
+  static const String routeName = "/search-orders";
 
   @override
   _SearchOrdersState createState() => _SearchOrdersState();
@@ -124,10 +125,11 @@ class _SearchOrdersState extends State<SearchOrders> {
                 imgIdCard: 'lkjgfùdfgùjdfg')),
       ),
       status: Status(
-        id: 1,
-        name: "En cours",
+        id: 2,
+        name: "Terminé",
       ),
       validationCode: 2315,
+      dateOrder: DateTime.parse('2021-07-20 17:30:04Z'),
     )
   ];
 
@@ -225,7 +227,10 @@ class _SearchOrdersState extends State<SearchOrders> {
                     WeezlyIcon.calendar2,
                     color: WeezlyColors.primary,
                   ),
-                  Text(order.announce.package.addressArrival.city),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(format(order.announce.package.datetimeDeparture)),
                 ],
               ),
               const SizedBox(
@@ -294,4 +299,11 @@ class _SearchOrdersState extends State<SearchOrders> {
       ),
     );
   }
+}
+
+String format(date) {
+  String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
+      ' - ' +
+      DateFormat.Hm('fr_fr').format(date);
+  return formattedDate;
 }
