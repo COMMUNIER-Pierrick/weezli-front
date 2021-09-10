@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:baloogo/commons/disconnect.dart';
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/views/account/email_verification.dart';
-import 'package:baloogo/views/account/phone_verification.dart';
-import 'package:baloogo/widgets/image_input.dart';
+import 'package:weezli/commons/disconnect.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/views/account/email_verification.dart';
+import 'package:weezli/views/account/phone_verification.dart';
+import 'package:weezli/widgets/image_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'dart:ffi';
 
-import 'package:baloogo/model/Formule.dart';
-import 'package:baloogo/model/RIB.dart';
+import 'package:weezli/model/Formule.dart';
+import 'package:weezli/model/RIB.dart';
 
 import 'Opinion.dart';
 import 'Check.dart';

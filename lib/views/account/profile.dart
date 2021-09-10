@@ -1,9 +1,9 @@
-import 'package:baloogo/commons/disconnect.dart';
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/views/announce/announces.dart';
-import 'package:baloogo/views/deliveries/search_deliveries.dart';
-import 'package:baloogo/views/orders/search_orders.dart';
+import 'package:weezli/commons/disconnect.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/views/announce/announces.dart';
+import 'package:weezli/views/deliveries/search_deliveries.dart';
+import 'package:weezli/views/orders/search_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

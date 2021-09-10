@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
-import 'package:baloogo/model/Announce.dart';
-import 'package:baloogo/widgets/footer.dart';
+import 'package:weezli/model/Announce.dart';
+import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,4 @@
-import 'package:baloogo/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_title.dart';

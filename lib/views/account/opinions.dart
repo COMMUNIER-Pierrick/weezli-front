@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/Address.dart';
-import 'package:baloogo/model/Announce.dart';
-import 'package:baloogo/model/Check.dart';
-import 'package:baloogo/model/Formule.dart';
-import 'package:baloogo/model/Opinion.dart';
-import 'package:baloogo/model/Order.dart';
-import 'package:baloogo/model/Package.dart';
-import 'package:baloogo/model/PackageSize.dart';
-import 'package:baloogo/model/Price.dart';
-import 'package:baloogo/model/PropositionPrice.dart';
-import 'package:baloogo/model/RIB.dart';
-import 'package:baloogo/model/Status.dart';
-import 'package:baloogo/model/Transportation.dart';
-import 'package:baloogo/model/user.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Address.dart';
+import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/Check.dart';
+import 'package:weezli/model/Formule.dart';
+import 'package:weezli/model/Opinion.dart';
+import 'package:weezli/model/Order.dart';
+import 'package:weezli/model/Package.dart';
+import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/model/Price.dart';
+import 'package:weezli/model/PropositionPrice.dart';
+import 'package:weezli/model/RIB.dart';
+import 'package:weezli/model/Status.dart';
+import 'package:weezli/model/Transportation.dart';
+import 'package:weezli/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

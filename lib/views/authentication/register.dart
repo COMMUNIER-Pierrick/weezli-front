@@ -1,5 +1,5 @@
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -23,10 +23,17 @@ class _RegisterState extends State<Register> {
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
 
+  // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
+  bool validateStructure(String value) {
+    RegExp regExp = new RegExp(
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+    return regExp.hasMatch(value);
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextFormField _field(TextEditingController controller, String label,
-        String errorText, int mode) {
+    TextFormField _field(
+        TextEditingController controller, String label, String errorText) {
       return TextFormField(
         controller: controller,
         decoration: InputDecoration(
@@ -42,35 +49,62 @@ class _RegisterState extends State<Register> {
           ),
         ),
         validator: (value) {
-          if (mode != 1) {
-            if (value == null || value.isEmpty) {
-              return errorText;
-            }
-          } else {
-            if (value == null ||
-                value.isEmpty ||
-                value != _repeatPasswordController.text) {
-              return errorText;
-            }
+          if (value == null || value.isEmpty) {
+            return errorText;
           }
           return null;
         },
       );
     }
 
+    TextFormField _hiddenfield(TextEditingController controller, String label,
+        String errorText, int mode) {
+      return TextFormField(
+          obscureText: true,
+          controller: controller,
+          decoration: InputDecoration(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: WeezlyColors.blue3,
+                ),
+              ),
+              labelText: label,
+              labelStyle: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+              errorMaxLines: 2),
+          validator: (value) {
+            if (mode == 0) {
+              if (value!.trim().isEmpty || !validateStructure(value)) {
+                return errorText;
+              }
+            } else if (value != _passwordController.text || value!.isEmpty) {
+              return errorText;
+            }
+          });
+    }
+
     final List<TextFormField> _fieldList = [
-      _field(_lastnameController, "Nom *", "Veuillez renseigner votre nom", 0),
-      _field(_firstnameController, "Prénom *",
-          "Veuillez renseigner votre prénom", 0),
+      _field(_lastnameController, "Nom *", "Veuillez renseigner votre nom"),
+      _field(
+          _firstnameController, "Prénom *", "Veuillez renseigner votre prénom"),
       _field(_emailController, "Adresse email *",
-          "Veuillez renseigner votre email", 0),
+          "Veuillez renseigner votre email"),
       _field(_usernameController, "Nom d'utilisateur *",
-          "Veuillez renseigner votre nom d'utilisateur", 0),
-      _field(_passwordController, "Mot de passe *",
-          "Veuillez renseigner votre mot de passe", 0),
-      _field(_repeatPasswordController, "Confirmation du mot de passe *",
+          "Veuillez renseigner votre nom d'utilisateur"),
+    ];
+
+    final List<TextFormField> _hiddenFieldList = [
+      _hiddenfield(
+          _passwordController,
+          "Mot de passe *",
+          "Le mot de passe doit être de minimum 8 caractères, dont une minuscule, une majuscule et un chiffre.",
+          0),
+      _hiddenfield(_repeatPasswordController, "Confirmation du mot de passe *",
           "Veuillez répéter correctement votre mot de passe", 1),
     ];
+
     final registerForm = Form(
       key: _formKey,
       child: Padding(
@@ -92,7 +126,7 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   const Text(
-                    "S'inscrire facebook",
+                    "S'inscrire avec facebook",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -138,6 +172,7 @@ class _RegisterState extends State<Register> {
               height: _separator,
             ),
             for (TextFormField field in _fieldList) field,
+            for (TextFormField hiddenField in _hiddenFieldList) hiddenField,
             SizedBox(
               height: _separator,
             ),
@@ -165,7 +200,13 @@ class _RegisterState extends State<Register> {
             SizedBox(
               width: double.infinity,
               child: RawMaterialButton(
-                onPressed: null,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Inscription effectuée !')),
+                    );
+                  }
+                },
                 child: const Text("S'INSCRIRE GRATUITEMENT"),
                 fillColor: WeezlyColors.blue2,
                 shape: RoundedRectangleBorder(

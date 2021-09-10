@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/views/announce/create_carrier_announce.dart';
-import 'package:baloogo/widgets/custom_title.dart';
-import 'package:baloogo/widgets/footer.dart';
-import 'package:baloogo/widgets/image_input.dart';
-import 'package:baloogo/widgets/sizes.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/views/announce/create_carrier_announce.dart';
+import 'package:weezli/widgets/custom_title.dart';
+import 'package:weezli/widgets/footer.dart';
+import 'package:weezli/widgets/image_input.dart';
+import 'package:weezli/widgets/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/widgets/calendar.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/widgets/calendar.dart';
 
 class CreateSenderAnnounce extends StatefulWidget {
   static const routeName = '/sender-announce';

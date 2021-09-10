@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:baloogo/widgets/sizes.dart';
-import 'package:baloogo/widgets/travelMode.dart';
+import 'package:weezli/widgets/sizes.dart';
+import 'package:weezli/widgets/travelMode.dart';
 import 'package:flutter/material.dart';
 
 import '../../commons/filter_datas.dart';

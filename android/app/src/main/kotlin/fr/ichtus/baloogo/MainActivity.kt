@@ -1,4 +1,4 @@
-package fr.ichtus.baloogo
+package fr.ichtus.Weezli
 
 import io.flutter.embedding.android.FlutterActivity
 

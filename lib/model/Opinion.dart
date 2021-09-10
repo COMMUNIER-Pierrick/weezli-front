@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
-import 'package:baloogo/model/user.dart';
+import 'package:weezli/model/user.dart';
 
 import 'Order.dart';
 

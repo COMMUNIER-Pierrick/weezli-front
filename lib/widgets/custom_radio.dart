@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:baloogo/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';
 import '../model/filter.dart';
 

@@ -1,19 +1,7 @@
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/Address.dart';
-import 'package:baloogo/model/Announce.dart';
-import 'package:baloogo/model/Formule.dart';
-import 'package:baloogo/model/Order.dart';
-import 'package:baloogo/model/Package.dart';
-import 'package:baloogo/model/PackageSize.dart';
-import 'package:baloogo/model/Price.dart';
-import 'package:baloogo/model/PropositionPrice.dart';
-import 'package:baloogo/model/RIB.dart';
-import 'package:baloogo/model/Status.dart';
-import 'package:baloogo/model/Transportation.dart';
-import 'package:baloogo/model/Check.dart';
-import 'package:baloogo/model/user.dart';
-import 'package:baloogo/service/colis/read_one.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Order.dart';
+import 'package:weezli/service/colis/read_one.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/views/announce/create_sender_announce.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/views/search/search.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/views/announce/create_sender_announce.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/views/search/search.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

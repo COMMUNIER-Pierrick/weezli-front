@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:baloogo/model/user.dart';
+import 'package:weezli/model/user.dart';
 
 import 'Address.dart';
 import 'Price.dart';

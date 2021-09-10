@@ -1,5 +1,5 @@
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/views/orders/order_details.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

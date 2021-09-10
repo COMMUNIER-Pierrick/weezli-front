@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:baloogo/model/Order.dart';
-import 'package:baloogo/model/Package.dart';
+import 'package:weezli/model/Order.dart';
+import 'package:weezli/model/Package.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 

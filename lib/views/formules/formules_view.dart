@@ -1,10 +1,10 @@
 
-import 'package:baloogo/service/Formule/read_one.dart';
-import 'package:baloogo/commons/weezly_colors.dart';
+import 'package:weezli/service/Formule/read_one.dart';
+import 'package:weezli/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:baloogo/model/Formule.dart';
-import 'package:baloogo/service/Formule/create_Formule.dart';
-import 'package:baloogo/service/Formule/read_all.dart';
+import 'package:weezli/model/Formule.dart';
+import 'package:weezli/service/Formule/create_Formule.dart';
+import 'package:weezli/service/Formule/read_all.dart';
 
 class FormuleView extends StatefulWidget{
   
@@ -40,9 +40,9 @@ Formule Formule_1 = Formule(
     price: 40.0
   );
 //-------------------------------------   Fin Brut pour apk sans DB   --------------------------------------------------------------------
-  
+
   List<Formule> FormuleList = [];
-  late Future<List<Formule>> FormuleListe;
+  late Future <List<Formule>> FormuleListe;
   var status_code = null;
 
   List<Widget> FormuleListWidget = [];
@@ -51,7 +51,7 @@ Formule Formule_1 = Formule(
   void initState() {
     // TODO: implement initState
     super.initState();
-    FormuleListe = readAllFormules();
+    FormuleListe = readAllFormules() as Future <List<Formule>>;
     print(FormuleListe);
   }
 
@@ -64,32 +64,32 @@ Formule Formule_1 = Formule(
     if(FormuleListWidget.isEmpty) {allFormule();}
     return Scaffold(
       appBar: AppBar(title: Text("Formule"), backgroundColor: WeezlyColors.green,),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              ElevatedButton(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ElevatedButton(
                 onPressed: ()  {
                   status_code = createFormule("nom", "une pztitz descroi^trepon ça fait pas de mal, juste enlever les fautes d'orthographe", 10.5);
                   print(status_code);
-                }, 
+                },
                 child: Text("Ajouter Formule DB")
-              ),
-              ...FormuleListWidget,
-            ],
-          ),
+            ),
+            ...FormuleListWidget,
+          ],
         ),
+      ),
     );
   }
   //-------------------------------------   Début Brut pour apk sans DB   --------------------------------------------------------------------
-allFormuleBrut(){
-    FormuleList.forEach((Formule) { 
+  allFormuleBrut(){
+    FormuleList.forEach((Formule) {
       FormuleListWidget.add(cardFormule(Formule));
     });
   }
 //-------------------------------------   Fin Brut pour apk sans DB   --------------------------------------------------------------------
   allFormule(){
     FormuleListe.then((value) {
-      value.forEach((Formule) { 
+      value.forEach((Formule) {
         setState(() {
           FormuleListWidget.add(cardFormule(Formule));
         });
@@ -103,14 +103,14 @@ allFormuleBrut(){
       margin: EdgeInsets.all(20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: EdgeInsets.all(10), 
+        padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Formule ${Formule.name}",
-              style: TextStyle(color: Theme.of(context).buttonColor, fontSize: 25, fontWeight: FontWeight.bold,)
-              ),
+                "Formule ${Formule.name}",
+                style: TextStyle(color: Theme.of(context).buttonColor, fontSize: 25, fontWeight: FontWeight.bold,)
+            ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(Formule.description),
@@ -119,29 +119,29 @@ allFormuleBrut(){
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [*/
-                Text.rich( 
-                  TextSpan(
+            Text.rich(
+                TextSpan(
                     text: "${Formule.price}€",
                     style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 30, fontWeight: FontWeight.bold),
                     children: [
                       TextSpan(
-                        text: " /mois",
-                        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontStyle: FontStyle.italic)
+                          text: " /mois",
+                          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontStyle: FontStyle.italic)
                       ),
                     ]
-                  )
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/'), // A MODIFIER !!!
-                  child: Text("SOUSCRIRE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    primary: Theme.of(context).buttonColor,
-                    elevation: 0, 
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                  ),
-                ),
-              /*],
+                )
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, '/'), // A MODIFIER !!!
+              child: Text("SOUSCRIRE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                primary: Theme.of(context).buttonColor,
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+              ),
+            ),
+            /*],
             )*/
           ],
         ),
