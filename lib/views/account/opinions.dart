@@ -304,7 +304,7 @@ class _AvisState extends State<Opinions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        opinion.order.announce.propositionPrice.sender.username,
+                        opinion.order.announce.propositionPrice!.sender.username,
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       SizedBox(

@@ -24,16 +24,22 @@ class _RegisterState extends State<Register> {
   final TextEditingController _lastnameController = TextEditingController();
 
   // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
-  bool validateStructure(String value) {
+  bool validateStructurePassWord(String value) {
+    RegExp regExp = new RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+    return regExp.hasMatch(value);
+  }
+
+  // Fonction qui teste l'email selon une regex
+  bool validateStructureEmail(String value) {
     RegExp regExp = new RegExp(
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     return regExp.hasMatch(value);
   }
 
   @override
   Widget build(BuildContext context) {
-    TextFormField _field(
-        TextEditingController controller, String label, String errorText) {
+    TextFormField _field(TextEditingController controller, String label,
+        String errorText, int mode) {
       return TextFormField(
         controller: controller,
         decoration: InputDecoration(
@@ -49,10 +55,17 @@ class _RegisterState extends State<Register> {
           ),
         ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return errorText;
+          switch (mode) {
+            case 0:
+              if (value == null || value.isEmpty) {
+                return errorText;
+              }
+              break;
+            case 1:
+              if (value!.trim().isEmpty || !validateStructureEmail(value)) {
+                return errorText;
+              }
           }
-          return null;
         },
       );
     }
@@ -76,7 +89,7 @@ class _RegisterState extends State<Register> {
               errorMaxLines: 2),
           validator: (value) {
             if (mode == 0) {
-              if (value!.trim().isEmpty || !validateStructure(value)) {
+              if (value!.trim().isEmpty || !validateStructurePassWord(value)) {
                 return errorText;
               }
             } else if (value != _passwordController.text || value!.isEmpty) {
@@ -86,13 +99,13 @@ class _RegisterState extends State<Register> {
     }
 
     final List<TextFormField> _fieldList = [
-      _field(_lastnameController, "Nom *", "Veuillez renseigner votre nom"),
-      _field(
-          _firstnameController, "Prénom *", "Veuillez renseigner votre prénom"),
+      _field(_lastnameController, "Nom *", "Veuillez renseigner votre nom", 0),
+      _field(_firstnameController, "Prénom *",
+          "Veuillez renseigner votre prénom", 0),
       _field(_emailController, "Adresse email *",
-          "Veuillez renseigner votre email"),
+          "Veuillez renseigner un email valable", 1),
       _field(_usernameController, "Nom d'utilisateur *",
-          "Veuillez renseigner votre nom d'utilisateur"),
+          "Veuillez renseigner votre nom d'utilisateur", 0),
     ];
 
     final List<TextFormField> _hiddenFieldList = [

@@ -1,3 +1,4 @@
+import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
@@ -113,15 +114,9 @@ class AnnouncesState extends State<Announces> {
               statusIdentity: true,
               statusPhone: true,
               imgIdCard: 'lkjgfùdfgùjdfg')),
+      //idOrder: 1,
     )
   ];
-
-  String format(date) {
-    String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
-        ' - ' +
-        DateFormat.Hm('fr_fr').format(date);
-    return formattedDate;
-  }
 
   //----------------------  Fin   brut  ----------------------------------------
   @override
@@ -165,8 +160,7 @@ class AnnouncesState extends State<Announces> {
 
     GestureDetector _cardannounce(Announce announce) {
       return GestureDetector(
-        onTap: () => Navigator.pushNamed(
-            context, AnnounceDetail.routeName,
+        onTap: () => Navigator.pushNamed(context, AnnounceDetail.routeName,
             arguments: announce),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
@@ -181,10 +175,12 @@ class AnnouncesState extends State<Announces> {
             children: [
               Row(children: [
                 Text(announce.package.addressDeparture.city,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Icon(Icons.arrow_right_alt),
                 Text(announce.package.addressArrival.city,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Spacer(),
                 Icon(
                   WeezlyIcon.arrow_right_square,
@@ -203,25 +199,23 @@ class AnnouncesState extends State<Announces> {
               ]),
               Row(
                 children: [
-                  Text("Moyen de transport : ", style: TextStyle(fontSize: 15)),
+                  Text("Moyen de transport : "),
                   Text(announce.package.transportation.name,
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
               Row(children: [
-                Text("Dimensions : ", style: TextStyle(fontSize: 15)),
+                Text("Dimensions : "),
                 Text(announce.package.size.name,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                    style: TextStyle(fontWeight: FontWeight.bold))
               ]),
               Row(
                 children: [
-                  Text("Commission : ", style: TextStyle(fontSize: 15)),
+                  Text("Commission : "),
                   Text(
-                      announce.propositionPrice.proposition.toStringAsFixed(0) +
+                      announce.propositionPrice!.proposition.toStringAsFixed(0) +
                           " €",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                      style: TextStyle(fontWeight: FontWeight.bold))
                 ],
               )
             ],

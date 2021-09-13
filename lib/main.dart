@@ -1,5 +1,6 @@
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:weezli/views/announce/announces.dart';
+import 'package:weezli/views/announce/search_announce_detail.dart';
 import 'package:weezli/views/orders/colis_avis.dart';
 import 'package:weezli/views/deliveries/delivery_details.dart';
 import 'package:weezli/views/orders/order_details.dart';
@@ -69,6 +70,7 @@ void main() {
         '/formules': (context) => FormuleView(),
         '/users': (context) => FormuleView(),
         AnnounceDetail.routeName: (context) => AnnounceDetail(),
+        SearchAnnounceDetail.routeName : (context) => SearchAnnounceDetail(),
         '/avis': (context) => Opinions(),
         CreateCarrierAnnounce.routeName: (context) => CreateCarrierAnnounce(),
         CreateSenderAnnounce.routeName: (context) => CreateSenderAnnounce(),

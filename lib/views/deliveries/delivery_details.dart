@@ -1,4 +1,5 @@
 
+import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
@@ -114,12 +115,12 @@ class DeliveryDetailState extends State<DeliveryDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.announce.propositionPrice.proposition.toString() + "€"),
+                  order.announce.propositionPrice!.proposition.toString() + "€"),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Expéditeur : ",
-                  order.announce.propositionPrice.sender.username),
+                  order.announce.propositionPrice!.sender.username),
               SizedBox(
                 height: _separator,
               ),
@@ -179,27 +180,6 @@ class DeliveryDetailState extends State<DeliveryDetail> {
       ),
     );
   }
-}
-
-String weight(double poids) {
-  String weight = "";
-
-  if (poids < 0.5) {
-    weight = "0-500 g";
-  } else if (poids < 1) {
-    weight = "500 g - 1kg";
-  } else {
-    weight = "+ 1 kg";
-  }
-
-  return weight;
-}
-
-String format(date) {
-  String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
-      ' - ' +
-      DateFormat.Hm('fr_fr').format(date);
-  return formattedDate;
 }
 
 Widget _opinion(Order order, BuildContext context) {

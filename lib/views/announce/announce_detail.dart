@@ -1,5 +1,7 @@
 import 'dart:ffi';
 
+import 'package:weezli/commons/format.dart';
+import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,12 +23,7 @@ class AnnounceDetail extends StatefulWidget {
 }
 
 class _AnnounceDetail extends State<AnnounceDetail> {
-  String format(date) {
-    String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
-        ' - ' +
-        DateFormat.Hm('fr_fr').format(date);
-    return formattedDate;
-  }
+  double widthSeparator = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +46,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
           children: [
             Row(
               children: [
-                Icon(WeezlyIcon.card_plane, color: WeezlyColors.blue3),
-                SizedBox(width: 20),
+                Icon(WeezlyIcon.card_plane,
+                    color: WeezlyColors.blue3, size: 20),
+                SizedBox(width: widthSeparator),
                 Text(
                   announce.package.addressDeparture.city,
                   style: TextStyle(
@@ -78,7 +76,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             ),
             Row(children: [
               Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: 5),
+              SizedBox(width: widthSeparator),
               Text("Date de départ : "),
               Text(format(announce.package.datetimeDeparture),
                   style: TextStyle(fontWeight: FontWeight.bold))
@@ -86,7 +84,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             SizedBox(height: 10),
             Row(children: [
               Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: 5),
+              SizedBox(width: widthSeparator),
               Text("Date d'arrivée : "),
               Text(format(announce.package.dateTimeArrival),
                   style: TextStyle(fontWeight: FontWeight.bold))
@@ -94,7 +92,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             SizedBox(height: 10),
             Row(children: [
               Icon(WeezlyIcon.box, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: 5),
+              SizedBox(width: widthSeparator),
               Text("Dimensions : "),
               Text(announce.package.size.name,
                   style: TextStyle(fontWeight: FontWeight.bold))
@@ -102,7 +100,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             SizedBox(height: 10),
             Row(children: [
               Icon(WeezlyIcon.kg, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: 5),
+              SizedBox(width: widthSeparator),
               Text("Poids : "),
               Text(weight(announce.package.kgAvailable),
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
@@ -111,22 +109,26 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             Row(
               children: [
                 Icon(WeezlyIcon.ticket, size: 20, color: WeezlyColors.blue3),
-                SizedBox(width: 5),
-                Text("Commission : "),
-                Text(announce.propositionPrice.proposition.toStringAsFixed(0) + " €",
+                SizedBox(width: widthSeparator),
+                Text("Commission de base : "),
+                Text(
+                    announce.package.price.kgPrice.toStringAsFixed(0) +
+                        " €",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
               ],
             ),
             SizedBox(height: 10),
             Row(
               children: [
-                Icon(Icons.remove_red_eye_outlined, size: 20, color: WeezlyColors.blue3),
-                SizedBox(width: 5),
+                Icon(Icons.remove_red_eye_outlined,
+                    size: 20, color: WeezlyColors.blue3),
+                SizedBox(width: widthSeparator),
                 Text("Nombre de vues : "),
                 Text(announce.views.toString(),
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
               ],
             ),
+            _order(announce, context),
             SizedBox(height: 10),
             Row(children: [
               Text("Description : ",
@@ -135,29 +137,63 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             SizedBox(height: 10),
             Row(children: [
               Flexible(
-                  child:
-                      Text(announce.package.description, textAlign: TextAlign.justify))
-            ])
+                  child: Text(announce.package.description,
+                      textAlign: TextAlign.justify))
+            ]),
           ],
         ),
       ),
     );
   }
+}
 
-  // Fonction qui prend en paramètre le poids du package pour pouvoir faire un text adapté.
+Widget _order(Announce announce, BuildContext context) {
+  if (announce.idOrder != null) {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
+        child: Container(
+          padding : EdgeInsets.fromLTRB(0, 5, 0, 5),
+          width: MediaQuery.of(context).size.width,
+          decoration: new BoxDecoration(
+              borderRadius: new BorderRadius.circular(16.0),
+              color: WeezlyColors.grey1),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Commande reçue",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextButton(
+                onPressed: null,
+                child: Text(
+                  "CONSULTER",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                  backgroundColor: WeezlyColors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(22.5),
+                  ),
+                ),
 
-  String weight(double poids) {
-    String weight = "";
-
-    if (poids < 0.5) {
-      weight = "0-500 g";
-    }
-    else if (poids < 1) {
-      weight = "500 g - 1kg";
-    } else {
-      weight = "+ 1 kg";
-    }
-
-    return weight;
-  }
+              )
+            ],
+          ),
+        ));
+  } else
+    return SizedBox(
+      height: 0,
+    );
 }

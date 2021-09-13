@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
@@ -217,6 +218,9 @@ class _SearchOrdersState extends State<SearchOrders> {
                 order.announce.package.description,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
+                style: TextStyle (
+                  fontSize: 13,
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -226,6 +230,7 @@ class _SearchOrdersState extends State<SearchOrders> {
                   Icon(
                     WeezlyIcon.calendar2,
                     color: WeezlyColors.primary,
+                    size: 15,
                   ),
                   SizedBox(
                     width: 10,
@@ -241,13 +246,13 @@ class _SearchOrdersState extends State<SearchOrders> {
                 children: [
                   Row(
                     children: [
-                      Text("Montant: ",
+                      Text("Montant : ",
                           style: Theme
                               .of(context)
                               .textTheme
                               .headline5),
                       Text(
-                        order.announce.propositionPrice.proposition.toStringAsFixed(
+                        order.announce.propositionPrice!.proposition.toStringAsFixed(
                             0) + "€",
                       ),
                     ],
@@ -301,9 +306,3 @@ class _SearchOrdersState extends State<SearchOrders> {
   }
 }
 
-String format(date) {
-  String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
-      ' - ' +
-      DateFormat.Hm('fr_fr').format(date);
-  return formattedDate;
-}
