@@ -1,4 +1,4 @@
-import 'package:baloogo/service/announce/create.dart';
+import 'package:weezli/service/announce/create.dart';
 import 'package:flutter/material.dart';
 
 class CreateAnnounce extends StatefulWidget {

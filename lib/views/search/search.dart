@@ -1,6 +1,8 @@
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/views/search_results.dart';
-import 'package:baloogo/widgets/calendar.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/views/announce/create_carrier_announce.dart';
+import 'package:weezli/views/announce/create_sender_announce.dart';
+import 'package:weezli/views/search_results.dart';
+import 'package:weezli/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,7 +31,6 @@ class _SearchState extends State<Search> {
     'searchType': null
   };
   String? searchType; // == sending || transfer
- 
 
   @override
   void didChangeDependencies() {
@@ -83,6 +84,12 @@ class _SearchState extends State<Search> {
     Navigator.pushNamed(context, '/resultat', arguments: _search);
   }
 
+  VoidCallback? _createAnnounce() {
+    searchType == "sending"
+        ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName)
+        : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     print(_search);
@@ -90,46 +97,48 @@ class _SearchState extends State<Search> {
     print(_search[searchType]);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          searchType == "sending" ? "Recherche transporteur": "Recherche paquet"
-        ),
-        backgroundColor: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors.yellowgreen,
+        title: Text(searchType == "sending"
+            ? "Recherche transporteur"
+            : "Recherche paquet"),
+        backgroundColor: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
+            .yellowgreen,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-              Container(
-                padding: const EdgeInsets.all(30),
-                decoration: BoxDecoration(
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
                 /*gradient: LinearGradient(
                   begin: Alignment.center,
                   end: Alignment.bottomCenter,
                   colors: //Theme.of(context).primaryColor,
                     searchType == "sending" ? [WeezlyColors.blue3,  WeezlyColors.yellow,] : [WeezlyColors.yellow,  WeezlyColors.blue2,]
                 ),*/
-                  color: /*searchType == "sending" ? WeezlyColors.yellowgreen:*/ WeezlyColors.blue6,
-                ),
+                color: /*searchType == "sending" ? WeezlyColors.yellowgreen:*/ WeezlyColors
+                    .blue6,
+              ),
               // color: Gradient() Theme.of(context).primaryColor,
-                height: 320,
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              _textFieldDecoration('Ville ou pays de départ'),
-                          style: TextStyle(color: WeezlyColors.blue5 ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please provide a value';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) => _search = {
+              height: 320,
+              child: Form(
+                key: _form,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        decoration:
+                            _textFieldDecoration('Ville ou pays de départ'),
+                        style: TextStyle(color: WeezlyColors.blue5),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please provide a value';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) => _search = {
                           'start': value,
                           'landing': _search['landing'],
                           'date': _search['date'],
@@ -143,7 +152,6 @@ class _SearchState extends State<Search> {
                         decoration: _textFieldDecoration(
                             'Ville ou pays de destination'),
                         style: TextStyle(color: WeezlyColors.blue5),
-                        
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please provide a value';
@@ -223,24 +231,42 @@ class _SearchState extends State<Search> {
             ),
             const SizedBox(height: 20),
             Container(
-              child: ElevatedButton(
-                onPressed: _saveForm,
-                child: Text('Rechercher'.toUpperCase()),
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors.yellowgreen,
-                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
-                  elevation: 5,
-                ),
-              ),
-            ),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton(
+                  onPressed: _saveForm,
+                  child: Text('Rechercher'.toUpperCase()),
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                    primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
+                        .yellowgreen,
+                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
+                    elevation: 5,
+                  )),
+            ])),
+            Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton(
+                  onPressed: _createAnnounce,
+                  child: Text('Créer une annonce'.toUpperCase()),
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                    primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
+                        .blue6,
+                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
+                    elevation: 5,
+                  )),
+            ])),
             const SizedBox(height: 20),
             Row(
               children: [
                 SizedBox(width: 20),
                 Text(
-                  "Rechercher récent", 
-                  style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                  "Rechercher récent",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold),
                 ),
                 Spacer(),
               ],

@@ -1,5 +1,5 @@
-import 'package:baloogo/commons/filter_datas.dart';
-import 'package:baloogo/widgets/custom_radio.dart';
+import 'package:weezli/commons/filter_datas.dart';
+import 'package:weezli/widgets/custom_radio.dart';
 import 'package:flutter/material.dart';
 
 var travelMode = ValueNotifier('');

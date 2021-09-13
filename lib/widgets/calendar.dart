@@ -1,4 +1,4 @@
-import 'package:baloogo/commons/colorSwatch.dart';
+import 'package:weezli/commons/colorSwatch.dart';
 import 'package:flutter/material.dart';
 
 Future openDatePicker(BuildContext context, Function selectDate,

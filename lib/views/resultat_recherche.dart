@@ -1,4 +1,4 @@
-import 'package:baloogo/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/card_item.dart';
 import '../../views/announce/create_carrier_announce.dart';

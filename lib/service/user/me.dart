@@ -1,4 +1,4 @@
-import 'package:baloogo/model/user.dart';
+import 'package:weezli/model/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 

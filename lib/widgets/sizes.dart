@@ -1,8 +1,8 @@
-import 'package:baloogo/model/filter.dart';
+import 'package:weezli/model/filter.dart';
 
 import '../commons/filter_datas.dart';
 import '../commons/weezly_colors.dart';
-import 'package:baloogo/widgets/custom_radio.dart';
+import 'package:weezli/widgets/custom_radio.dart';
 import 'package:flutter/material.dart';
 
 class Sizes extends StatefulWidget {

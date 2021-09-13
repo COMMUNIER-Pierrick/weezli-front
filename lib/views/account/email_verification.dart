@@ -1,6 +1,6 @@
-import 'package:baloogo/commons/disconnect.dart';
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
+import 'package:weezli/commons/disconnect.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

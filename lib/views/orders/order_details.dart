@@ -1,20 +1,9 @@
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/Address.dart';
-import 'package:baloogo/model/Announce.dart';
-import 'package:baloogo/model/Formule.dart';
-import 'package:baloogo/model/Order.dart';
-import 'package:baloogo/model/Package.dart';
-import 'package:baloogo/model/PackageSize.dart';
-import 'package:baloogo/model/Price.dart';
-import 'package:baloogo/model/PropositionPrice.dart';
-import 'package:baloogo/model/RIB.dart';
-import 'package:baloogo/model/Status.dart';
-import 'package:baloogo/model/Transportation.dart';
-import 'package:baloogo/model/Check.dart';
-import 'package:baloogo/model/user.dart';
-import 'package:baloogo/service/colis/read_one.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Order.dart';
+import 'package:weezli/service/colis/read_one.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'colis_avis.dart';
 
@@ -26,20 +15,20 @@ class OrderDetail extends StatefulWidget {
 }
 
 class OrderDetailState extends State<OrderDetail> {
-  late Future<Package> colisFuture;
-  late Package thisColis;
+  late Future<Order> ordersFuture;
+  late Order thisOrder;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    colisFuture = readOnePackage(2);
-    colisFuture.then((value) {
-      setState(() => thisColis = value);
+    ordersFuture = readOneOrder(2);
+    ordersFuture.then((value) {
+      setState(() => thisOrder = value);
     });
   }
 
-  double _separator = 10;
+  double _separator = 15;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +56,9 @@ class OrderDetailState extends State<OrderDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mes colis"),
+        title: Text(order.announce.package.addressDeparture.city +
+            " - " +
+            order.announce.package.addressArrival.city),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -76,14 +67,11 @@ class OrderDetailState extends State<OrderDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("N° de commande : " + order.id.toString()),
-              //Text("Du : " +
-              //order.package.datetimeDeparture
-              //.replaceFirst("T", " à ")
-              //.substring(0, 21)),
+              Text("Du : " + format(order.dateOrder)),
               Image(
                 image: AssetImage('assets/images/comment.png'),
                 width: _mediaQuery.width * 0.8,
-                height: _mediaQuery.height * 0.3,
+                height: _mediaQuery.height * 0.2,
               ),
               Text(
                 "Détails",
@@ -110,16 +98,17 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.calendar2, "Date de départ : ",
-                  order.announce.package.datetimeDeparture.toString().substring(0, 10)),
+                  format(order.announce.package.datetimeDeparture)),
               SizedBox(
                 height: _separator,
               ),
-              mix(WeezlyIcon.box, "Dimension : ", order.announce.package.size.name),
+              mix(WeezlyIcon.box, "Dimension : ",
+                  order.announce.package.size.name),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.kg, "Poids : ",
-                  order.announce.package.kgAvailable.toString()),
+                  order.announce.package.kgAvailable.toString() + " kg"),
               SizedBox(
                 height: _separator,
               ),
@@ -149,7 +138,7 @@ class OrderDetailState extends State<OrderDetail> {
                   Icon(WeezlyIcon.copy),
                 ],
               ),
-              Text ("Code à transmettre au destinaire du colis uniquement"),
+              Text("Code à transmettre au destinaire du colis uniquement"),
               SizedBox(
                 height: _separator,
               ),
@@ -191,7 +180,7 @@ class OrderDetailState extends State<OrderDetail> {
                 ],
               ),
               SizedBox(
-                height: _separator + 20,
+                height: _separator,
               ),
               Divider(
                 thickness: 2,
@@ -205,16 +194,31 @@ class OrderDetailState extends State<OrderDetail> {
                   Icon(WeezlyIcon.help),
                 ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, ColisAvis.routeName);
-                },
-                child: const Text('Mettre un avis'),
-              ),
+              _opinion(order, context),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+String format(date) {
+  String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
+      ' - ' +
+      DateFormat.Hm('fr_fr').format(date);
+  return formattedDate;
+}
+
+Widget _opinion(Order order, BuildContext context) {
+  if (order.status.name == "Terminé")
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context, ColisAvis.routeName);
+        },
+        child: const Text('Mettre un avis'));
+  else
+    return SizedBox(
+      height: 0,
+    );
 }

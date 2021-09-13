@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/service/authentication/login.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/service/authentication/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';

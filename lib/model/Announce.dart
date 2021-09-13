@@ -1,8 +1,8 @@
 
 import 'dart:convert';
 
-import 'package:baloogo/model/PropositionPrice.dart';
-import 'package:baloogo/model/user.dart';
+import 'package:weezli/model/PropositionPrice.dart';
+import 'package:weezli/model/user.dart';
 
 import 'Package.dart';
 import 'Price.dart';

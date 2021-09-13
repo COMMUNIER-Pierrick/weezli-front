@@ -1,6 +1,6 @@
-import 'package:baloogo/views/announce/announce_detail.dart';
-import 'package:baloogo/widgets/avatar.dart';
-import 'package:baloogo/widgets/contact.dart';
+import 'package:weezli/views/announce/announce_detail.dart';
+import 'package:weezli/widgets/avatar.dart';
+import 'package:weezli/widgets/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

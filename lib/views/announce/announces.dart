@@ -1,17 +1,17 @@
-import 'package:baloogo/commons/weezly_colors.dart';
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/model/Address.dart';
-import 'package:baloogo/model/Announce.dart';
-import 'package:baloogo/model/Formule.dart';
-import 'package:baloogo/model/Package.dart';
-import 'package:baloogo/model/Price.dart';
-import 'package:baloogo/model/PropositionPrice.dart';
-import 'package:baloogo/model/RIB.dart';
-import 'package:baloogo/model/PackageSize.dart';
-import 'package:baloogo/model/Transportation.dart';
-import 'package:baloogo/model/Check.dart';
-import 'package:baloogo/model/user.dart';
-import 'package:baloogo/views/announce/seller_announce_detail.dart';
+import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Address.dart';
+import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/Formule.dart';
+import 'package:weezli/model/Package.dart';
+import 'package:weezli/model/Price.dart';
+import 'package:weezli/model/PropositionPrice.dart';
+import 'package:weezli/model/RIB.dart';
+import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/model/Transportation.dart';
+import 'package:weezli/model/Check.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,13 +56,13 @@ class AnnouncesState extends State<Announces> {
               number: 2,
               street: 'rue de Merville',
               zipCode: '59160',
-              city: 'Tourcoing'),
+              city: 'Rome'),
           addressArrival: Address(
               id: 45,
               number: 3,
               street: 'allée de la cour baleine',
               zipCode: '95500',
-              city: 'Gonesse'),
+              city: 'Paris'),
           datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
           dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
           kgAvailable: 0.8,
@@ -166,7 +166,7 @@ class AnnouncesState extends State<Announces> {
     GestureDetector _cardannounce(Announce announce) {
       return GestureDetector(
         onTap: () => Navigator.pushNamed(
-            context, SellerAnnounceDetail.routeName,
+            context, AnnounceDetail.routeName,
             arguments: announce),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),

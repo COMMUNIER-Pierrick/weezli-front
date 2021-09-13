@@ -1,6 +1,6 @@
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/widgets/custom_title.dart';
-import 'package:baloogo/widgets/footer.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/widgets/custom_title.dart';
+import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

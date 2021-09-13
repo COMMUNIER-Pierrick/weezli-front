@@ -1,4 +1,4 @@
-# baloogo
+# Weezli
 
 Application de vente de poids de bagage
 

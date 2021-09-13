@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:baloogo/model/Formule.dart';
+import 'package:weezli/model/Formule.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 

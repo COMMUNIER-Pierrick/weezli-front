@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:baloogo/model/Formule.dart';
+import 'package:weezli/model/Formule.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Formule>> readAllFormules() async {
- 
+
   final Response response = await http.get(
     Uri.parse("http://10.0.2.2:5000/formule/all-formules"),
     headers: <String, String>{

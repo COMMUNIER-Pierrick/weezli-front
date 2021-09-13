@@ -1,8 +1,8 @@
-import 'package:baloogo/commons/weezly_icon_icons.dart';
-import 'package:baloogo/views/account/profile.dart';
-import 'package:baloogo/views/announce/create.dart';
-import 'package:baloogo/views/message/message_view.dart';
-import 'package:baloogo/views/home/home.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/views/account/profile.dart';
+import 'package:weezli/views/announce/create.dart';
+import 'package:weezli/views/message/message_view.dart';
+import 'package:weezli/views/home/home.dart';
 import '../search/search.dart';
 import 'package:flutter/material.dart';
 
