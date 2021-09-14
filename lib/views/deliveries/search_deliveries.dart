@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
@@ -249,7 +250,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                               .textTheme
                               .headline5),
                       Text(
-                        order.announce.propositionPrice.proposition.toStringAsFixed(
+                        order.announce.propositionPrice!.proposition.toStringAsFixed(
                             0) + "€",
                       ),
                     ],
@@ -301,11 +302,4 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
       ),
     );
   }
-}
-
-String format(date) {
-  String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
-      ' - ' +
-      DateFormat.Hm('fr_fr').format(date);
-  return formattedDate;
 }

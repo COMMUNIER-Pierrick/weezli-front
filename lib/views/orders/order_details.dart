@@ -1,5 +1,7 @@
+import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/service/colis/read_one.dart';
 import 'package:flutter/material.dart';
@@ -108,12 +110,12 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.kg, "Poids : ",
-                  order.announce.package.kgAvailable.toString() + " kg"),
+                  weight(order.announce.package.kgAvailable)),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.announce.package.price.kgPrice.toString() + "€"),
+                  order.announce.propositionPrice!.proposition.toStringAsFixed(0) + "€"),
               SizedBox(
                 height: _separator,
               ),
@@ -138,10 +140,14 @@ class OrderDetailState extends State<OrderDetail> {
                   Icon(WeezlyIcon.copy),
                 ],
               ),
-              Text("Code à transmettre au destinaire du colis uniquement"),
               SizedBox(
                 height: _separator,
               ),
+              Text(
+                  "Code à transmettre au destinaire du colis uniquement",
+              style: TextStyle (
+                fontSize: 12,
+              )),
               SizedBox(
                 height: _separator,
               ),
@@ -201,13 +207,6 @@ class OrderDetailState extends State<OrderDetail> {
       ),
     );
   }
-}
-
-String format(date) {
-  String formattedDate = DateFormat.yMMMMd('fr_fr').format(date) +
-      ' - ' +
-      DateFormat.Hm('fr_fr').format(date);
-  return formattedDate;
 }
 
 Widget _opinion(Order order, BuildContext context) {

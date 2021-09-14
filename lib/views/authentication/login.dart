@@ -6,6 +6,7 @@ import 'package:weezli/service/authentication/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
+import 'package:weezli/views/authentication/register.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -100,7 +101,7 @@ class _LoginState extends State<Login> {
                     );
                     if (response.statusCode == 200) {
                       final SnackBar snackBar = SnackBar(
-                        content: Text("Connexion réussi"),
+                        content: Text("Connexion réussie"),
                       );
                       final data = jsonDecode(response.body);
                       await _storage.write(key: 'jwt', value: data["token"]);
@@ -109,7 +110,7 @@ class _LoginState extends State<Login> {
                     } else {
                       final SnackBar snackBar = SnackBar(
                         content: Text(
-                          "L'identifiant ou le mot de passe ne sont pas valide",
+                          "L'identifiant ou le mot de passe ne sont pas valides",
                         ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -172,7 +173,7 @@ class _LoginState extends State<Login> {
               height: _separator,
             ),
             const Text(
-              "Mot de passe oublié?",
+              "Mot de passe oublié ?",
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
@@ -183,7 +184,7 @@ class _LoginState extends State<Login> {
               height: _separator,
             ),
             const Text(
-              "Pas encore de compte?",
+              "Pas encore de compte ?",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
@@ -206,7 +207,9 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(22.5),
                   ),
                 ),
-                onPressed: null,
+                onPressed: () {
+                  Navigator.pushNamed(context, "/register");
+                },
                 child: const Text(
                   "INSCRIVEZ-VOUS",
                   style: TextStyle(
