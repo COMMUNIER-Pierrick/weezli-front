@@ -5,19 +5,20 @@ import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Check.dart';
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Opinion.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/PropositionPrice.dart';
 import 'package:weezli/model/RIB.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/model/Transportation.dart';
 import 'package:weezli/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:weezli/model/Type.dart';
 
 class Opinions extends StatefulWidget {
   const Opinions({Key? key}) : super(key: key);
@@ -28,147 +29,140 @@ class Opinions extends StatefulWidget {
 
 class _AvisState extends State<Opinions> {
   final List<Opinion> list_opinions = [
-    Opinion(
+    /*Opinion(
         id: 1,
         number: 5,
         comment: "Super livraison, très content !",
-        order : Order(
+        order: Order(
           id: 215545454,
           announce: Announce(
-            id: 233123,
-            package: Package(
-                id: 132565,
-                addressDeparture: Address(
-                    id: 12,
-                    number: 2,
-                    street: 'rue de Merville',
-                    zipCode: '59160',
-                    city: 'Tourcoing'),
-                addressArrival: Address(
-                    id: 45,
-                    number: 3,
-                    street: 'allée de la cour baleine',
-                    zipCode: '95500',
-                    city: 'Gonesse'),
-                datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-                dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-                kgAvailable: 0.8,
-                transportation: Transportation(id: 2, name: 'Avion'),
-                description:
-                "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                size: PackageSize(id: 1, name: 'Petit'),
-                price: Price(
-                  id: 2,
-                  kgPrice: 50.0,
-                )),
-            propositionPrice: PropositionPrice(
+              id: 233123,
+              package: Package(
+                  id: 132565,
+                  addressDeparture: Address(
+                      id: 12,
+                      number: 2,
+                      street: 'rue de Merville',
+                      zipCode: '59160',
+                      city: 'Tourcoing'),
+                  addressArrival: Address(
+                      id: 45,
+                      number: 3,
+                      street: 'allée de la cour baleine',
+                      zipCode: '95500',
+                      city: 'Gonesse'),
+                  datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
+                  dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
+                  kgAvailable: 0.8,
+                  transportation: Transportation(id: 2, name: 'Avion'),
+                  description:
+                  "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                  size: [PackageSize (id : 1, name : "Petit")],
+                  price: Price(
+                    id: 2,
+                    kgPrice: 50.0,
+                  )),
+              finalPrice: FinalPrice(
                 id: 2,
                 proposition: 45,
                 accept: true,
-                sender: User(
-                    id: 2,
-                    firstname: 'Marie',
-                    lastname: "Corrales",
-                    username: 'Nino',
-                    email: 'noemie.contant@gmail.com',
-                    phone: '0627155307',
-                    active: true,
-                    rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-                    urlProfilPicture: 'oiogdfpogkfdiojo',
-                    formule: Formule(
-                        id: 1,
-                        name: 'Formule 1',
-                        description: 'Formule 1',
-                        price: 5),
-                    check: Check(
-                        id: 1,
-                        statusIdentity: true,
-                        statusPhone: true,
-                        imgIdCard: 'lkjgfùdfgùjdfg'))),
-            views: 15,
-            user: User(
-                id: 1,
-                firstname: 'Noémie',
-                lastname: "Contant",
-                username: 'STid',
-                email: 'noemie.contant@gmail.com',
-                phone: '0627155307',
-                active: true,
-                rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-                urlProfilPicture: 'oiogdfpogkfdiojo',
-                formule: Formule(
-                    id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-                check: Check(
-                    id: 1,
-                    statusIdentity: true,
-                    statusPhone: true,
-                    imgIdCard: 'lkjgfùdfgùjdfg')),
-          ),
+              ),
+              views: 15,
+              user: User(
+                  id: 1,
+                  firstname: 'Noémie',
+                  lastname: "Contant",
+                  username: 'STid',
+                  email: 'noemie.contant@gmail.com',
+                  phone: '0627155307',
+                  active: true,
+                  rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
+                  urlProfilPicture: 'oiogdfpogkfdiojo',
+                  formule: Formule(
+                      id: 1,
+                      name: 'Formule 1',
+                      description: 'Formule 1',
+                      price: 5),
+                  check: Check(
+                      id: 1,
+                      statusIdentity: true,
+                      statusPhone: true,
+                      imgIdCard: 'lkjgfùdfgùjdfg')),
+              transact: true,
+              price: 45,
+              type: Type(id: 1, name: "Transport")),
           status: Status(
             id: 1,
             name: "En cours",
           ),
           validationCode: 2315,
           dateOrder: DateTime.parse('2021-07-20 17:30:04Z'),
+          user: User(
+              id: 2,
+              firstname: 'Marie',
+              lastname: "Corrales",
+              username: 'STid',
+              email: 'noemie.contant@gmail.com',
+              phone: '0627155307',
+              active: true,
+              rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
+              urlProfilPicture: 'oiogdfpogkfdiojo',
+              formule: Formule(
+                  id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+              check: Check(
+                  id: 1,
+                  statusIdentity: true,
+                  statusPhone: true,
+                  imgIdCard: 'lkjgfùdfgùjdfg')),
         )),
     Opinion(
         id: 2,
         number: 3,
         comment: "Colis un peu abimé, mais à part ça rien à dire.",
-        order : Order(
-          id: 215545454,
-          announce: Announce(
-            id: 233123,
-            package: Package(
-                id: 132565,
-                addressDeparture: Address(
-                    id: 12,
-                    number: 2,
-                    street: 'rue de Merville',
-                    zipCode: '59160',
-                    city: 'Strasbourg'),
-                addressArrival: Address(
-                    id: 45,
-                    number: 3,
-                    street: 'allée de la cour baleine',
-                    zipCode: '95500',
-                    city: 'Nice'),
-                datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-                dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-                kgAvailable: 0.8,
-                transportation: Transportation(id: 2, name: 'Avion'),
-                description:
-                "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                size: PackageSize(id: 1, name: 'Petit'),
-                price: Price(
+        order: Order(
+            id: 215545454,
+            announce: Announce(
+                id: 233123,
+                package: Package(
+                    id: 132565,
+                    addressDeparture: Address(
+                        id: 12,
+                        number: 2,
+                        street: 'rue de Merville',
+                        zipCode: '59160',
+                        city: 'Strasbourg'),
+                    addressArrival: Address(
+                        id: 45,
+                        number: 3,
+                        street: 'allée de la cour baleine',
+                        zipCode: '95500',
+                        city: 'Nice'),
+                    datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
+                    dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
+                    kgAvailable: 0.8,
+                    transportation: Transportation(id: 2, name: 'Avion'),
+                    description:
+                    "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    size: [PackageSize (id : 1, name : "Petit")],
+                    price: Price(
+                      id: 2,
+                      kgPrice: 50.0,
+                    )),
+                finalPrice: FinalPrice(
                   id: 2,
-                  kgPrice: 50.0,
-                )),
-            propositionPrice: PropositionPrice(
-                id: 2,
-                proposition: 45,
-                accept: true,
-                sender: User(
-                    id: 2,
-                    firstname: 'Marie',
-                    lastname: "Corrales",
-                    username: 'STid',
-                    email: 'noemie.contant@gmail.com',
-                    phone: '0627155307',
-                    active: true,
-                    rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-                    urlProfilPicture: 'oiogdfpogkfdiojo',
-                    formule: Formule(
-                        id: 1,
-                        name: 'Formule 1',
-                        description: 'Formule 1',
-                        price: 5),
-                    check: Check(
-                        id: 1,
-                        statusIdentity: true,
-                        statusPhone: true,
-                        imgIdCard: 'lkjgfùdfgùjdfg'))),
-            views: 15,
+                  proposition: 45,
+                  accept: true,
+                ),
+                views: 15,
+                transact: true,
+                type: Type(id: 1, name: "Transport"),
+                price: 45),
+            status: Status(
+              id: 1,
+              name: "En cours",
+            ),
+            validationCode: 2315,
+            dateOrder: DateTime.parse('2021-07-20 17:30:04Z'),
             user: User(
                 id: 1,
                 firstname: 'Noémie',
@@ -180,77 +174,63 @@ class _AvisState extends State<Opinions> {
                 rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
                 urlProfilPicture: 'oiogdfpogkfdiojo',
                 formule: Formule(
-                    id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+                    id: 1,
+                    name: 'Formule 1',
+                    description: 'Formule 1',
+                    price: 5),
                 check: Check(
                     id: 1,
                     statusIdentity: true,
                     statusPhone: true,
                     imgIdCard: 'lkjgfùdfgùjdfg')),
-          ),
-          status: Status(
-            id: 1,
-            name: "En cours",
-          ),
-          validationCode: 2315,
-          dateOrder: DateTime.parse('2021-07-20 17:30:04Z'),
         )),
     Opinion(
         id: 2,
         number: 5,
-        order : Order(
-          id: 215545454,
-          announce: Announce(
-            id: 233123,
-            package: Package(
-                id: 132565,
-                addressDeparture: Address(
-                    id: 12,
-                    number: 2,
-                    street: 'rue de Merville',
-                    zipCode: '59160',
-                    city: 'Strasbourg'),
-                addressArrival: Address(
-                    id: 45,
-                    number: 3,
-                    street: 'allée de la cour baleine',
-                    zipCode: '95500',
-                    city: 'Nice'),
-                datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-                dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-                kgAvailable: 0.8,
-                transportation: Transportation(id: 2, name: 'Avion'),
-                description:
-                "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                size: PackageSize(id: 1, name: 'Petit'),
-                price: Price(
+        order: Order(
+            id: 215545454,
+            announce: Announce(
+                id: 233123,
+                package: Package(
+                    id: 132565,
+                    addressDeparture: Address(
+                        id: 12,
+                        number: 2,
+                        street: 'rue de Merville',
+                        zipCode: '59160',
+                        city: 'Strasbourg'),
+                    addressArrival: Address(
+                        id: 45,
+                        number: 3,
+                        street: 'allée de la cour baleine',
+                        zipCode: '95500',
+                        city: 'Nice'),
+                    datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
+                    dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
+                    kgAvailable: 0.8,
+                    transportation: Transportation(id: 2, name: 'Avion'),
+                    description:
+                    "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    size: [PackageSize (id : 2, name : "Moyen")],
+                    price: Price(
+                      id: 2,
+                      kgPrice: 50.0,
+                    )),
+                finalPrice: FinalPrice(
                   id: 2,
-                  kgPrice: 50.0,
-                )),
-            propositionPrice: PropositionPrice(
-                id: 2,
-                proposition: 45,
-                accept: true,
-                sender: User(
-                    id: 2,
-                    firstname: 'Marie',
-                    lastname: "Corrales",
-                    username: 'STid',
-                    email: 'noemie.contant@gmail.com',
-                    phone: '0627155307',
-                    active: true,
-                    rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-                    urlProfilPicture: 'oiogdfpogkfdiojo',
-                    formule: Formule(
-                        id: 1,
-                        name: 'Formule 1',
-                        description: 'Formule 1',
-                        price: 5),
-                    check: Check(
-                        id: 1,
-                        statusIdentity: true,
-                        statusPhone: true,
-                        imgIdCard: 'lkjgfùdfgùjdfg'))),
-            views: 15,
+                  proposition: 45,
+                  accept: true,
+                ),
+                views: 15,
+                transact: true,
+                type: Type(id: 1, name: "Transport"),
+                price: 45),
+            status: Status(
+              id: 1,
+              name: "En cours",
+            ),
+            validationCode: 2315,
+            dateOrder: DateTime.parse('2021-07-20 17:30:04Z'),
             user: User(
                 id: 1,
                 firstname: 'Noémie',
@@ -262,25 +242,23 @@ class _AvisState extends State<Opinions> {
                 rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
                 urlProfilPicture: 'oiogdfpogkfdiojo',
                 formule: Formule(
-                    id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+                    id: 1,
+                    name: 'Formule 1',
+                    description: 'Formule 1',
+                    price: 5),
                 check: Check(
                     id: 1,
                     statusIdentity: true,
                     statusPhone: true,
                     imgIdCard: 'lkjgfùdfgùjdfg')),
-          ),
-          status: Status(
-            id: 1,
-            name: "En cours",
-          ),
-          validationCode: 2315,
-          dateOrder: DateTime.parse('2021-07-20 17:30:04Z'),
-        )),
+        )),*/
   ];
 
   @override
   Widget build(BuildContext context) {
-    final Size _mediaQuery = MediaQuery.of(context).size;
+    final Size _mediaQuery = MediaQuery
+        .of(context)
+        .size;
     Container _opinionCard(Opinion opinion) {
       return Container(
         padding: EdgeInsets.only(
@@ -304,8 +282,13 @@ class _AvisState extends State<Opinions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        opinion.order.announce.propositionPrice!.sender.username,
-                        style: Theme.of(context).textTheme.headline5,
+                        opinion.order.user.firstname +
+                            " " +
+                            opinion.order.user.lastname,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5,
                       ),
                       SizedBox(
                         height: 10,
@@ -313,7 +296,8 @@ class _AvisState extends State<Opinions> {
                       Row(
                         children: [
                           Text(
-                            opinion.order.announce.package.addressDeparture.city,
+                            opinion
+                                .order.announce.package.addressDeparture.city,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -325,7 +309,7 @@ class _AvisState extends State<Opinions> {
                           ),
                         ],
                       ),
-                      Text (opinion.comment ?? ""),
+                      Text(opinion.comment ?? ""),
                       Container(
                         width: 40,
                         height: 20,
@@ -374,7 +358,10 @@ class _AvisState extends State<Opinions> {
             SizedBox(height: 20),
             Text(
               "John Doe",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline5,
             ),
             Container(
               margin: const EdgeInsets.all(20.0),
@@ -404,10 +391,11 @@ class _AvisState extends State<Opinions> {
                     itemCount: 5,
                     itemSize: _mediaQuery.width < 321 ? 15 : 20,
                     itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: WeezlyColors.yellow,
-                    ),
+                    itemBuilder: (context, _) =>
+                        Icon(
+                          Icons.star,
+                          color: WeezlyColors.yellow,
+                        ),
                     onRatingUpdate: (rating) {
                       print(rating);
                     },
@@ -428,5 +416,4 @@ class _AvisState extends State<Opinions> {
       ),
     );
   }
-
 }

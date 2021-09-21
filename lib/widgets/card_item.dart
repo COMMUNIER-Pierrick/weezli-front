@@ -5,7 +5,7 @@ import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/PropositionPrice.dart';
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/RIB.dart';
 import 'package:weezli/model/Transportation.dart';
 import 'package:weezli/model/user.dart';
@@ -15,6 +15,8 @@ import 'package:weezli/widgets/avatar.dart';
 import 'package:weezli/widgets/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weezli/model/Type.dart';
+
 
 class CardItem extends StatelessWidget {
   final searchValues;
@@ -23,53 +25,29 @@ class CardItem extends StatelessWidget {
   Announce announce = Announce(
     id: 215545454,
     package: Package(
-        id: 132565,
-        addressDeparture: Address(
-            id: 12,
-            number: 2,
-            street: 'rue de Merville',
-            zipCode: '59160',
-            city: 'France'),
-        addressArrival: Address(
-            id: 45,
-            number: 3,
-            street: 'allée de la cour baleine',
-            zipCode: '95500',
-            city: 'Madagascar'),
-        datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-        dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-        kgAvailable: 0.8,
-        transportation: Transportation(id: 2, name: 'Avion'),
-        description:
-        "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        size: PackageSize(id: 1, name: 'Petit'),
-        price: Price(
-          id: 2,
-          kgPrice: 100.0,
-        )),
-    propositionPrice: PropositionPrice(
-        id: 2,
-        proposition: 100,
-        accept: true,
-        sender: User(
-            id: 2,
-            firstname: 'Marie',
-            lastname: "Corrales",
-            username: 'Nino',
-            email: 'noemie.contant@gmail.com',
-            phone: '0627155307',
-            active: true,
-            rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-            urlProfilPicture: 'oiogdfpogkfdiojo',
-            formule: Formule(
-                id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-            check: Check(
-                id: 1,
-                statusIdentity: true,
-                statusPhone: true,
-                imgIdCard: 'lkjgfùdfgùjdfg'))),
+      id: 132565,
+      addressDeparture: Address(
+          id: 12,
+          number: 2,
+          street: 'rue de Merville',
+          zipCode: '59160',
+          city: 'France', name: 'maison'),
+      addressArrival: Address(
+          id: 45,
+          number: 3,
+          street: 'allée de la cour baleine',
+          zipCode: '95500',
+          city: 'Madagascar', name: 'Chez les vieux'),
+      datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
+      dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
+      kgAvailable: 1,
+      transportation: Transportation(id: 2, name: 'Avion'),
+      description:
+      "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      size: [PackageSize (id : 1, name : "Petit")],
+    ),
     views: 15,
-    user: User(
+    userAnnounce: User(
         id: 1,
         firstname: 'Mélinda',
         lastname: "Rachel",
@@ -87,6 +65,10 @@ class CardItem extends StatelessWidget {
             statusPhone: true,
             imgIdCard: 'lkjgfùdfgùjdfg'),
         moyenneAvis: 4),
+
+    type: 2,
+    transact: 0,
+    price: 60, dateCreated: new DateTime.now(),
 
     //idOrder: 1,
   );

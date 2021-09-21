@@ -1,4 +1,3 @@
-
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
@@ -105,7 +104,7 @@ class DeliveryDetailState extends State<DeliveryDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.box, "Dimension : ",
-                  order.announce.package.size.name),
+                  order.announce.package.size.first.name),
               SizedBox(
                 height: _separator,
               ),
@@ -115,12 +114,12 @@ class DeliveryDetailState extends State<DeliveryDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.announce.propositionPrice!.proposition.toString() + "€"),
+                  order.announce.price.toString() + "€"),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Expéditeur : ",
-                  order.announce.propositionPrice!.sender.username),
+                  order.user.firstname + " " + order.user.lastname),
               SizedBox(
                 height: _separator,
               ),

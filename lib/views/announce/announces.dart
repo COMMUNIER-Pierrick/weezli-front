@@ -1,21 +1,11 @@
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Formule.dart';
-import 'package:weezli/model/Package.dart';
-import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/PropositionPrice.dart';
-import 'package:weezli/model/RIB.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Transportation.dart';
-import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 
 class Announces extends StatefulWidget {
   @override
@@ -48,7 +38,7 @@ class AnnouncesState extends State<Announces> {
   }*/
   //----------------------  Début brut  ----------------------------------------
   final List<Announce> _listTransporterAnnounce = [
-    Announce(
+    /*Announce(
       id: 215545454,
       package: Package(
           id: 132565,
@@ -70,32 +60,16 @@ class AnnouncesState extends State<Announces> {
           transportation: Transportation(id: 2, name: 'Avion'),
           description:
               "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          size: PackageSize(id: 1, name: 'Petit'),
+          size: [PackageSize (id : 1, name : "Petit")],
           price: Price(
             id: 2,
             kgPrice: 50.0,
           )),
-      propositionPrice: PropositionPrice(
+      finalPrice: FinalPrice(
           id: 2,
           proposition: 45,
           accept: true,
-          sender: User(
-              id: 2,
-              firstname: 'Marie',
-              lastname: "Corrales",
-              username: 'Nino',
-              email: 'noemie.contant@gmail.com',
-              phone: '0627155307',
-              active: true,
-              rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-              urlProfilPicture: 'oiogdfpogkfdiojo',
-              formule: Formule(
-                  id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-              check: Check(
-                  id: 1,
-                  statusIdentity: true,
-                  statusPhone: true,
-                  imgIdCard: 'lkjgfùdfgùjdfg'))),
+          ),
       views: 15,
       user: User(
           id: 1,
@@ -113,9 +87,9 @@ class AnnouncesState extends State<Announces> {
               id: 1,
               statusIdentity: true,
               statusPhone: true,
-              imgIdCard: 'lkjgfùdfgùjdfg')),
+              imgIdCard: 'lkjgfùdfgùjdfg')), transact: false, type: Type (id : 2, name : "Envoi"), price: 45,
       //idOrder: 1,
-    )
+    )*/
   ];
 
   //----------------------  Fin   brut  ----------------------------------------
@@ -200,20 +174,20 @@ class AnnouncesState extends State<Announces> {
               Row(
                 children: [
                   Text("Moyen de transport : "),
-                  Text(announce.package.transportation.name,
+                  Text(announce.package.transportation!.name,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
               Row(children: [
                 Text("Dimensions : "),
-                Text(announce.package.size.name,
+                Text(announce.package.size.first.name,
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
               Row(
                 children: [
                   Text("Commission : "),
                   Text(
-                      announce.propositionPrice!.proposition.toStringAsFixed(0) +
+                      announce.price!.toStringAsFixed(0) +
                           " €",
                       style: TextStyle(fontWeight: FontWeight.bold))
                 ],

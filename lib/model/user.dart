@@ -17,14 +17,14 @@ class User {
     required this.id,
     required this.firstname,
     required this.lastname,
-    required this.username,
-    required this.email,
-    required this.phone,
-    required this.active,
-    required this.rib,
-    required this.urlProfilPicture,
-    required this.formule,
-    required this.check,
+    this.username,
+    this.email,
+    this.phone,
+    this.active,
+    this.rib,
+    this.urlProfilPicture,
+    this.formule,
+    this.check,
     this.opinions,
     this.moyenneAvis,
   });
@@ -32,16 +32,16 @@ class User {
   int id;
   String firstname;
   String lastname;
-  String username;
-  String email;
-  String phone;
-  bool active;
-  RIB rib;
-  String urlProfilPicture;
-  Formule formule;
-  Check check;
+  String? username;
+  String? email;
+  String? phone;
+  bool? active;
+  RIB? rib;
+  String? urlProfilPicture;
+  Formule? formule;
+  Check? check;
   List <Opinion>? opinions;
-  double? moyenneAvis;
+  num? moyenneAvis;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -56,7 +56,7 @@ class User {
         formule: json ["idFormule"],
         check: json["id_check"],
         opinions: json["id_opinion"],
-        moyenneAvis: json ["moyenneAvis"],
+        moyenneAvis: json ["average_opinion"],
       );
 
   Map<String, dynamic> toJson() => {
