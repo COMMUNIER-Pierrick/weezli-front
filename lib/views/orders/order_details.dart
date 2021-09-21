@@ -105,7 +105,7 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.box, "Dimension : ",
-                  order.announce.package.size.name),
+                  order.announce.package.size.first.name),
               SizedBox(
                 height: _separator,
               ),
@@ -115,12 +115,12 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.announce.propositionPrice!.proposition.toStringAsFixed(0) + "€"),
+                  order.announce.price!.toStringAsFixed(0) + "€"),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.announce.user.username),
+                  order.user.firstname + " " + order.user.lastname),
               SizedBox(
                 height: _separator,
               ),

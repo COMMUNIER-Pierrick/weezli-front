@@ -1,7 +1,7 @@
 // Fonction qui prend en paramètre le poids du package pour pouvoir faire un text adapté.
 
 
-String weight(double poids) {
+String weight(num poids) {
   String weight = "";
 
   if (poids < 0.5) {

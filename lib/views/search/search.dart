@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/model/Announce.dart';
+import 'package:weezli/service/announce/findByType.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';
@@ -17,6 +21,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  List<Announce> announcesList = [];
+
   DateTime _selectedDate = DateTime.now();
   Map<String, String?> _filters = {
     'size': null,
@@ -90,11 +96,20 @@ class _SearchState extends State<Search> {
         : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName);
   }
 
+
+  Future<void> getAnnouncesList() async {
+    String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
+    int type;
+    searchType == "sending" ? type = 2 : type = 1;
+    announcesList = await findByType(type);
+  }
+
   @override
   Widget build(BuildContext context) {
     print(_search);
     print(searchType);
     print(_search[searchType]);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(searchType == "sending"
@@ -263,19 +278,25 @@ class _SearchState extends State<Search> {
               children: [
                 SizedBox(width: 20),
                 Text(
-                  "Rechercher récent",
+                  "Annonces récentes",
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                 ),
-                Spacer(),
               ],
             ),
-            SearchResults().oneResult(context),
-            SearchResults().oneResult(context),
-            SearchResults().oneResult(context),
-            SearchResults().oneResult(context),
-            SearchResults().oneResult(context),
+            SizedBox(height: 20),
+            Row(children: [
+              FutureBuilder(
+                builder: (context, snapshot) => Container(
+                    child: Column(children: [
+                  for (Announce announce in announcesList)
+                    SearchResults().oneResult(context, announce)
+                ])),
+                future: getAnnouncesList(),
+              ),
+            ]),
           ],
         ),
       ),

@@ -11,51 +11,47 @@ class Package {
   int id;
   Address addressDeparture;
   Address addressArrival;
-  DateTime datetimeDeparture;
-  DateTime dateTimeArrival;
-  double kgAvailable;
-  Transportation transportation;
+  DateTime? datetimeDeparture;
+  DateTime? dateTimeArrival;
+  num kgAvailable;
+  Transportation? transportation;
   String description;
-  PackageSize size;
-  Price price;
+  List<PackageSize> size; // Faire liste
 
   Package({
     required this.id,
     required this.addressDeparture,
     required this.addressArrival,
-    required this.datetimeDeparture,
-    required this.dateTimeArrival,
+    this.datetimeDeparture,
+    this.dateTimeArrival,
     required this.kgAvailable,
-    required this.transportation,
+    this.transportation,
     required this.description,
     required this.size,
-    required this.price,
-
+    price,
   });
 
   factory Package.fromJson(Map<String, dynamic> json) => Package(
-      id: json["id"] as int,
-      addressDeparture: json["id_address_departure"],
-      addressArrival: json["id_address_arrival"],
-      datetimeDeparture: DateTime.parse(json["datetime_departure"]),
-      dateTimeArrival: DateTime.parse(json["datetime_arrival"]),
-      kgAvailable: json["kg_available"],
-      transportation: json["idTransportation"],
-      description: json["description_condition"],
-      size: json ["id_size"],
-      price: json ["id_price"],
-    );
+        id: json["id"] as int,
+        addressDeparture: Address.fromJson(json["addressDeparture"]),
+        addressArrival: Address.fromJson(json["addressArrival"]),
+        datetimeDeparture: (json['datetimeDeparture'] != null) ? DateTime.parse(json['datetimeDeparture']): null,
+        dateTimeArrival: (json['datetimeArrival'] != null) ? DateTime.parse(json['datetimeArrival']): null,
+        kgAvailable: json["kgAvailable"],
+        transportation: (json["transport"] != null ) ? Transportation.fromJson(json["transport"]) : null,
+        description: json["description"],
+        size: SizesList.fromJson(json["sizes"]).sizes,
+      );
 
-    Map<String, dynamic> toJson() => {
-      "id": id,
-      "id_address_departure" : addressDeparture,
-      "id_address_arrival" : addressArrival,
-      "datetime_departure" : datetimeDeparture,
-      "datetime_arrival" : dateTimeArrival,
-      "kg_available" : kgAvailable,
-      "idTransportation" : transportation,
-      "description_condition" : description,
-      "id_size" : size,
-      "id_price" : price,
-    };
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "addressDeparture": addressDeparture,
+        "addressArrival": addressArrival,
+        "datetime_departure": datetimeDeparture,
+        "datetime_arrival": dateTimeArrival,
+        "kgAvailable": kgAvailable,
+        "idTransport": transportation,
+        "description": description,
+        "sizes": size,
+      };
 }

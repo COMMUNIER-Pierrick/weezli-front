@@ -1,50 +1,122 @@
-
 import 'dart:convert';
 
-import 'package:weezli/model/PropositionPrice.dart';
 import 'package:weezli/model/user.dart';
 
 import 'Package.dart';
-import 'Price.dart';
 
 Announce AnnounceFromJSon(String str) => Announce.fromJson(json.decode(str));
 
 String AnnounceToJson(Announce data) => json.encode(data.toJson());
 
+/*List<Announce> allAnnouncesFromJson(String str) {
+  List <Announce> announcesList = [];
+  final jsonData = json.decode(str);
+  announcesList = jsonData.
+  print (announcesList);
+  return announcesList;
+}*/
+
 class Announce {
-  Announce ({
+  Announce({
     required this.id,
     required this.package,
-    required this.user,
-    required this.views,
-    this.propositionPrice,
-    this.idOrder,
-    this.type,
+    required this.userAnnounce,
+    this.views,
+    required this.type,
+    this.price,
+    required this.transact,
+    this.imgUrl,
+    this.dateCreated,
   });
 
   int id;
   Package package;
-  User user;
-  int views;
-  PropositionPrice? propositionPrice;
+  User? userAnnounce;
+  int? views;
   int? idOrder;
-  int? type;
+  int type;
+  num? price;
+  int transact;
+  String? imgUrl;
+  DateTime? dateCreated;
 
-  factory Announce.fromJson(Map<String, dynamic> json) => Announce(
-    id: json["id"],
-    package: json ["id_package"],
-    user: json ["id_user"],
-    views: json ["views"],
-    propositionPrice: json ["id_proposition"],
-    idOrder : json ["id_order"]
-  );
+  factory Announce.fromJson(Map<String, dynamic> json) {
+    return Announce(
+      id: json["id"],
+      userAnnounce: (json['userAnnounce'] != null) ? User.fromJson(json["userAnnounce"]) : null,
+      package: Package.fromJson(json["packages"]),
+      views: json["views"],
+      type: json["idType"],
+      price: json["price"],
+      transact: json["transact"],
+      imgUrl: json["imgUrl"],
+      dateCreated: DateTime.parse(json["dateCreated"]),
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "id_package" : package,
-    "id_user" : user,
-    "views" : views,
-    "id_proposition" : propositionPrice,
-    "id_order" : idOrder,
-  };
+  Map<String, dynamic> toJson() =>
+      {
+        "id": id,
+        "packages": package,
+        "userAnnounce": userAnnounce,
+        "views": views,
+        "price": price,
+        "transact": transact,
+        "idType": type,
+        "imgUrl": imgUrl,
+        "dateCreated": dateCreated,
+      };
+}
+
+// Récupère une liste dynamique à partir de la map renvoyée par le json.
+
+class AnnouncesListMap {
+  AnnouncesListMap({
+    required this.list,
+  });
+
+  List <dynamic> list;
+
+  factory AnnouncesListMap.fromJson(Map<String, dynamic> json) {
+    return AnnouncesListMap(
+        list: json ["announces"]);
+  }
+}
+
+// Passe d'une liste dynamique à un objet map pour créer une annonce.
+
+class AnnouncesListDynamic {
+  AnnouncesListDynamic({
+    required this.announcesListDynamic,
+  });
+
+  Map <String, dynamic> announcesListDynamic;
+
+  factory AnnouncesListDynamic.fromJson(Map<String, dynamic> json) {
+    return AnnouncesListDynamic(
+        announcesListDynamic: json ["announce"]);
+  }
+}
+
+class AnnouncesList {
+  AnnouncesList({
+    required this.announcesList,
+  });
+
+  List<Announce> announcesList;
+
+  //Récupère une liste dynamique pour créer annonce par annonce, puis recréer une liste d'annonces.
+
+  factory AnnouncesList.fromJson(List<dynamic> parsedJson) {
+    List<Announce> announces = [];
+    parsedJson.forEach((element) {
+      var mapAnnounce = AnnouncesListDynamic.fromJson(element).announcesListDynamic;
+      Announce announce = Announce.fromJson(mapAnnounce);
+      announces.add(announce);
+    });
+
+    return new AnnouncesList(
+        announcesList: announces
+    );
+  }
 }

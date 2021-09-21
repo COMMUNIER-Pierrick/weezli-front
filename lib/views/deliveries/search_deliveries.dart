@@ -11,10 +11,11 @@ import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/PropositionPrice.dart';
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/RIB.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/model/Transportation.dart';
+import 'package:weezli/model/Type.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/colis/read_all.dart';
 import 'package:weezli/views/orders/order_details.dart';
@@ -55,93 +56,91 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
   }*/
   //----------------------  Début brut  ----------------------------------------
   final List<Order> _listOrders = [
-    Order(
+    /*Order(
       id: 215545454,
       announce: Announce(
-        id: 233123,
-        package: Package(
-            id: 132565,
-            addressDeparture: Address(
-                id: 12,
-                number: 2,
-                street: 'rue de Merville',
-                zipCode: '59160',
-                city: 'Nantes'),
-            addressArrival: Address(
-                id: 45,
-                number: 3,
-                street: 'allée de la cour baleine',
-                zipCode: '95500',
-                city: 'Dakar'),
-            datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-            dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-            kgAvailable: 0.8,
-            transportation: Transportation(id: 2, name: 'Avion'),
-            description:
-            "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            size: PackageSize(id: 1, name: 'Petit'),
-            price: Price(
-              id: 2,
-              kgPrice: 50.0,
-            )),
-        propositionPrice: PropositionPrice(
+          id: 233123,
+          package: Package(
+              id: 132565,
+              addressDeparture: Address(
+                  id: 12,
+                  number: 2,
+                  street: 'rue de Merville',
+                  zipCode: '59160',
+                  city: 'Nantes'),
+              addressArrival: Address(
+                  id: 45,
+                  number: 3,
+                  street: 'allée de la cour baleine',
+                  zipCode: '95500',
+                  city: 'Dakar'),
+              datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
+              dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
+              kgAvailable: 0.8,
+              transportation: Transportation(id: 2, name: 'Avion'),
+              description:
+                  "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+              size: [PackageSize (id : 1, name : "Petit")],
+              price: Price(
+                id: 2,
+                kgPrice: 50.0,
+              )),
+          finalPrice: FinalPrice(
             id: 2,
             proposition: 45,
             accept: true,
-            sender: User(
-                id: 2,
-                firstname: 'Marie',
-                lastname: "Corrales",
-                username: 'Nino',
-                email: 'noemie.contant@gmail.com',
-                phone: '0627155307',
-                active: true,
-                rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-                urlProfilPicture: 'oiogdfpogkfdiojo',
-                formule: Formule(
-                    id: 1,
-                    name: 'Formule 1',
-                    description: 'Formule 1',
-                    price: 5),
-                check: Check(
-                    id: 1,
-                    statusIdentity: true,
-                    statusPhone: true,
-                    imgIdCard: 'lkjgfùdfgùjdfg'))),
-        views: 15,
-        user: User(
-            id: 1,
-            firstname: 'Noémie',
-            lastname: "Contant",
-            username: 'STid',
-            email: 'noemie.contant@gmail.com',
-            phone: '0627155307',
-            active: true,
-            rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-            urlProfilPicture: 'oiogdfpogkfdiojo',
-            formule: Formule(
-                id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-            check: Check(
-                id: 1,
-                statusIdentity: true,
-                statusPhone: true,
-                imgIdCard: 'lkjgfùdfgùjdfg')),
-      ),
+          ),
+          views: 15,
+          user: User(
+              id: 2,
+              firstname: 'Marie',
+              lastname: "Corrales",
+              username: 'Nino',
+              email: 'noemie.contant@gmail.com',
+              phone: '0627155307',
+              active: true,
+              rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
+              urlProfilPicture: 'oiogdfpogkfdiojo',
+              formule: Formule(
+                  id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+              check: Check(
+                  id: 1,
+                  statusIdentity: true,
+                  statusPhone: true,
+                  imgIdCard: 'lkjgfùdfgùjdfg')),
+          type: Type(id: 1, name: "Transport"),
+          transact: true,
+          price: 50),
       status: Status(
         id: 1,
         name: "En cours",
       ),
       validationCode: 2315,
       dateOrder: DateTime.parse('2021-08-05 17:30:04Z'),
-    )
+      user: User(
+          id: 1,
+          firstname: 'Noémie',
+          lastname: "Contant",
+          username: 'STid',
+          email: 'noemie.contant@gmail.com',
+          phone: '0627155307',
+          active: true,
+          rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
+          urlProfilPicture: 'oiogdfpogkfdiojo',
+          formule: Formule(
+              id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+          check: Check(
+              id: 1,
+              statusIdentity: true,
+              statusPhone: true,
+              imgIdCard: 'lkjgfùdfgùjdfg')),
+    )*/
   ];
 
   //----------------------  Fin   brut  ----------------------------------------
   @override
   Widget build(BuildContext context) {
-    final Size _mediaQuery = MediaQuery
-        .of(context)
-        .size;
+    final Size _mediaQuery = MediaQuery.of(context).size;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
         bottom: 15.0,
@@ -180,8 +179,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
 
     GestureDetector _cardOrder(Order order) {
       return GestureDetector(
-        onTap: () => Navigator.pushNamed(
-            context, DeliveryDetail.routeName,
+        onTap: () => Navigator.pushNamed(context, DeliveryDetail.routeName,
             arguments: order),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
@@ -211,10 +209,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
               ),
               Text(
                 "Description:",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline5,
+                style: Theme.of(context).textTheme.headline5,
               ),
               Text(
                 order.announce.package.description,
@@ -245,13 +240,11 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                   Row(
                     children: [
                       Text("Montant: ",
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .headline5),
+                          style: Theme.of(context).textTheme.headline5),
                       Text(
-                        order.announce.propositionPrice!.proposition.toStringAsFixed(
-                            0) + "€",
+                        order.announce.price!
+                                .toStringAsFixed(0) +
+                            "€",
                       ),
                     ],
                   ),
@@ -260,20 +253,21 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                       Text(order.status.name),
                       order.status.name == "En cours"
                           ? Icon(
-                        Icons.circle,
-                        color: WeezlyColors.yellow,
-                      )
+                              Icons.circle,
+                              color: WeezlyColors.yellow,
+                            )
                           : Icon(
-                        WeezlyIcon.check_circle,
-                        color: WeezlyColors.green,
-                      ),
+                              WeezlyIcon.check_circle,
+                              color: WeezlyColors.green,
+                            ),
                     ],
                   ),
                 ],
               ),
             ],
           ),
-        ),);
+        ),
+      );
     }
 
     return Scaffold(

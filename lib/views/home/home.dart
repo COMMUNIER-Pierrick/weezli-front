@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/views/search/search.dart';
@@ -169,7 +170,8 @@ class _HomeState extends State<Home> {
       String text,
     ) {
       return InkWell(
-        onTap: () => Navigator.pushNamed(context, '/formules'),
+        //onTap: () => Navigator.pushNamed(context, '/formules'),
+        onTap: () => Navigator.pushNamed(context, AnnounceDetail.routeName),
         child: Container(
           padding: EdgeInsets.all(10.0),
           width: _mediaQuery.width * 0.9,
