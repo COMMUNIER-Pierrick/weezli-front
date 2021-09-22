@@ -1,11 +1,8 @@
 
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:weezli/model/user.dart';
 
-import 'Message.dart';
-import 'Price.dart';
 
 
 Channel ChannelFromJson(String str) => Channel.fromJson(json.decode(str));

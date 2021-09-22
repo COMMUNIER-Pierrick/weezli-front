@@ -8,13 +8,6 @@ Announce AnnounceFromJSon(String str) => Announce.fromJson(json.decode(str));
 
 String AnnounceToJson(Announce data) => json.encode(data.toJson());
 
-/*List<Announce> allAnnouncesFromJson(String str) {
-  List <Announce> announcesList = [];
-  final jsonData = json.decode(str);
-  announcesList = jsonData.
-  print (announcesList);
-  return announcesList;
-}*/
 
 class Announce {
   Announce({

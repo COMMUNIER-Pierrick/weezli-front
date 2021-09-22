@@ -113,7 +113,7 @@ Formule Formule_1 = Formule(
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(Formule.description),
+              //child: Text(Formule.description),
             ),
             /*Row(
               mainAxisSize: MainAxisSize.max,
