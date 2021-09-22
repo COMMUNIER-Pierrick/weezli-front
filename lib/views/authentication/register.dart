@@ -2,6 +2,9 @@ import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/service/announce/create.dart';
+import 'package:weezli/service/user/createAccount.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -25,7 +28,7 @@ class _RegisterState extends State<Register> {
 
   // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
   bool validateStructurePassWord(String value) {
-    RegExp regExp = new RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+    RegExp regExp = new RegExp(r"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-!#$@%^&*()_+|~=`{}:;'<>?,.\\\[\]\/])(?=\S+$).{6,}$");
     return regExp.hasMatch(value);
   }
 
@@ -213,11 +216,24 @@ class _RegisterState extends State<Register> {
             SizedBox(
               width: double.infinity,
               child: RawMaterialButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Inscription effectuée !')),
+                    String lastname = _lastnameController.text;
+                    String firstname = _firstnameController.text;
+                    String password = _passwordController.text;
+                    String email = _emailController.text;
+                    String username = _usernameController.text;
+                    User user = User (lastname: lastname,
+                      firstname:  firstname,
+                      password: password,
+                      email : email,
+                      username: username
                     );
+                    var response = await createUser(user);
+                    if (response == 201)
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Inscription effectuée !')),
+                      );
                   }
                 },
                 child: const Text("S'INSCRIRE GRATUITEMENT"),

@@ -12,7 +12,7 @@ import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Price.dart';
 import 'package:weezli/model/FinalPrice.dart';
-import 'package:weezli/model/RIB.dart';
+import 'package:weezli/model/Payment.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/model/Transportation.dart';
 import 'package:weezli/model/Type.dart';

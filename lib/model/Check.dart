@@ -11,14 +11,14 @@ class Check {
     required this.id,
     required this.statusPhone,
     required this.statusIdentity,
-    required this.imgIdCard,
+    this.imgIdCard,
 
   });
 
   int id;
-  bool statusPhone;
-  bool statusIdentity;
-  String imgIdCard;
+  int statusPhone;
+  int statusIdentity;
+  String? imgIdCard;
 
 
   factory Check.fromJson(Map<String, dynamic> json) => Check(

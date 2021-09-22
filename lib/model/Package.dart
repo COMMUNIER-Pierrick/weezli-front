@@ -1,9 +1,6 @@
-import 'dart:ffi';
 
-import 'package:weezli/model/user.dart';
 
 import 'Address.dart';
-import 'Price.dart';
 import 'PackageSize.dart';
 import 'Transportation.dart';
 

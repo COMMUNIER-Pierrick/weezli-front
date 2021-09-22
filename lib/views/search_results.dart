@@ -1,21 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:path/path.dart';
 import 'package:weezli/commons/weight.dart';
-import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/Formule.dart';
-import 'package:weezli/model/Package.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/RIB.dart';
-import 'package:weezli/model/Transportation.dart';
-import 'package:weezli/model/user.dart';
-import 'package:weezli/model/Type.dart';
-import 'package:weezli/service/announce/findByType.dart';
 
-import 'announce/announce_detail.dart';
 import 'announce/search_announce_detail.dart';
 
 class SearchResults {
