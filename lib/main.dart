@@ -1,3 +1,4 @@
+import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:weezli/views/announce/announces.dart';
 import 'package:weezli/views/announce/search_announce_detail.dart';
@@ -14,6 +15,7 @@ import 'package:weezli/commons/colorSwatch.dart';
 import 'package:weezli/views/account/opinions.dart';
 import 'package:weezli/views/account/email_verification.dart';
 import 'package:weezli/views/account/personal.dart';
+import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/account/phone_verification.dart';
 import 'package:weezli/views/paiement/paiement_view.dart';
 import './commons/weezly_colors.dart';
@@ -82,6 +84,7 @@ void main() {
         EmailVerification.routeName: (context) => EmailVerification(),
         PhoneVerification.routeName: (context) => PhoneVerification(),
         Announces.routeName : (context) => Announces(),
+        UserProfile.routeName : (context) => UserProfile(),
        },
     ),
   );

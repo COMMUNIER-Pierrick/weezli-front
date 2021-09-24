@@ -119,7 +119,7 @@ class SearchResults {
         children: [
           Row(children: [
             Text(
-              announce.userAnnounce!.firstname,
+              announce.userAnnounce!.firstname!,
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

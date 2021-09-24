@@ -26,7 +26,7 @@ class Payment {
     name: json["name"],
     IBAN: json["IBAN"],
     numberCard : json ["numberCard"],
-    expiredDateCard: DateTime.parse (json ["expired_date_card"])
+    expiredDateCard : (json['expired_date_card'] != null) ? DateTime.parse(json['expired_date_card']): null,
 
   );
 

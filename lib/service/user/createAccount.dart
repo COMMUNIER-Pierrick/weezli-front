@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:weezli/model/user.dart';
 
-Future<int> createUser(User account) async {
+Future<Response> createUser(User account) async {
   String str = "";
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
@@ -16,6 +16,7 @@ Future<int> createUser(User account) async {
     resBody["username"] =  account.username;
     resBody["password"] =  account.password;
     resBody["email"] =  account.email;
+    resBody["dateOfBirthday"] =  account.dateOfBirthday!.toIso8601String();
     var user = {};
     user["user"] = resBody;
     str = encoder.convert(user);
@@ -33,6 +34,6 @@ Future<int> createUser(User account) async {
           body: str
       );
 
-  return response.statusCode;
+  return response;
 
 }

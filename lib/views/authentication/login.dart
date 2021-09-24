@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/user.dart';
 import 'package:weezli/service/authentication/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,7 +19,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _storage = FlutterSecureStorage();
+
   final double _separator = 20;
   final identifierController = TextEditingController();
   final passwordController = TextEditingController();
@@ -31,7 +34,7 @@ class _LoginState extends State<Login> {
             color: WeezlyColors.blue3,
           ),
         ),
-        labelText: "Adresse Email",
+        labelText: "Adresse email",
         labelStyle: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,
@@ -95,17 +98,14 @@ class _LoginState extends State<Login> {
               child: RawMaterialButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    final Response response = await login(
-                      identifierController.text,
-                      passwordController.text,
-                    );
-                    if (response.statusCode == 200) {
-                      final SnackBar snackBar = SnackBar(
-                        content: Text("Connexion réussie"),
+                    final Response response = await login(User(
+                        email: identifierController.text,
+                        password: passwordController.text));
+                    if (response.statusCode == 201) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Connexion réussie')),
                       );
-                      final data = jsonDecode(response.body);
-                      await _storage.write(key: 'jwt', value: data["token"]);
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      saveData(response.body);
                       Navigator.pushNamed(context, '/');
                     } else {
                       final SnackBar snackBar = SnackBar(
@@ -227,19 +227,21 @@ class _LoginState extends State<Login> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Connexion"),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                authForm,
-              ],
-            ),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+                onPressed: () => Navigator.pushNamed(context, "/")),
+            title: const Text("Connexion"),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              authForm,
+            ],
           ),
         ),
       ),
-    );
+    ),);
   }
 }

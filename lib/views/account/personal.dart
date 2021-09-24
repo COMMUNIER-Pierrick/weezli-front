@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:weezli/commons/disconnect.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/user.dart';
 import 'package:weezli/views/account/email_verification.dart';
 import 'package:weezli/views/account/phone_verification.dart';
 import 'package:weezli/widgets/image_input.dart';
@@ -35,6 +36,7 @@ class _PersonalState extends State<Personal> {
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
+    final User user = ModalRoute.of(context)!.settings.arguments as User;
 
     final Row _avatarField = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,8 +49,8 @@ class _PersonalState extends State<Personal> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "John Doe",
+            Text(
+              user.firstname! + " " + user.lastname!,
               style: TextStyle(
                 color: WeezlyColors.primary,
                 fontWeight: FontWeight.w600,

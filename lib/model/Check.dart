@@ -11,6 +11,7 @@ class Check {
     required this.id,
     required this.statusPhone,
     required this.statusIdentity,
+    required this.statusEmail,
     this.imgIdCard,
 
   });
@@ -18,6 +19,7 @@ class Check {
   int id;
   int statusPhone;
   int statusIdentity;
+  int statusEmail;
   String? imgIdCard;
 
 
@@ -25,6 +27,7 @@ class Check {
     id: json["id"],
     statusPhone: json ["statusPhone"],
     statusIdentity: json ["statusIdentity"],
+    statusEmail: json ["statusMail"],
     imgIdCard: json ["imgIdCard"]
   );
 
@@ -32,6 +35,7 @@ class Check {
     "id": id,
     "statusPhone": statusPhone,
     "statusIdentity": statusIdentity,
+    "statusEmail" : statusEmail,
     "imgIdCard": imgIdCard,
   };
 }

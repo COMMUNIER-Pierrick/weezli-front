@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
@@ -16,9 +19,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final double _separator = 20;
 
+  searchPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userStr = prefs.getString('user');
+    print (userStr);
+    return userStr;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
+    final userStr = searchPrefs();
 
     final Container header = Container(
       padding: EdgeInsets.all(20),
@@ -128,41 +140,40 @@ class _HomeState extends State<Home> {
       String text,
     ) {
       return InkWell(
-        onTap: () => Navigator.pushNamed(context, '/formules'),
-        child: Container(
-          width: _mediaQuery.width * 0.9,
-          height: 104,
-          margin: EdgeInsets.only(bottom: 10),
-          padding: EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-              image: AssetImage(img),
-              fit: BoxFit.cover,
+          onTap: () => Navigator.pushNamed(context, '/formules'),
+          child: Container(
+            width: _mediaQuery.width * 0.9,
+            height: 104,
+            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image: DecorationImage(
+                image: AssetImage(img),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Text(
-                text,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+            child: Row(
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Icon(
-                WeezlyIcon.arrow_right_circle,
-                color: Colors.white,
-                size: 30,
-              ),
-            ],
-          ),
-        )
-      );
+                SizedBox(
+                  width: 30,
+                ),
+                Icon(
+                  WeezlyIcon.arrow_right_circle,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ],
+            ),
+          ));
     }
 
     Widget largeButton2(
@@ -280,18 +291,20 @@ class _HomeState extends State<Home> {
               ),
               largeButton1("assets/images/comment.png", "COMMENT\nÇA MARCHE"),
               largeButton2("assets/images/moyens2.png", "FORMULES"),
-              const Text(
-                "INSCRIPTION GRATUITE",
-                style: TextStyle(
-                  color: Color.fromRGBO(20, 37, 83, 1),
-                  fontWeight: FontWeight.w700,
-                  fontSize: 18,
+              if (userStr == "null")
+                Text(
+                  "INSCRIPTION GRATUITE",
+                  style: TextStyle(
+                    color: Color.fromRGBO(20, 37, 83, 1),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
               SizedBox(
                 height: 22,
               ),
-              const Text(
+              if (userStr == null)
+              Text(
                 "Inscrivez-vous pour consulter ou déposer\ndes annonces et pour "
                 "entrer en contact\navec d’autres annonceurs !\n\n"
                 "Si vous êtes déjà membre, vous devez tout\n"
@@ -303,6 +316,7 @@ class _HomeState extends State<Home> {
                   fontSize: 14,
                 ),
               ),
+              if (userStr == null)
               Padding(
                 padding: EdgeInsets.only(
                   top: 22,
