@@ -1,4 +1,4 @@
-import 'package:weezli/commons/disconnect.dart';
+import 'package:flutter/gestures.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
@@ -78,11 +78,18 @@ class _PhoneVerificationState extends State<PhoneVerification> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            disconnect,
-          ],
-        ),
+        appBar: AppBar(actions: [
+          RichText(
+              text: TextSpan(
+                  text: "Déconnexion",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      print("Coucou");
+                      //Response response = await logout();
+                      Navigator.pushNamed(context, "/");
+                    }))
+        ]),
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.all(20.0),

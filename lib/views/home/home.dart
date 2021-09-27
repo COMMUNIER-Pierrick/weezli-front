@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,15 +23,13 @@ class _HomeState extends State<Home> {
   searchPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userStr = prefs.getString('user');
-    print (userStr);
+    print(userStr);
     return userStr;
   }
-
 
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
-    final userStr = searchPrefs();
 
     final Container header = Container(
       padding: EdgeInsets.all(20),
@@ -291,39 +290,45 @@ class _HomeState extends State<Home> {
               ),
               largeButton1("assets/images/comment.png", "COMMENT\nÇA MARCHE"),
               largeButton2("assets/images/moyens2.png", "FORMULES"),
-              if (userStr == "null")
-                Text(
-                  "INSCRIPTION GRATUITE",
-                  style: TextStyle(
-                    color: Color.fromRGBO(20, 37, 83, 1),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                  ),
-                ),
-              SizedBox(
-                height: 22,
-              ),
-              if (userStr == null)
-              Text(
-                "Inscrivez-vous pour consulter ou déposer\ndes annonces et pour "
-                "entrer en contact\navec d’autres annonceurs !\n\n"
-                "Si vous êtes déjà membre, vous devez tout\n"
-                "simplement vous connecter.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromRGBO(20, 37, 83, 1),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
-              ),
-              if (userStr == null)
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 22,
-                  bottom: 22,
-                ),
-                child: buttonsRow2,
-              ),
+              FutureBuilder(
+                future: searchPrefs(),
+                builder: (context, snapshot) {
+                  if (snapshot.data == null)
+                    return Column(children: [
+                      Text(
+                        "INSCRIPTION GRATUITE",
+                        style: TextStyle(
+                          color: Color.fromRGBO(20, 37, 83, 1),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 22,
+                      ),
+                      Text(
+                        "Inscrivez-vous pour consulter ou déposer\ndes annonces et pour "
+                        "entrer en contact\navec d’autres annonceurs !\n\n"
+                        "Si vous êtes déjà membre, vous devez tout\n"
+                        "simplement vous connecter.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromRGBO(20, 37, 83, 1),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 22,
+                          bottom: 22,
+                        ),
+                        child: buttonsRow2,
+                      ),
+                    ]);
+                  return SizedBox(height: 10);
+                },
+              )
             ],
           ),
         ),

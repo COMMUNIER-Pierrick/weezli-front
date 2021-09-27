@@ -9,11 +9,12 @@ async {
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
     var resBody = {};
-    resBody["password"] =  login.password;
     resBody["email"] =  login.email;
+    resBody["password"] =  login.password;
     var user = {};
-    user["user"] = resBody;
+    user["User"] = resBody;
     str = encoder.convert(user);
+    print (str);
   } catch(e) {
     print(e);
   }

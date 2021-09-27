@@ -1,9 +1,11 @@
 import 'dart:io';
 
-import 'package:weezli/commons/disconnect.dart';
+import 'package:flutter/gestures.dart';
+import 'package:http/http.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/user.dart';
+import 'package:weezli/service/authentication/logout.dart';
 import 'package:weezli/views/account/email_verification.dart';
 import 'package:weezli/views/account/phone_verification.dart';
 import 'package:weezli/widgets/image_input.dart';
@@ -158,8 +160,7 @@ class _PersonalState extends State<Personal> {
       final isValid = _formPersonalKey.currentState!.validate();
       if (!isValid) {
         return;
-      }
-      else {
+      } else {
         _formPersonalKey.currentState!.save();
       }
     }
@@ -199,11 +200,21 @@ class _PersonalState extends State<Personal> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            disconnect,
-          ],
-        ),
+        appBar: AppBar(actions: [
+          Padding(
+              padding: EdgeInsets.all(20),
+              child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: "Déconnexion",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          logout();
+                          Navigator.pushNamed(context, '/');
+                        })))
+        ]),
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.all(20.0),
