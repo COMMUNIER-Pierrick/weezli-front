@@ -6,3 +6,8 @@ String format(date) {
       DateFormat.Hm('fr_fr').format(date);
   return formattedDate;
 }
+
+String formatDate(date) {
+  String formattedDate = DateFormat.yMd('fr_fr').format(date);
+  return formattedDate;
+}

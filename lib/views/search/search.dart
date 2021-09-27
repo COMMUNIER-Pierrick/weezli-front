@@ -96,12 +96,11 @@ class _SearchState extends State<Search> {
         : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName);
   }
 
-
-  Future<void> getAnnouncesList() async {
+  Future<List <Announce>> getAnnouncesList() async {
     String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
     int type;
     searchType == "sending" ? type = 2 : type = 1;
-    announcesList = await findByType(type);
+    return announcesList = await findByType(type);
   }
 
   @override
@@ -289,13 +288,21 @@ class _SearchState extends State<Search> {
             SizedBox(height: 20),
             Row(children: [
               FutureBuilder(
-                builder: (context, snapshot) => Container(
-                    child: Column(children: [
-                  for (Announce announce in announcesList)
-                    SearchResults().oneResult(context, announce)
-                ])),
-                future: getAnnouncesList(),
-              ),
+                  future: getAnnouncesList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      List<Announce> announcesList =
+                          snapshot.data as List<Announce>;
+                      return Container(
+                          child: Column(children: [
+                        for (Announce announce in announcesList)
+                          SearchResults().oneResult(context, announce)
+                      ]));
+                    }
+                    else
+                      return _buildLoadingScreen();
+                  }),
             ]),
           ],
         ),
@@ -309,4 +316,14 @@ class _SearchState extends State<Search> {
       style: TextStyle(color: Colors.white),
     );
   }
+}
+
+Widget _buildLoadingScreen() {
+  return Center(
+    child: Container(
+      width: 50,
+      height: 50,
+      child: CircularProgressIndicator(),
+    ),
+  );
 }

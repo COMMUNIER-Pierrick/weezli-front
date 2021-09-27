@@ -120,7 +120,7 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.user.firstname + " " + order.user.lastname),
+                  order.user.firstname! + " " + order.user.lastname!),
               SizedBox(
                 height: _separator,
               ),

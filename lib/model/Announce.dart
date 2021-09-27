@@ -72,7 +72,7 @@ class AnnouncesListMap {
 
   factory AnnouncesListMap.fromJson(Map<String, dynamic> json) {
     return AnnouncesListMap(
-        list: json ["announces"]);
+        list: json ["Announces"]);
   }
 }
 
@@ -87,7 +87,7 @@ class AnnouncesListDynamic {
 
   factory AnnouncesListDynamic.fromJson(Map<String, dynamic> json) {
     return AnnouncesListDynamic(
-        announcesListDynamic: json ["announce"]);
+        announcesListDynamic: json ["Announce"]);
   }
 }
 

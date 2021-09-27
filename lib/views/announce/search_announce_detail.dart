@@ -4,8 +4,10 @@ import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Price.dart';
+import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findById.dart';
 import 'package:weezli/service/user/userById.dart';
+import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,12 +80,12 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            userById(announce.userAnnounce!.id);
+                                            Navigator.pushNamed(context, UserProfile.routeName, arguments: announce.userAnnounce!.id);
                                           },
                                           child: CustomTitle(announce
-                                              .userAnnounce!.firstname +
+                                              .userAnnounce!.firstname! +
                                               " " +
-                                              announce.userAnnounce!.lastname),
+                                              announce.userAnnounce!.lastname!),
                                         ),
                                         Contact(),
                                         SizedBox(height: 2),

@@ -79,6 +79,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
               id: 1,
               statusIdentity: 1,
               statusPhone: 1,
+              statusEmail : 1,
               imgIdCard: 'lkjgfùdfgùjdfg')),
       transact: 1,
       type: 1,

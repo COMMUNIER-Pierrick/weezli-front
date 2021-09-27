@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/user/me.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +18,7 @@ Future<int> createAnnounce(
   String descriptionConditions,
   String type,
 ) async {
-  final User user = await me();
+  //final User? user = await getUserInfo();
   final FlutterSecureStorage storage = FlutterSecureStorage();
   final String? token = await storage.read(key: "jwt");
   final Response response = await http.post(
@@ -38,7 +38,6 @@ Future<int> createAnnounce(
       "kg_wanted": kgWanted,
       "list_objects": listObjects,
       "description_conditions": descriptionConditions,
-      "userId": user.id,
       "type": type
     }),
   );

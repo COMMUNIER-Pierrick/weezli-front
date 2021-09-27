@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +27,12 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
+  DateTime dateOfBirthday = DateTime.now();
 
   // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
   bool validateStructurePassWord(String value) {
-    RegExp regExp = new RegExp(r"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-!#$@%^&*()_+|~=`{}:;'<>?,.\\\[\]\/])(?=\S+$).{6,}$");
+    RegExp regExp = new RegExp(
+        r"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-!#$@%^&*()_+|~=`{}:;'<>?,.\\\[\]\/])(?=\S+$).{6,}$");
     return regExp.hasMatch(value);
   }
 
@@ -37,6 +41,21 @@ class _RegisterState extends State<Register> {
     RegExp regExp = new RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     return regExp.hasMatch(value);
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      locale: Locale('fr'),
+      context: context,
+      initialDate: dateOfBirthday,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2025),
+      initialDatePickerMode: DatePickerMode.year,
+    );
+    if (picked != null && picked != dateOfBirthday)
+      setState(() {
+        dateOfBirthday = picked;
+      });
   }
 
   @override
@@ -189,6 +208,16 @@ class _RegisterState extends State<Register> {
             ),
             for (TextFormField field in _fieldList) field,
             for (TextFormField hiddenField in _hiddenFieldList) hiddenField,
+            Row(children: [
+              IconButton(
+                onPressed: () => _selectDate(context), // Refer step 3
+                icon: Icon(
+                  WeezlyIcon.calendar2,
+                ),
+              ),
+              Text("Date de naissance",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400))
+            ]),
             SizedBox(
               height: _separator,
             ),
@@ -223,17 +252,21 @@ class _RegisterState extends State<Register> {
                     String password = _passwordController.text;
                     String email = _emailController.text;
                     String username = _usernameController.text;
-                    User user = User (lastname: lastname,
-                      firstname:  firstname,
-                      password: password,
-                      email : email,
-                      username: username
-                    );
+                    User user = User(
+                        lastname: lastname,
+                        firstname: firstname,
+                        password: password,
+                        email: email,
+                        username: username,
+                        dateOfBirthday: dateOfBirthday);
                     var response = await createUser(user);
-                    if (response == 201)
+                    if (response.statusCode == 201)
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Inscription effectuée !')),
+                        const SnackBar(
+                            content: Text('Inscription effectuée !')),
                       );
+                    saveData(response.body);
+                    Navigator.pushNamed(context, '/');
                   }
                 },
                 child: const Text("S'INSCRIRE GRATUITEMENT"),

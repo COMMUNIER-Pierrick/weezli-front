@@ -10,12 +10,11 @@ import 'Check.dart';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
-
 class User {
   User({
     this.id,
-    required this.firstname,
-    required this.lastname,
+    this.firstname,
+    this.lastname,
     this.username,
     this.email,
     this.phone,
@@ -28,12 +27,13 @@ class User {
     this.moyenneAvis,
     this.password,
     this.choiceDateStarted,
-    this.choiceDateEnd
+    this.choiceDateEnd,
+    this.dateOfBirthday,
   });
 
   int? id;
-  String firstname;
-  String lastname;
+  String? firstname;
+  String? lastname;
   String? username;
   String? email;
   String? phone;
@@ -42,13 +42,12 @@ class User {
   String? urlProfilPicture;
   Formule? formule;
   Check? check;
-  List <Opinion>? opinions;
+  List<Opinion>? opinions;
   num? moyenneAvis;
   String? password;
   DateTime? choiceDateStarted;
   DateTime? choiceDateEnd;
-
-
+  DateTime? dateOfBirthday;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -58,24 +57,29 @@ class User {
         email: json["email"],
         phone: json["phone"],
         active: json["active"],
-        payment: (json['payment'] != null) ? Payment.fromJson(json["payment"]) : null,
+        payment: (json['payment'] != null)
+            ? Payment.fromJson(json["payment"])
+            : null,
         urlProfilPicture: json["url_profil_img"],
-        formule: (json['Choice'] != null) ? Formule.fromJson(json ["Choice"]) : null,
-        check: (json['Check'] != null) ? Check.fromJson(json["Check"]) : null,
+        formule:
+            (json['choice'] != null) ? Formule.fromJson(json["choice"]) : null,
+        check: (json['check'] != null) ? Check.fromJson(json["check"]) : null,
         opinions: json["id_opinion"],
-        moyenneAvis: json ["average_opinion"],
-        password: json ["password"],
-    choiceDateStarted: json ["choiceDateStarted"],
-    choiceDateEnd: json ["choiceDateEnd"],
+        moyenneAvis: json["average_opinion"],
+        password: json["password"],
+        choiceDateStarted: json["choiceDateStarted"],
+        choiceDateEnd: json["choiceDateEnd"],
+        dateOfBirthday: DateTime.parse(json["dateOfBirthday"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "id": this.id,
         "firstname": this.firstname,
         "lastname": this.lastname,
         "username": this.username,
-        "password" : this.password,
+        "password": this.password,
         "email": this.email,
-
+        "dateOfBirthday" : this.dateOfBirthday != null ? this.dateOfBirthday!.toIso8601String() : null,
       };
 }
 
@@ -84,10 +88,9 @@ class UserDynamic {
     required this.userDynamic,
   });
 
-  Map <String, dynamic> userDynamic;
+  Map<String, dynamic> userDynamic;
 
   factory UserDynamic.fromJson(Map<String, dynamic> json) {
-    return UserDynamic(
-        userDynamic: json ["user"]);
+    return UserDynamic(userDynamic: json["User"]);
   }
 }
