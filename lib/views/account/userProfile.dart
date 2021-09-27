@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weezli/commons/disconnect.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/user.dart';
+import 'package:weezli/service/authentication/logout.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/account/email_verification.dart';
@@ -50,15 +52,25 @@ class _UserProfileState extends State<UserProfile> {
     final int userId = ModalRoute.of(context)!.settings.arguments as int;
 
     return Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            disconnect,
-          ],
-        ),
+        appBar: AppBar(actions: [
+          Padding(
+              padding: EdgeInsets.all(20),
+              child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: "Déconnexion",
+                      style:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          logout();
+                          Navigator.pushNamed(context, '/');
+                        })))
+        ]),
         body: SingleChildScrollView(
             child: Center(
                 child: Container(
-                  padding : EdgeInsets.all(10),
+          padding: EdgeInsets.all(40),
           child: Column(
             children: [
               FutureBuilder(
@@ -153,86 +165,81 @@ class _UserProfileState extends State<UserProfile> {
                                   children: [
                                     if (actualUserId != null &&
                                         user.id == actualUserId)
+                                      Row(children: [
+                                        Text(
+                                          "Nom",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                            width: _mediaQuery.width * 0.3),
+                                        Text(user.lastname!)
+                                      ]),
+                                    SizedBox(height: 10),
+                                    Row(children: [
                                       Text(
-                                        "Nom",
+                                        "Prénom",
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      "Prénom",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                      SizedBox(
+                                          width: _mediaQuery.width * 0.245),
+                                      Text(user.firstname!)
+                                    ]),
                                     SizedBox(height: 10),
                                     if (actualUserId != null &&
                                         user.id == actualUserId)
-                                      Text(
-                                        "Date de naissance : ",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      Row(children: [
+                                        Text(
+                                          "Date de naissance : ",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                            width: _mediaQuery.width * 0.027),
+                                        Text(
+                                          formatDate(user.dateOfBirthday!),
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ]),
                                     SizedBox(height: 10),
                                     if (actualUserId != null &&
-                                        user.id == actualUserId)
-                                      Text(
-                                        "Email",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                        user.id == actualUserId &&
+                                        user.email != null)
+                                      Row(children: [
+                                        Text(
+                                          "Email",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                            width: _mediaQuery.width * 0.3),
+                                        Text(
+                                          user.email!,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ]),
                                     SizedBox(height: 10),
                                     if (actualUserId != null &&
-                                        user.id == actualUserId)
-                                      if (user.phone != null)
+                                        user.id == actualUserId &&
+                                        user.phone != null)
+                                      Row(children: [
                                         Text(
                                           "Numéro de téléphone",
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                  ]),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (actualUserId != null &&
-                                        user.id == actualUserId)
-                                      Text(
-                                        user.lastname!,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      user.firstname!,
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    SizedBox(height: 10),
-                                    if (actualUserId != null &&
-                                        user.id == actualUserId)
-                                      Text(
-                                        formatDate(user.dateOfBirthday!),
-                                        textAlign: TextAlign.right,
-                                      ),
-                                    SizedBox(height: 10),
-                                    if (actualUserId != null &&
-                                        user.id == actualUserId)
-                                      if (user.email != null)
-                                        Text(
-                                          user.email!,
-                                          textAlign: TextAlign.left,
-                                        ),
-                                    SizedBox(height: 10),
-                                    if (actualUserId != null &&
-                                        user.id == actualUserId)
-                                      if (user.phone != null)
                                         Text(
                                           user.phone!,
                                           textAlign: TextAlign.left,
                                         ),
-                                  ])
+                                      ]),
+                                  ]),
                             ]),
                         SizedBox(height: 30),
                         Row(children: [

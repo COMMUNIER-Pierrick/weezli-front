@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weezli/commons/disconnect.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/user.dart';
+import 'package:weezli/service/authentication/logout.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/announce/announces.dart';
@@ -90,10 +91,21 @@ class _ProfileState extends State<Profile> {
     ];
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[
-          disconnect,
-        ],
-      ),
+        actions: [
+          Padding(
+              padding: EdgeInsets.all(20),
+              child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: "Déconnexion",
+                      style:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          logout();
+                          Navigator.pushNamed(context, '/');
+                        })))
+        ]),
       body: SingleChildScrollView(
         child: Center(
           child: Container(

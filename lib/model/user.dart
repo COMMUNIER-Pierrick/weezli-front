@@ -69,7 +69,7 @@ class User {
         password: json["password"],
         choiceDateStarted: json["choiceDateStarted"],
         choiceDateEnd: json["choiceDateEnd"],
-        dateOfBirthday: DateTime.parse(json["dateOfBirthday"]),
+        dateOfBirthday: (json['dateOfBirthday'] != null) ? DateTime.parse(json['dateOfBirthday']): null,
       );
 
   Map<String, dynamic> toJson() => {
