@@ -18,6 +18,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
+  static const routeName = '/profile';
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -28,7 +30,8 @@ class _ProfileState extends State<Profile> {
     User? user = await getUserInfo(prefs);
     if (user == null)
       Navigator.pushNamed(context, '/login');
-    else return user;
+    else
+      return user;
   }
 
   @override
@@ -99,13 +102,17 @@ class _ProfileState extends State<Profile> {
                   text: TextSpan(
                       text: "Déconnexion",
                       style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           logout();
                           Navigator.pushNamed(context, '/');
                         })))
-        ]),
+        ],
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, "/")),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -134,7 +141,6 @@ class _ProfileState extends State<Profile> {
                             fontSize: 16,
                           ),
                         ),
-
                         for (List<String> item in _list1)
                           _customButton(item[0], item[1], user.id),
                         SizedBox(
@@ -149,8 +155,7 @@ class _ProfileState extends State<Profile> {
                           _customButton(item[0], item[1], user.id),
                       ]));
                     }
-                      return _buildLoadingScreen();
-
+                    return _buildLoadingScreen();
                   }),
             ]),
           ),

@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart';
+import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/authentication/logout.dart';
+import 'package:weezli/service/user/modifyProfile.dart';
 import 'package:weezli/views/account/email_verification.dart';
 import 'package:weezli/views/account/phone_verification.dart';
+import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/widgets/image_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +42,10 @@ class _PersonalState extends State<Personal> {
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
     final User user = ModalRoute.of(context)!.settings.arguments as User;
+    final lastNameController = TextEditingController(text : user.lastname);
+    final firstNameController = TextEditingController(text : user.firstname);
+    final emailController = TextEditingController(text : user.email);
+    final phoneController = TextEditingController (text : user.phone);
 
     final Row _avatarField = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,62 +106,19 @@ class _PersonalState extends State<Personal> {
       return TextInputType.text;
     }
 
-    TextFormField _field(String label, String errorText, String type, int id) {
-      return TextFormField(
-        keyboardType: _textInputType(type),
-        decoration: InputDecoration(
-          suffixIcon: stateForm[id] == true
-              ? Icon(
-                  Icons.check_circle_rounded,
-                  color: WeezlyColors.green,
-                )
-              : Icon(
-                  WeezlyIcon.attention,
-                  color: WeezlyColors.yellow,
-                ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: WeezlyColors.blue3,
-            ),
-          ),
-          labelText: label,
-          labelStyle: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        onChanged: (value) {
-          if (value.isEmpty) {
-            setState(() {
-              stateForm[id] = false;
-            });
-          } else {
-            setState(() {
-              stateForm[id] = true;
-            });
-          }
-          if (type == "email" &&
-              !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?"
-                      r"^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(value)) {
-            setState(() {
-              stateForm[id] = false;
-            });
-          } else if (type == "number" &&
-              !RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(value)) {
-            setState(() {
-              stateForm[id] = false;
-            });
-          }
-        },
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return errorText;
-          }
-          return null;
-        },
-      );
+    Icon suffixIcon(TextEditingController controller) {
+      if (controller.text != "")
+        return Icon(
+          Icons.check_circle_rounded,
+          color: WeezlyColors.green,
+        );
+      else
+        return Icon(
+          WeezlyIcon.attention,
+          color: WeezlyColors.yellow,
+        );
     }
+
 
     Future<void> _saveForm() async {
       final isValid = _formPersonalKey.currentState!.validate();
@@ -162,41 +126,24 @@ class _PersonalState extends State<Personal> {
         return;
       } else {
         _formPersonalKey.currentState!.save();
+        final Response response = await modifyProfile(User(
+          id : user.id,
+          lastname: lastNameController.text,
+          firstname: firstNameController.text,
+          phone: phoneController.text,
+          email: emailController.text,
+        ));
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Modification effectuée')),
+          );
+            saveData(response.body);
+            Navigator.pushNamed(context, UserProfile.routeName, arguments: user.id);
+        }
       }
     }
 
-    final List<TextFormField> _fieldList = [
-      _field(
-        "Nom",
-        "Veuillez renseigner votre nom",
-        "text",
-        0,
-      ),
-      _field(
-        "Prénom",
-        "Veuillez renseigner votre prénom",
-        "text",
-        1,
-      ),
-      _field(
-        "Date de naissance",
-        "Veuillez renseigner votre date de naissance",
-        "text",
-        2,
-      ),
-      _field(
-        "Email",
-        "Veuillez renseigner votre email",
-        "email",
-        3,
-      ),
-      _field(
-        "Numéro de téléphone",
-        "Veuillez renseigner votre numéro de téléphone",
-        "phone",
-        4,
-      ),
-    ];
+
 
     return SafeArea(
       child: Scaffold(
@@ -240,7 +187,38 @@ class _PersonalState extends State<Personal> {
                   key: _formPersonalKey,
                   child: Column(
                     children: <Widget>[
-                      for (TextFormField item in _fieldList) item,
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: lastNameController,
+                        onTap: () => lastNameController.clear(),
+                        decoration: InputDecoration (
+                          suffixIcon: suffixIcon(lastNameController)
+                        ),
+                      ),
+                      TextFormField(
+                        controller: firstNameController,
+                        onTap: () => firstNameController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(firstNameController)
+                        ),
+                      ),
+                      TextFormField(
+                        controller: emailController,
+                        onTap: () => emailController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(emailController)
+                        ),
+                      ),
+                      TextFormField(
+                        controller: phoneController,
+                        onTap: () => phoneController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(phoneController)
+                        ),
+                      ),
+                      SizedBox(
+                        height: _separator,
+                      ),
                       ElevatedButton(
                         onPressed: _saveForm,
                         child: const Text('Enregistrer'),
