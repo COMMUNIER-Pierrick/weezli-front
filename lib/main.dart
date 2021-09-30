@@ -14,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:weezli/commons/colorSwatch.dart';
 import 'package:weezli/views/account/opinions.dart';
 import 'package:weezli/views/account/email_verification.dart';
-import 'package:weezli/views/account/personal.dart';
+import 'package:weezli/views/account/modifyProfile.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/account/phone_verification.dart';
 import 'package:weezli/views/paiement/paiement_view.dart';
@@ -85,6 +85,7 @@ void main() {
         PhoneVerification.routeName: (context) => PhoneVerification(),
         Announces.routeName : (context) => Announces(),
         UserProfile.routeName : (context) => UserProfile(),
+        Profile.routeName : (context) => Profile(),
        },
     ),
   );
