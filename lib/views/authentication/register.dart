@@ -5,7 +5,6 @@ import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/announce/create.dart';
 import 'package:weezli/service/user/createAccount.dart';
 
 class Register extends StatefulWidget {

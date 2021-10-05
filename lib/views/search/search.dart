@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findByType.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';
@@ -90,10 +93,17 @@ class _SearchState extends State<Search> {
     Navigator.pushNamed(context, '/resultat', arguments: _search);
   }
 
-  VoidCallback? _createAnnounce() {
-    searchType == "sending"
-        ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName)
-        : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName);
+
+  Future _createAnnounce() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user != null) {
+      print (user);
+      searchType == "sending"
+          ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: user)
+          : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: user);
+    }
+    else Navigator.pushNamed(context, "/login");
   }
 
   Future<List <Announce>> getAnnouncesList() async {
@@ -105,9 +115,7 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    print(_search);
-    print(searchType);
-    print(_search[searchType]);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -197,7 +205,7 @@ class _SearchState extends State<Search> {
                           ),
                           IconButton(
                             onPressed: () =>
-                                openDatePicker(context, _selectDate),
+                                openDatePicker(context),
                             icon: Icon(
                               WeezlyIcon.calendar2,
                               color: WeezlyColors.blue5,

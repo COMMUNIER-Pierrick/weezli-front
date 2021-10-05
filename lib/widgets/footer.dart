@@ -7,7 +7,7 @@ class Footer extends StatelessWidget {
   final num height;
   final Widget childLeft;
   final String childRight;
-  final VoidCallback saveForm;
+  final Future <dynamic>? saveForm;
 
   Footer({required this.height,
     required this.childLeft,
@@ -38,7 +38,7 @@ class Footer extends StatelessWidget {
         children: [
           childLeft,
           ElevatedButton(
-            onPressed: saveForm,
+            onPressed: () => saveForm,
             child: Text(
               childRight.toUpperCase(),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),

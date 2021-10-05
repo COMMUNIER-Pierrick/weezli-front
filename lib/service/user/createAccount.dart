@@ -18,13 +18,12 @@ Future<Response> createUser(User account) async {
     resBody["email"] =  account.email;
     resBody["dateOfBirthday"] =  account.dateOfBirthday!.toIso8601String();
     var user = {};
-    user["user"] = resBody;
+    user["User"] = resBody;
     str = encoder.convert(user);
     print(str);
   } catch(e) {
     print(e);
   }
-  final FlutterSecureStorage storage = FlutterSecureStorage();
   final Response response =
       await http.post(Uri.parse("http://10.0.2.2:5000/user/register"),
           headers: <String, String>{

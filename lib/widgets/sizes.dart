@@ -13,12 +13,14 @@ class Sizes extends StatefulWidget {
 
 class _SizesState extends State<Sizes> {
   List<String> _size = [];
-  void _setSelected(dynamic userSizeFilter) {
+  List<String> _setSelected(dynamic userSizeFilter) {
     if (_size.contains(userSizeFilter)) {
       _size.remove(userSizeFilter);
-      return;
+      return _size;
     }
     setState(() => _size.add(userSizeFilter));
+    return _size;
+
   }
 
   void resetSizes() {

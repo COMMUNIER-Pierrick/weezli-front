@@ -1,18 +1,13 @@
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
-import 'package:weezli/commons/weezly_colors.dart';
-import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/user.dart';
+import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/service/announce/findById.dart';
-import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -31,10 +26,7 @@ class SearchAnnounceDetail extends StatefulWidget {
 
 class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
   Future<Announce> getAnnounce() async {
-    int? announceId = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as int?;
+    int? announceId = ModalRoute.of(context)!.settings.arguments as int?;
     Announce announce = await findById(announceId!);
     return announce;
   }
@@ -56,6 +48,13 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                       snapshot.hasData) {
                     Announce announce = snapshot.data as Announce;
                     num? price = announce.price;
+                    String? sizes;
+                    for (PackageSize size in announce.package.size) {
+                      if (sizes != null)
+                        sizes = sizes + ", " + size.name;
+                      else
+                        sizes = size.name;
+                    }
 
                     return Column(children: [
                       Container(
@@ -76,14 +75,17 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                     // height: 80,
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(context, UserProfile.routeName, arguments: announce.userAnnounce!.id);
+                                            Navigator.pushNamed(
+                                                context, UserProfile.routeName,
+                                                arguments:
+                                                    announce.userAnnounce!.id);
                                           },
                                           child: CustomTitle(announce
-                                              .userAnnounce!.firstname! +
+                                                  .userAnnounce!.firstname! +
                                               " " +
                                               announce.userAnnounce!.lastname!),
                                         ),
@@ -94,44 +96,44 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                               horizontal: 7, vertical: 0),
                                           decoration: announce.type == 1
                                               ? BoxDecoration(
-                                            color: Colors.orangeAccent,
-                                            borderRadius:
-                                            BorderRadius.only(
-                                              bottomRight:
-                                              Radius.circular(40),
-                                              topRight:
-                                              Radius.circular(40),
-                                            ),
-                                          )
+                                                  color: Colors.orangeAccent,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    bottomRight:
+                                                        Radius.circular(40),
+                                                    topRight:
+                                                        Radius.circular(40),
+                                                  ),
+                                                )
                                               : BoxDecoration(
-                                            color: WeezlyColors.blue3,
-                                            borderRadius:
-                                            BorderRadius.only(
-                                              bottomRight:
-                                              Radius.circular(40),
-                                              topRight:
-                                              Radius.circular(40),
-                                            ),
-                                          ),
+                                                  color: WeezlyColors.blue3,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    bottomRight:
+                                                        Radius.circular(40),
+                                                    topRight:
+                                                        Radius.circular(40),
+                                                  ),
+                                                ),
                                           child: Row(
                                             children: [
                                               announce.type == 2
                                                   ? Row(children: [
-                                                Icon(WeezlyIcon.delivery),
-                                                SizedBox(width: 4),
-                                                CustomTitle(
-                                                  "Transporteur",
-                                                )
-                                              ])
+                                                      Icon(WeezlyIcon.delivery),
+                                                      SizedBox(width: 4),
+                                                      CustomTitle(
+                                                        "Transporteur",
+                                                      )
+                                                    ])
                                                   : Row(children: [
-                                                Icon(
-                                                    WeezlyIcon
-                                                        .paper_plane_empty,
-                                                    color: Colors.white,
-                                                    size: 15),
-                                                SizedBox(width: 6),
-                                                CustomTitle("Colis")
-                                              ]),
+                                                      Icon(
+                                                          WeezlyIcon
+                                                              .paper_plane_empty,
+                                                          color: Colors.white,
+                                                          size: 15),
+                                                      SizedBox(width: 6),
+                                                      CustomTitle("Colis")
+                                                    ]),
                                             ],
                                           ),
                                         ),
@@ -145,7 +147,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               Container(
                                 child: Column(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomTitle("Détail"),
@@ -183,7 +185,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                           SizedBox(width: 12),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               _buildCustomText(
                                                   context,
@@ -200,17 +202,16 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                           )
                                         ],
                                       ),
-                                    _buildRow(
-                                        context,
-                                        WeezlyIcon.box,
-                                        "Dimensions : ",
-                                        announce.package.size.first.name),
+                                    _buildRow(context, WeezlyIcon.box,
+                                        "Dimensions : ", sizes!),
                                     SizedBox(height: 10),
                                     _buildRow(
-                                        context,
-                                        WeezlyIcon.kg,
-                                        "Poids : ",
-                                        weight(announce.package.kgAvailable)),
+                                      context,
+                                      WeezlyIcon.kg,
+                                      "Poids : ",
+                                      announce.package.kgAvailable.toString() +
+                                          " kg",
+                                    ),
                                     SizedBox(height: 10),
                                     if (announce.type == 2)
                                       _buildRow(
@@ -233,7 +234,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                           },
                                           child: Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                 "CONTRE-PROPOSITION",
@@ -244,7 +245,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                               ),
                                               Padding(
                                                 padding:
-                                                EdgeInsets.only(left: 5),
+                                                    EdgeInsets.only(left: 5),
                                                 child: Icon(
                                                   WeezlyIcon.arrow_right,
                                                   size: 13,
@@ -255,7 +256,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(22.5),
+                                                  BorderRadius.circular(22.5),
                                             ),
                                             backgroundColor: WeezlyColors.grey3,
                                           ),
@@ -269,7 +270,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               CustomTitle("A propos"),
                               SizedBox(height: 10),
                               Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                announce.package.description,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(height: 1.3),
                               )
@@ -282,19 +283,19 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                             height: height,
                             childLeft: price != null
                                 ? Text(
-                              price.toStringAsFixed(2) + " €",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
-                            )
+                                    price.toStringAsFixed(2) + " €",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  )
                                 : Text(
-                              price!.toStringAsFixed(2) + " €",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                                    price!.toStringAsFixed(2) + " €",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                             childRight: "Contacter",
-                            saveForm: () {})
+                            saveForm: null)
                       else
                         Container(
                           height: height * 0.1,
@@ -310,7 +311,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                 spreadRadius: 1,
                                 blurRadius: 15,
                                 offset:
-                                Offset(0, 1), // changes position of shadow
+                                    Offset(0, 1), // changes position of shadow
                               )
                             ],
                           ),
@@ -348,14 +349,11 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                 })));
   }
 
-  RichText _buildCustomText(BuildContext context, String firstText,
-      String secondText) {
+  RichText _buildCustomText(
+      BuildContext context, String firstText, String secondText) {
     return RichText(
       text: TextSpan(
-        style: Theme
-            .of(context)
-            .textTheme
-            .bodyText2,
+        style: Theme.of(context).textTheme.bodyText2,
         children: [
           TextSpan(text: firstText),
           TextSpan(
@@ -378,19 +376,13 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  Widget _buildPopupCounterOffer(BuildContext context, Announce announce,
-      num? price) {
+  Widget _buildPopupCounterOffer(
+      BuildContext context, Announce announce, num? price) {
     var myController = TextEditingController();
     return new Dialog(
       child: Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: MediaQuery
-            .of(context)
-            .size
-            .width * 0.7,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width * 0.7,
         padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -404,10 +396,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 LimitedBox(
-                    maxWidth: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.7,
+                    maxWidth: MediaQuery.of(context).size.width * 0.7,
                     child: Text(
                       "Combien proposez-vous pour transporter votre colis ?",
                       textAlign: TextAlign.center,
@@ -418,10 +407,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   child: TextFormField(
                     controller: myController,
                     decoration: InputDecoration(
@@ -441,10 +427,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: 35,
                   child: RawMaterialButton(
                     fillColor: WeezlyColors.white,
@@ -463,10 +446,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: 35,
                   child: RawMaterialButton(
                     fillColor: WeezlyColors.primary,

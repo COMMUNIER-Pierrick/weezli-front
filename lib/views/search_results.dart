@@ -80,11 +80,6 @@ class SearchResults {
               foregroundImage: NetworkImage(
                   "https://images.assetsdelivery.com/compings_v2/macrovector/macrovector1901/macrovector190100030.jpg"),
             ),
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 7,
-              child: SvgPicture.asset("assets/images/svg/check.svg"),
-            ),
           ],
         ),
         SizedBox(height: 10),
@@ -229,7 +224,6 @@ class SearchResults {
   Widget carryIcon() {
     return CircleAvatar(
       backgroundColor: Colors.amber,
-      child: SvgPicture.asset("assets/images/svg/delivery.svg"),
     );
   }
 }

@@ -11,25 +11,25 @@ String AnnounceToJson(Announce data) => json.encode(data.toJson());
 
 class Announce {
   Announce({
-    required this.id,
+    this.id,
     required this.package,
     required this.userAnnounce,
     this.views,
     required this.type,
     this.price,
-    required this.transact,
+    this.transact,
     this.imgUrl,
     this.dateCreated,
   });
 
-  int id;
+  int? id;
   Package package;
   User? userAnnounce;
   int? views;
   int? idOrder;
   int type;
   num? price;
-  int transact;
+  int? transact;
   String? imgUrl;
   DateTime? dateCreated;
 

@@ -14,7 +14,6 @@ async {
     var user = {};
     user["User"] = resBody;
     str = encoder.convert(user);
-    print (str);
   } catch(e) {
     print(e);
   }

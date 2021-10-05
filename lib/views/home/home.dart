@@ -180,8 +180,7 @@ class _HomeState extends State<Home> {
       String text,
     ) {
       return InkWell(
-        //onTap: () => Navigator.pushNamed(context, '/formules'),
-        onTap: () => Navigator.pushNamed(context, AnnounceDetail.routeName),
+        onTap: () => Navigator.pushNamed(context, '/formules'),
         child: Container(
           padding: EdgeInsets.all(10.0),
           width: _mediaQuery.width * 0.9,

@@ -2,28 +2,11 @@ import 'dart:ffi';
 
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weight.dart';
-import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/Formule.dart';
-import 'package:weezli/model/Package.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Payment.dart';
-import 'package:weezli/model/Transportation.dart';
-import 'package:weezli/model/Type.dart';
-import 'package:weezli/model/user.dart';
-import 'package:weezli/service/announce/findById.dart';
-import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-
 import '../../commons/weezly_colors.dart';
-import '../../widgets/custom_title.dart';
-import '../../widgets/avatar.dart';
 import '../../commons/weezly_icon_icons.dart';
-import '../../widgets/contact.dart';
 
 class AnnounceDetail extends StatefulWidget {
   static const routeName = '/seller-announce-detail';
@@ -37,61 +20,9 @@ class AnnounceDetail extends StatefulWidget {
 class _AnnounceDetail extends State<AnnounceDetail> {
   double widthSeparator = 20;
 
-  Announce announce = Announce (
-      id: 215545454,
-      package: Package(
-          id: 132565,
-          addressDeparture: Address(
-              id: 12,
-              number: 2,
-              street: 'rue de Merville',
-              zipCode: '59160',
-              city: 'Rome', name: 'Test'),
-          addressArrival: Address(
-              id: 45,
-              number: 3,
-              street: 'allée de la cour baleine',
-              zipCode: '95500',
-              city: 'Paris', name: 'Maison'),
-          datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-          dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-          kgAvailable: 2,
-          transportation: Transportation(id: 2, name: 'Avion'),
-          description:
-          "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          size: [PackageSize (id : 1, name : "Petit")],
-          price: 50
-      ),
-      views: 15,
-      userAnnounce: User(
-          id: 1,
-          firstname: 'Noémie',
-          lastname: "Contant",
-          username: 'STid',
-          email: 'noemie.contant@gmail.com',
-          phone: '0627155307',
-          active: 1,
-          payment: Payment(id: 5, name: 'RIB', IBAN: '46116465654'),
-          urlProfilPicture: 'oiogdfpogkfdiojo',
-          formule: Formule(
-              id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-          check: Check(
-              id: 1,
-              statusIdentity: 1,
-              statusPhone: 1,
-              statusEmail : 1,
-              imgIdCard: 'lkjgfùdfgùjdfg')),
-      transact: 1,
-      type: 1,
-      price : 50,
-    //idOrder: 1,
-  );
-
-
-
   @override
   Widget build(BuildContext context) {
-    //final announce = ModalRoute.of(context)!.settings.arguments as Announce;
+    final announce = ModalRoute.of(context)!.settings.arguments as Announce;
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
     final height = (mediaQuery.size.height -
@@ -99,6 +30,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
         mediaQuery.padding.top);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, '/mes_annonces')),
         title: Text("Détail"),
       ),
       body: Container(
@@ -130,9 +64,10 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                 )
               ],
             ),
+            if (announce.type == 2)
             Row(children: [
               Text("Moyen de transport : "),
-              Text(announce.package.transportation!.name,
+              Text(announce.package.transportation!.name!,
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ]),
             Divider(
@@ -141,11 +76,12 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             Row(children: [
               Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: widthSeparator),
-              Text("Date de départ : "),
+              Text(announce.type == 2 ? "Date de départ : " : "Date limite : "),
               Text(format(announce.package.datetimeDeparture),
                   style: TextStyle(fontWeight: FontWeight.bold))
             ]),
             SizedBox(height: 10),
+            if (announce.type == 2)
             Row(children: [
               Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: widthSeparator),
@@ -166,11 +102,12 @@ class _AnnounceDetail extends State<AnnounceDetail> {
               Icon(WeezlyIcon.kg, size: 20, color: WeezlyColors.blue3),
               SizedBox(width: widthSeparator),
               Text("Poids : "),
-              Text(weight(announce.package.kgAvailable),
+              Text(announce.package.kgAvailable.toString() + " kg",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
             ]),
             SizedBox(height: 10),
-            /*Row(
+            if (announce.type == 2)
+            Row(
               children: [
                 Icon(WeezlyIcon.ticket, size: 20, color: WeezlyColors.blue3),
                 SizedBox(width: widthSeparator),
@@ -178,9 +115,10 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                 Text(
                     announce.price!.toStringAsFixed(0) +
                         " €",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
               ],
-            ),*/
+            ),
             SizedBox(height: 10),
             Row(
               children: [
