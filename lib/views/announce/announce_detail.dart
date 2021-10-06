@@ -5,13 +5,12 @@ import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/service/announce/deleteAnnounce.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
 
 class AnnounceDetail extends StatefulWidget {
   static const routeName = '/seller-announce-detail';
-
-
 
   @override
   _AnnounceDetail createState() => _AnnounceDetail();
@@ -65,11 +64,11 @@ class _AnnounceDetail extends State<AnnounceDetail> {
               ],
             ),
             if (announce.type == 2)
-            Row(children: [
-              Text("Moyen de transport : "),
-              Text(announce.package.transportation!.name!,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ]),
+              Row(children: [
+                Text("Moyen de transport : "),
+                Text(announce.package.transportation!.name!,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ]),
             Divider(
               color: WeezlyColors.black,
             ),
@@ -82,13 +81,13 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             ]),
             SizedBox(height: 10),
             if (announce.type == 2)
-            Row(children: [
-              Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: widthSeparator),
-              Text("Date d'arrivée : "),
-              Text(format(announce.package.dateTimeArrival),
-                  style: TextStyle(fontWeight: FontWeight.bold))
-            ]),
+              Row(children: [
+                Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
+                SizedBox(width: widthSeparator),
+                Text("Date d'arrivée : "),
+                Text(format(announce.package.dateTimeArrival),
+                    style: TextStyle(fontWeight: FontWeight.bold))
+              ]),
             SizedBox(height: 10),
             Row(children: [
               Icon(WeezlyIcon.box, size: 20, color: WeezlyColors.blue3),
@@ -107,18 +106,17 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             ]),
             SizedBox(height: 10),
             if (announce.type == 2)
-            Row(
-              children: [
-                Icon(WeezlyIcon.ticket, size: 20, color: WeezlyColors.blue3),
-                SizedBox(width: widthSeparator),
-                Text("Commission de base : "),
-                Text(
-                    announce.price!.toStringAsFixed(0) +
-                        " €",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-              ],
-            ),
+              Row(
+                children: [
+                  Icon(WeezlyIcon.ticket, size: 20, color: WeezlyColors.blue3),
+                  SizedBox(width: widthSeparator),
+                  Text("Commission de base : "),
+                  Text(announce.price!.toStringAsFixed(0) + " €",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10),
+                ],
+              ),
             SizedBox(height: 10),
             Row(
               children: [
@@ -142,6 +140,24 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                   child: Text(announce.package.description,
                       textAlign: TextAlign.justify))
             ]),
+            /*TextButton(
+              onPressed: () {
+                deleteAnnounce(announce.id);
+              },
+              child: Text(
+                "SUPPRIMER L'ANNONCE",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                backgroundColor: WeezlyColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22.5),
+                ),
+              ),
+            )*/
           ],
         ),
       ),
@@ -154,7 +170,7 @@ Widget _order(Announce announce, BuildContext context) {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
         child: Container(
-          padding : EdgeInsets.fromLTRB(0, 5, 0, 5),
+          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
           width: MediaQuery.of(context).size.width,
           decoration: new BoxDecoration(
               borderRadius: new BorderRadius.circular(16.0),
@@ -189,7 +205,6 @@ Widget _order(Announce announce, BuildContext context) {
                     borderRadius: BorderRadius.circular(22.5),
                   ),
                 ),
-
               )
             ],
           ),

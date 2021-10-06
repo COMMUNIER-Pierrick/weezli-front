@@ -1,15 +1,15 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:io';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/PackageSize.dart';
+import 'package:http_parser/http_parser.dart';
 
-Future<Response> createSenderAnnounce(Announce newAnnounce) async {
-  String str = "";
+Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList) async {
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+  var str;
+
   try {
     var addressDeparture = {};
     var resBodyAddressDeparture = {};
@@ -59,21 +59,60 @@ Future<Response> createSenderAnnounce(Announce newAnnounce) async {
     resBody["imgUrl"] =  '';
     resBody["dateCreated"] =  newAnnounce.dateCreated!.toIso8601String();
     resBody["userAnnounce"] = userAnnounce;
-    var announce = {};
-    announce["Announce"] = resBody;
 
-    str = encoder.convert(announce);
+    var announce = {};
+    announce ["Announce"] = resBody;
+    str = announce;
   } catch(e) {
     print(e);
   }
-  final Response response =
-  await http.post(Uri.parse("http://10.0.2.2:5000/announce/new-announce"),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8",
-        "Accept": "application/json",
-      },
-      body: str
-  );
+
+  var request = http.MultipartRequest('POST', Uri.parse("http://10.0.2.2:5000/announce/new-announce"));
+  Map<String, String> headers = {
+    "Content-Type": "application/json",
+    //"Accept": "application/json",
+  };
+
+  String? filename;
+  int i = 0;
+
+  imgList.forEach((element) {
+    switch (i) {
+      case 0 :
+        filename = "fileOne";
+        break;
+      case 1 :
+        filename = "fileTwo";
+        break;
+      case 2 :
+        filename = "fileThree";
+        break;
+      case 3 :
+        filename = "fileFour";
+        break;
+      case 4 :
+        filename = "fileFive";
+        break;
+    }
+
+
+    request.files.add(http.MultipartFile(
+      filename!,
+      element.readAsBytes().asStream(),
+      element.lengthSync(),
+      filename: filename! + ".jpg",
+      contentType: MediaType('image', 'jpeg'),
+    ));
+
+    i = i+1;
+
+  });
+
+  request.headers.addAll(headers);
+  request.fields['Announce'] = jsonEncode(str);
+  print (request.fields);
+
+  http.Response response = await http.Response.fromStream(await request.send());
 
   return response;
 

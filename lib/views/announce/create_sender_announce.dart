@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
@@ -38,8 +39,17 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
   DateTime dateDeparture = DateTime.now();
   List<int> _currentSelectedIndexSize = [];
   List<PackageSize> sizes = [];
+  List <File> imgList = [];
+  final picker = ImagePicker();
 
-// Actual hour + 1 hour
+  pickImageFromGallery() async {
+    print ("Coucou");
+    final image = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      imgList.add(File(image!.path));
+    });
+  }
 
   Future<List<PackageSize>> getSizes() async {
     List<PackageSize> sizes = await findAllSizes();
@@ -83,7 +93,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
         type: 1,
         userAnnounce: user,
       );
-      var response = await createSenderAnnounce(announce);
+      var response = await createSenderAnnounce(announce, imgList);
       var mapAnnounce = AnnouncesListDynamic.fromJson(jsonDecode(response.body)).announcesListDynamic;
       Announce newAnnounce = Announce.fromJson(mapAnnounce);
 
@@ -211,6 +221,10 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                                 }),
                             SizedBox(height: height * 0.03),
                             _field('textarea', 'Description', _descriptionCtrl),
+                            ElevatedButton (
+                              onPressed: pickImageFromGallery,
+                              child: Text ("Ajouter une image"),
+                            )
                           ],
                         ),
                       ),

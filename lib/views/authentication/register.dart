@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
@@ -15,7 +16,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _storage = FlutterSecureStorage();
   final _formKey = GlobalKey<FormState>();
   bool _condition = false;
   final double _separator = 20;
@@ -26,6 +26,7 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
   DateTime dateOfBirthday = DateTime.now();
 
   // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
@@ -54,6 +55,7 @@ class _RegisterState extends State<Register> {
     if (picked != null && picked != dateOfBirthday)
       setState(() {
         dateOfBirthday = picked;
+        _birthdayController.text = DateFormat.yMd('fr_FR').format(picked);
       });
   }
 
@@ -208,14 +210,29 @@ class _RegisterState extends State<Register> {
             for (TextFormField field in _fieldList) field,
             for (TextFormField hiddenField in _hiddenFieldList) hiddenField,
             Row(children: [
-              IconButton(
-                onPressed: () => _selectDate(context), // Refer step 3
-                icon: Icon(
-                  WeezlyIcon.calendar2,
-                ),
+              Icon(
+                WeezlyIcon.calendar2,
               ),
-              Text("Date de naissance",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400))
+              SizedBox(width: 10),
+              Expanded(
+                  child: GestureDetector(
+                onTap: () => _selectDate(context),
+                child: AbsorbPointer(
+                    child: TextFormField(
+                      decoration: InputDecoration (
+                        labelText: "Date de naissance"
+                      ),
+                  style: TextStyle(height: 0),
+                  controller: _birthdayController,
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Veuillez renseigner une valeur";
+                    }
+                    return null;
+                  },
+                )),
+              )),
             ]),
             SizedBox(
               height: _separator,
