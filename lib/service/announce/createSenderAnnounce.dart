@@ -60,17 +60,15 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
     resBody["dateCreated"] =  newAnnounce.dateCreated!.toIso8601String();
     resBody["userAnnounce"] = userAnnounce;
 
-    var announce = {};
-    announce ["Announce"] = resBody;
-    str = announce;
+    str = encoder.convert(resBody);
   } catch(e) {
     print(e);
   }
 
   var request = http.MultipartRequest('POST', Uri.parse("http://10.0.2.2:5000/announce/new-announce"));
   Map<String, String> headers = {
-    "Content-Type": "application/json",
-    //"Accept": "application/json",
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
   };
 
   String? filename;
@@ -105,11 +103,11 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
     ));
 
     i = i+1;
-
   });
 
   request.headers.addAll(headers);
-  request.fields['Announce'] = jsonEncode(str);
+
+  request.fields['Announce'] = str;
   print (request.fields);
 
   http.Response response = await http.Response.fromStream(await request.send());
