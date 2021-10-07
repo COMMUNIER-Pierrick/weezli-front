@@ -10,6 +10,19 @@ Future<Response> createUser(User account) async {
   String str = "";
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
+
+    var address = {};
+    var resBodyAddress = {};
+    resBodyAddress ["city"] = account.address!.city;
+    resBodyAddress["country"] = account.address!.country;
+    resBodyAddress["number"] = account.address!.number;
+    resBodyAddress["street"] = account.address!.street;
+    resBodyAddress["zipCode"] = account.address!.zipCode;
+    resBodyAddress["name"] = '';
+    resBodyAddress["additionalAddress"] = '';
+    resBodyAddress["idInfo"] = 3;
+    address = resBodyAddress;
+
     var resBody = {};
     resBody["firstname"] = account.firstname;
     resBody["lastname"] =  account.lastname;
@@ -17,6 +30,7 @@ Future<Response> createUser(User account) async {
     resBody["password"] =  account.password;
     resBody["email"] =  account.email;
     resBody["dateOfBirthday"] =  account.dateOfBirthday!.toIso8601String();
+    resBody["address"] = address;
     var user = {};
     user["User"] = resBody;
     str = encoder.convert(user);

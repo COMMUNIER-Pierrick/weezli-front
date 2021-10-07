@@ -297,7 +297,7 @@ class _AvisState extends State<Opinions> {
                         children: [
                           Text(
                             opinion
-                                .order.announce.package.addressDeparture.city,
+                                .order.announce.package.addressDeparture!.city,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -305,7 +305,7 @@ class _AvisState extends State<Opinions> {
                           ),
                           Icon(Icons.arrow_right_alt),
                           Text(
-                            opinion.order.announce.package.addressArrival.city,
+                            opinion.order.announce.package.addressArrival!.city,
                           ),
                         ],
                       ),

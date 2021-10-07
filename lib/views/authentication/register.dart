@@ -5,6 +5,7 @@ import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/user/createAccount.dart';
 
@@ -28,6 +29,11 @@ class _RegisterState extends State<Register> {
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
   DateTime dateOfBirthday = DateTime.now();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _zipCodeController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
 
   // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
   bool validateStructurePassWord(String value) {
@@ -129,6 +135,16 @@ class _RegisterState extends State<Register> {
           "Veuillez renseigner un email valable", 1),
       _field(_usernameController, "Nom d'utilisateur *",
           "Veuillez renseigner votre nom d'utilisateur", 0),
+      _field(_numberController, "Numéro de rue *",
+          "Veuillez renseigner votre numéro de rue", 0),
+      _field(_streetController, "Nom de rue *",
+          "Veuillez renseigner votre nom de rue", 0),
+      _field(_zipCodeController, "Code postal *",
+          "Veuillez renseigner votre code postal", 0),
+      _field(_cityController, "Ville *",
+          "Veuillez renseigner votre ville", 0),
+      _field(_countryController, "Pays *",
+          "Veuillez renseigner votre pays", 0),
     ];
 
     final List<TextFormField> _hiddenFieldList = [
@@ -274,7 +290,14 @@ class _RegisterState extends State<Register> {
                         password: password,
                         email: email,
                         username: username,
-                        dateOfBirthday: dateOfBirthday);
+                        dateOfBirthday: dateOfBirthday,
+                        address: Address (
+                          number: int.parse(_numberController.text),
+                          street: _streetController.text,
+                          zipCode: _zipCodeController.text,
+                          city: _cityController.text,
+                          country: _countryController.text
+                        ));
                     var response = await createUser(user);
                     if (response.statusCode == 201)
                       ScaffoldMessenger.of(context).showSnackBar(

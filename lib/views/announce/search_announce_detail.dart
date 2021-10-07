@@ -38,6 +38,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
+    final width = mediaQuery.size.width;
+
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
@@ -160,7 +162,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                         SizedBox(width: 12),
                                         Text(
                                           announce
-                                              .package.addressDeparture.city,
+                                              .package.addressDeparture!.city,
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
@@ -168,7 +170,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                         ),
                                         Icon(Icons.arrow_right_alt),
                                         Text(
-                                          announce.package.addressArrival.city,
+                                          announce.package.addressArrival!.city,
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
@@ -273,7 +275,18 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                 announce.package.description,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(height: 1.3),
-                              )
+                              ),
+                              if ((announce.type == 1) && (announce.imgUrl != ''))
+                                Column(
+                                  children: [
+                                    Text("Photos : ",
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Image(
+                                        width: width,
+                                        image: NetworkImage('http://10.0.2.2:5000/images/' +
+                                            announce.imgUrl!)),
+                                  ],
+                                )
                             ],
                           ),
                         ),

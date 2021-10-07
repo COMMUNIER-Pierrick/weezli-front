@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
+
 
 Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList) async {
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
@@ -13,8 +15,8 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
   try {
     var addressDeparture = {};
     var resBodyAddressDeparture = {};
-    resBodyAddressDeparture ["city"] = newAnnounce.package.addressDeparture.city;
-    resBodyAddressDeparture["country"] = newAnnounce.package.addressDeparture.country;
+    resBodyAddressDeparture ["city"] = newAnnounce.package.addressDeparture!.city;
+    resBodyAddressDeparture["country"] = newAnnounce.package.addressDeparture!.country;
     resBodyAddressDeparture["idInfo"] = 1;
     resBodyAddressDeparture["number"] = '';
     resBodyAddressDeparture["street"] = '';
@@ -24,8 +26,8 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
 
     var addressArrival = {};
     var resBodyAddressArrival = {};
-    resBodyAddressArrival ["city"] = newAnnounce.package.addressArrival.city;
-    resBodyAddressArrival["country"] = newAnnounce.package.addressArrival.country;
+    resBodyAddressArrival ["city"] = newAnnounce.package.addressArrival!.city;
+    resBodyAddressArrival["country"] = newAnnounce.package.addressArrival!.country;
     resBodyAddressArrival["idInfo"] = 2;
     resBodyAddressArrival["number"] = '';
     resBodyAddressArrival["street"] = '';
@@ -98,8 +100,8 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
       filename!,
       element.readAsBytes().asStream(),
       element.lengthSync(),
-      filename: filename! + ".jpg",
-      contentType: MediaType('image', 'jpeg'),
+      contentType: MediaType('image', "jpeg"),
+      filename: basename(element.path.split("image_picker").last)
     ));
 
     i = i+1;

@@ -278,6 +278,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                 }
                                 return _buildLoadingScreen();
                               }),
+                          Text("Tailles d'objets possibles"),
                           FutureBuilder(
                               future: getSizes(),
                               builder: (context, snapshot) {

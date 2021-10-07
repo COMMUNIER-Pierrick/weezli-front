@@ -4,7 +4,6 @@ import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/service/colis/read_one.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../orders/colis_avis.dart';
 

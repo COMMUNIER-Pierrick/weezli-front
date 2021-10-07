@@ -1,11 +1,8 @@
-import 'dart:ffi';
-
 import 'package:weezli/commons/format.dart';
-import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/service/announce/deleteAnnounce.dart';
+import 'package:weezli/model/PackageSize.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
 
@@ -22,11 +19,19 @@ class _AnnounceDetail extends State<AnnounceDetail> {
   @override
   Widget build(BuildContext context) {
     final announce = ModalRoute.of(context)!.settings.arguments as Announce;
+    String? sizes;
+    for (PackageSize size in announce.package.size) {
+      if (sizes != null)
+        sizes = sizes + ", " + size.name;
+      else
+        sizes = size.name;
+    }
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
+    final width = (mediaQuery.size.width);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,112 +40,131 @@ class _AnnounceDetail extends State<AnnounceDetail> {
         title: Text("Détail"),
       ),
       body: Container(
-        color: Color(0xE5E5E5),
-        height: height * 0.9,
-        padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+          color: Color(0xE5E5E5),
+          height: height * 0.9,
+          padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(WeezlyIcon.card_plane,
-                    color: WeezlyColors.blue3, size: 20),
-                SizedBox(width: widthSeparator),
-                Text(
-                  announce.package.addressDeparture.city,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  children: [
+                    Icon(WeezlyIcon.card_plane,
+                        color: WeezlyColors.blue3, size: 20),
+                    SizedBox(width: widthSeparator),
+                    Text(
+                      announce.package.addressDeparture.city,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Icon(Icons.arrow_right_alt),
+                    Text(
+                      announce.package.addressArrival.city,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
                 ),
-                Icon(Icons.arrow_right_alt),
-                Text(
-                  announce.package.addressArrival.city,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
-            ),
-            if (announce.type == 2)
-              Row(children: [
-                Text("Moyen de transport : "),
-                Text(announce.package.transportation!.name!,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ]),
-            Divider(
-              color: WeezlyColors.black,
-            ),
-            Row(children: [
-              Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: widthSeparator),
-              Text(announce.type == 2 ? "Date de départ : " : "Date limite : "),
-              Text(format(announce.package.datetimeDeparture),
-                  style: TextStyle(fontWeight: FontWeight.bold))
-            ]),
-            SizedBox(height: 10),
-            if (announce.type == 2)
-              Row(children: [
-                Icon(WeezlyIcon.calendar2, size: 20, color: WeezlyColors.blue3),
-                SizedBox(width: widthSeparator),
-                Text("Date d'arrivée : "),
-                Text(format(announce.package.dateTimeArrival),
-                    style: TextStyle(fontWeight: FontWeight.bold))
-              ]),
-            SizedBox(height: 10),
-            Row(children: [
-              Icon(WeezlyIcon.box, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: widthSeparator),
-              Text("Dimensions : "),
-              Text(announce.package.size.first.name,
-                  style: TextStyle(fontWeight: FontWeight.bold))
-            ]),
-            SizedBox(height: 10),
-            Row(children: [
-              Icon(WeezlyIcon.kg, size: 20, color: WeezlyColors.blue3),
-              SizedBox(width: widthSeparator),
-              Text("Poids : "),
-              Text(announce.package.kgAvailable.toString() + " kg",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-            ]),
-            SizedBox(height: 10),
-            if (announce.type == 2)
-              Row(
-                children: [
-                  Icon(WeezlyIcon.ticket, size: 20, color: WeezlyColors.blue3),
+                if (announce.type == 2)
+                  Row(children: [
+                    Text("Moyen de transport : "),
+                    Text(announce.package.transportation!.name!,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ]),
+                Divider(
+                  color: WeezlyColors.black,
+                ),
+                Row(children: [
+                  Icon(WeezlyIcon.calendar2,
+                      size: 20, color: WeezlyColors.blue3),
                   SizedBox(width: widthSeparator),
-                  Text("Commission de base : "),
-                  Text(announce.price!.toStringAsFixed(0) + " €",
+                  Text(announce.type == 2
+                      ? "Date de départ : "
+                      : "Date limite : "),
+                  Text(format(announce.package.datetimeDeparture),
+                      style: TextStyle(fontWeight: FontWeight.bold))
+                ]),
+                SizedBox(height: 10),
+                if (announce.type == 2)
+                  Row(children: [
+                    Icon(WeezlyIcon.calendar2,
+                        size: 20, color: WeezlyColors.blue3),
+                    SizedBox(width: widthSeparator),
+                    Text("Date d'arrivée : "),
+                    Text(format(announce.package.dateTimeArrival),
+                        style: TextStyle(fontWeight: FontWeight.bold))
+                  ]),
+                SizedBox(height: 10),
+                Row(children: [
+                  Icon(WeezlyIcon.box, size: 20, color: WeezlyColors.blue3),
+                  SizedBox(width: widthSeparator),
+                  Text("Dimensions : "),
+                  Text(sizes!, style: TextStyle(fontWeight: FontWeight.bold))
+                ]),
+                SizedBox(height: 10),
+                Row(children: [
+                  Icon(WeezlyIcon.kg, size: 20, color: WeezlyColors.blue3),
+                  SizedBox(width: widthSeparator),
+                  Text("Poids : "),
+                  Text(announce.package.kgAvailable.toString() + " kg",
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                ],
-              ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(Icons.remove_red_eye_outlined,
-                    size: 20, color: WeezlyColors.blue3),
-                SizedBox(width: widthSeparator),
-                Text("Nombre de vues : "),
-                Text(announce.views.toString(),
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-              ],
-            ),
-            _order(announce, context),
-            SizedBox(height: 10),
-            Row(children: [
-              Text("Description : ",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ]),
-            SizedBox(height: 10),
-            Row(children: [
-              Flexible(
-                  child: Text(announce.package.description,
-                      textAlign: TextAlign.justify))
-            ]),
-            /*TextButton(
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                ]),
+                SizedBox(height: 10),
+                if (announce.type == 2)
+                  Row(
+                    children: [
+                      Icon(WeezlyIcon.ticket,
+                          size: 20, color: WeezlyColors.blue3),
+                      SizedBox(width: widthSeparator),
+                      Text("Commission de base : "),
+                      Text(announce.price!.toStringAsFixed(0) + " €",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(Icons.remove_red_eye_outlined,
+                        size: 20, color: WeezlyColors.blue3),
+                    SizedBox(width: widthSeparator),
+                    Text("Nombre de vues : "),
+                    Text(announce.views.toString(),
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold))
+                  ],
+                ),
+                _order(announce, context),
+                SizedBox(height: 10),
+                Row(children: [
+                  Text("Description : ",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ]),
+                SizedBox(height: 10),
+                Row(children: [
+                  Flexible(
+                      child: Text(announce.package.description,
+                          textAlign: TextAlign.justify))
+                ]),
+                if (announce.imgUrl != null)
+                  Column(
+                    children: [
+                      Text("Photos : ",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Image(
+                          width: width,
+                          image: NetworkImage('http://10.0.2.2:5000/images/' +
+                              announce.imgUrl!)),
+                    ],
+                  )
+
+                /*TextButton(
               onPressed: () {
                 deleteAnnounce(announce.id);
               },
@@ -158,9 +182,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                 ),
               ),
             )*/
-          ],
-        ),
-      ),
+              ],
+            ),
+          )),
     );
   }
 }

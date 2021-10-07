@@ -1,26 +1,11 @@
-import 'dart:developer';
 
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/Package.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/FinalPrice.dart';
-import 'package:weezli/model/Payment.dart';
-import 'package:weezli/model/Status.dart';
-import 'package:weezli/model/Transportation.dart';
-import 'package:weezli/model/user.dart';
-import 'package:weezli/service/colis/read_all.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:weezli/model/Type.dart';
 
 class SearchOrders extends StatefulWidget {
   const SearchOrders({Key? key}) : super(key: key);
@@ -194,7 +179,7 @@ class _SearchOrdersState extends State<SearchOrders> {
                 children: [
                   Text(order.announce.package.addressDeparture.city),
                   Icon(Icons.arrow_right_alt),
-                  Text(order.announce.package.addressArrival.city),
+                  Text(order.announce.package.addressArrival!.city),
                   Spacer(),
                   Icon(
                     WeezlyIcon.arrow_right_square,

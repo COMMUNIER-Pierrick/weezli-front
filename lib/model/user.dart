@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Payment.dart';
 
+import 'Address.dart';
 import 'Opinion.dart';
 import 'Check.dart';
 
@@ -29,6 +30,7 @@ class User {
     this.choiceDateStarted,
     this.choiceDateEnd,
     this.dateOfBirthday,
+    this.address,
   });
 
   int? id;
@@ -48,6 +50,7 @@ class User {
   DateTime? choiceDateStarted;
   DateTime? choiceDateEnd;
   DateTime? dateOfBirthday;
+  Address? address;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -69,7 +72,12 @@ class User {
         password: json["password"],
         choiceDateStarted: json["choiceDateStarted"],
         choiceDateEnd: json["choiceDateEnd"],
-        dateOfBirthday: (json['dateOfBirthday'] != null) ? DateTime.parse(json['dateOfBirthday']): null,
+        dateOfBirthday: (json['dateOfBirthday'] != null)
+            ? DateTime.parse(json['dateOfBirthday'])
+            : null,
+        address: (json['address'] != null)
+            ? Address.fromJson(json["address"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -79,7 +87,9 @@ class User {
         "username": this.username,
         "password": this.password,
         "email": this.email,
-        "dateOfBirthday" : this.dateOfBirthday != null ? this.dateOfBirthday!.toIso8601String() : null,
+        "dateOfBirthday": this.dateOfBirthday != null
+            ? this.dateOfBirthday!.toIso8601String()
+            : null,
       };
 }
 
