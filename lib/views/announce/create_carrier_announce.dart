@@ -1,4 +1,20 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Address.dart';
+import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/Package.dart';
+import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/model/Transportation.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/service/announce/createCarrierAnnounce.dart';
+import 'package:weezli/service/announce/findAllSizes.dart';
+import 'package:weezli/service/announce/findAllTransportations.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/views/search/search.dart';
 import 'package:weezli/widgets/custom_title.dart';
 import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +24,7 @@ import '../../widgets/sizes.dart';
 import '../../widgets/travelMode.dart';
 import '../../commons/weezly_colors.dart';
 import '../../widgets/calendar.dart';
+import 'announce_detail.dart';
 
 class CreateCarrierAnnounce extends StatefulWidget {
   static const routeName = '/carrier-announce';
@@ -22,64 +39,121 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
   var _timeDepartureCtrl = TextEditingController();
   var _dateArrivalCtrl = TextEditingController();
   var _timeArrivalCtrl = TextEditingController();
-  String? typePrice;
-  Map<String, bool> debate = {
-    'yes': false,
-    'no': false,
-  };
-  bool? debateToSave;
-  Map<String, dynamic> announce = {};
+  var _placeDepartureCtrl = TextEditingController();
+  var _countryDepartureCtrl = TextEditingController();
+  var _placeArrivalCtrl = TextEditingController();
+  var _countryArrivalCtrl = TextEditingController();
+  var _weightCtrl = TextEditingController();
+  var _priceCtrl = TextEditingController();
+  var _descriptionCtrl = TextEditingController();
+  DateTime dateDeparture = DateTime.now();
+  DateTime dateArrival = DateTime.now();
+  TimeOfDay timeDeparture = TimeOfDay.now();
+  TimeOfDay timeArrival =
+      TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 60)));
+  int _currentSelectedIndexTransportation = 0;
+  List<int> _currentSelectedIndexSize = [];
+  List<PackageSize> sizes = [];
+  int transact = 0;
+  Transportation? transportationSelected;
 
-  void _selectDate(DateTime dateSelected, String? type) {
-    setState(
-      () => type == 'departure'
-          ? _dateDepartureCtrl.text = DateFormat.yMd('fr').format(dateSelected)
-          : _dateArrivalCtrl.text = DateFormat.yMd('fr').format(dateSelected),
-    );
+// Actual hour + 1 hour
+
+  Future<List<Transportation>> getTransportations() async {
+    List<Transportation> transportations = await findAllTransportations();
+    return transportations;
   }
 
-  void _setDebate(String keyToChange, String keyToChange2) {
-    setState(
-      () {
-        if (debate[keyToChange]!) {
-          debate[keyToChange] = !debate[keyToChange]!;
-          debateToSave = null;
-        } else {
-          debate[keyToChange] = !debate[keyToChange]!;
-          debate[keyToChange2] = !debate[keyToChange]!;
-          debateToSave = debate['yes'];
-        }
-      },
-    );
+  Future<List<PackageSize>> getSizes() async {
+    List<PackageSize> sizes = await findAllSizes();
+    return sizes;
   }
 
-  void _selectTime(TimeOfDay timeSelected, String type) {
-    setState(
-      () => type == 'departure'
-          ? _timeDepartureCtrl.text = DateFormat.Hm('fr').format(
-              DateFormat.jm().parse(
-                timeSelected.format(context),
-              ),
-            )
-          : _timeArrivalCtrl.text = DateFormat.Hm('fr').format(
-              DateFormat.jm().parse(
-                timeSelected.format(context),
-              ),
-            ),
-    );
-  }
-
-  Future<void> _saveCarrierAnnounce() async {
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    showDialog(
+  _selectDate(BuildContext context, TextEditingController controller,
+      bool departure) async {
+    final DateTime? picked = await showDatePicker(
+      locale: Locale('fr'),
       context: context,
-      builder: (BuildContext context) =>
-          _buildPopupSavedCarrierAnnounce(context),
+      initialDate: dateDeparture,
+      firstDate: dateDeparture,
+      lastDate: dateDeparture.add(const Duration(days: 365)),
+      initialDatePickerMode: DatePickerMode.year,
     );
-    _formKey.currentState!.save();
+    if (picked != null) {
+      setState(() {
+        controller.text = DateFormat.yMd('fr_FR').format(picked);
+      });
+      if (departure)
+        dateDeparture = picked;
+      else
+        dateArrival = picked;
+    }
+  }
+
+  _selectTime(BuildContext context, TextEditingController controller,
+      bool departure) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: timeDeparture,
+    );
+    if (picked != null) {
+      setState(() {
+        controller.text = picked.format(context);
+      });
+      if (departure)
+        timeDeparture = picked;
+      else
+        timeArrival = picked;
+    }
+  }
+
+  DateTime join(DateTime date, TimeOfDay time) {
+    return new DateTime(
+        date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  _saveCarrierAnnounce(User user) async {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      Announce announce = Announce(
+        views: 0,
+        dateCreated: DateTime.now(),
+        package: Package(
+          description: _descriptionCtrl.text,
+          addressDeparture: Address(
+              city: _placeDepartureCtrl.text,
+              country: _countryDepartureCtrl.text),
+          datetimeDeparture: join(dateDeparture, timeDeparture),
+          transportation:
+              Transportation(id: _currentSelectedIndexTransportation),
+          size: sizes,
+          kgAvailable: double.parse(_weightCtrl.text),
+          addressArrival: Address(
+              city: _placeArrivalCtrl.text, country: _countryArrivalCtrl.text),
+          dateTimeArrival: join(dateArrival, timeArrival),
+        ),
+        type: 2,
+        price: double.parse(_priceCtrl.text),
+        transact: transact,
+        userAnnounce: user,
+      );
+      var response = await createCarrierAnnounce(announce);
+      print (response.body);
+      if (response.statusCode == 200) {
+        var mapAnnounce = AnnouncesListDynamic
+            .fromJson(jsonDecode(response.body))
+            .announcesListDynamic;
+        Announce newAnnounce = Announce.fromJson(mapAnnounce);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              _buildPopupSavedCarrierAnnounce(context, newAnnounce),
+        );
+      }
+      _formKey.currentState!.save();
+    } else
+      return;
   }
 
   @override
@@ -89,6 +163,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
+    User user = ModalRoute.of(context)!.settings.arguments as User;
 
     return Scaffold(
       appBar: appBar,
@@ -112,7 +187,10 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _field('text', 'Ville ou pays de départ'),
+                          _field(
+                              'text', 'Ville de départ', _placeDepartureCtrl),
+                          _field(
+                              'text', 'Pays de départ', _countryDepartureCtrl),
                           Container(
                             margin: EdgeInsets.only(top: 20),
                             child: Row(
@@ -123,7 +201,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                       _dateDepartureCtrl,
                                       'Choisir une date',
                                       'date',
-                                      'departure'),
+                                      'departure',
+                                      true),
                                 ),
                                 SizedBox(width: 20),
                                 Expanded(
@@ -132,7 +211,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                       _timeDepartureCtrl,
                                       'Choisir l\'heure de départ',
                                       'time',
-                                      'departure'),
+                                      'departure',
+                                      true),
                                 ),
                               ],
                             ),
@@ -140,10 +220,13 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           ),
                           Row(children: [
                             Expanded(
-                                child: _field(
-                              'text',
-                              'Ville ou pays destination',
-                            ))
+                                child: _field('text', 'Ville de destination',
+                                    _placeArrivalCtrl))
+                          ]),
+                          Row(children: [
+                            Expanded(
+                                child: _field('text', 'Pays de destination',
+                                    _countryArrivalCtrl))
                           ]),
                           Container(
                             margin: EdgeInsets.only(top: 20),
@@ -151,11 +234,13 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                               children: [
                                 Expanded(
                                   child: _buildDateOrTime(
-                                      'Date d\'arrivée*',
-                                      _dateArrivalCtrl,
-                                      'Choisir une date',
-                                      'date',
-                                      'arrival'),
+                                    'Date d\'arrivée*',
+                                    _dateArrivalCtrl,
+                                    'Choisir une date',
+                                    'date',
+                                    'arrival',
+                                    false,
+                                  ),
                                 ),
                                 SizedBox(width: 20),
                                 Expanded(
@@ -164,35 +249,65 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                       _timeArrivalCtrl,
                                       'Choisir l\'heure de départ',
                                       'time',
-                                      'arrival'),
+                                      'arrival',
+                                      false),
                                 ),
                               ],
                             ),
                             height: 80,
                           ),
-                          Text("Moyen de transport *",
-                              style: Theme.of(context).textTheme.headline5),
-                          TravelMode(Colors.white, WeezlyColors.blue4, 0.35),
-                          Row(
-                            children: [
-                              Text("Dimensions",
-                                  style: Theme.of(context).textTheme.headline5),
-                              _buildTooltip(
-                                  'Vous pouvez choisir 1 ou plusieurs choix'),
-                            ],
-                          ),
-                          Sizes(),
+                          Text("Moyen de transport"),
+                          FutureBuilder(
+                              future: getTransportations(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  List<Transportation> transportations =
+                                      snapshot.data as List<Transportation>;
+                                  return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        for (var transportation
+                                            in transportations)
+                                          if (transportation.name !=
+                                              "non-identifier")
+                                            _setTransportation(transportation)
+                                      ]);
+                                }
+                                return _buildLoadingScreen();
+                              }),
+                          Text("Tailles d'objets possibles"),
+                          FutureBuilder(
+                              future: getSizes(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  List<PackageSize> sizes =
+                                      snapshot.data as List<PackageSize>;
+                                  return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        for (var size in sizes) _setSize(size)
+                                      ]);
+                                }
+                                return _buildLoadingScreen();
+                              }),
                           _field(
-                                'number',
-                                'Poids approximatif disponible (en kg)*',
-                                field: 'weight',
-                              ),
+                            'number',
+                            'Poids approximatif disponible (en kg)*',
+                            _weightCtrl,
+                            field: 'weight',
+                          ),
                           SizedBox(height: 15),
                           Row(children: [
                             Text("Commission",
                                 style: Theme.of(context).textTheme.headline5),
                             _buildTooltip(
-                              "Vous pouvez choisir un prix par kilo ou pour un ensemble. Vous pouvez aussi de ne pas renseigner un prix et attendre qu'un expéditeur fasse une proposition",
+                              "Le prix est pour l'ensemble. Vous pouvez aussi laisser libre et attendre qu'un expéditeur vous fasse une offre.",
                             ),
                           ]),
                           SizedBox(height: 5),
@@ -200,37 +315,39 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                             //crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Expanded(
-                                  child: _field('number', 'Proposition en €',
+                                  child: _field(
+                                      'number', 'Proposition en €', _priceCtrl,
                                       field: 'price')),
-                              SizedBox(width: 10),
-                              DropdownButton(
-                                value: typePrice,
-                                onChanged: (String? value) =>
-                                    setState(() => typePrice = value),
-                                items: [
-                                  'Par kilos',
-                                  'L\'ensemble'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
                             ],
                           ),
                           SizedBox(height: 15),
                           Text("Votre proposition est-elle négociable ?",
                               style: Theme.of(context).textTheme.headline5),
+                          SizedBox(height: 15),
                           Row(
                             children: [
-                              _buildDebate('Oui', 'yes'),
-                              _buildDebate('Non', 'no'),
-                              Spacer(),
+                              ToggleSwitch(
+                                minWidth: 90.0,
+                                cornerRadius: 20.0,
+                                activeBgColors: [
+                                  [Colors.red[800]!],
+                                  [WeezlyColors.blue2],
+                                ],
+                                activeFgColor: Colors.white,
+                                inactiveBgColor: Colors.grey,
+                                inactiveFgColor: Colors.white,
+                                initialLabelIndex: 0,
+                                totalSwitches: 2,
+                                labels: ['Non', 'Oui'],
+                                radiusStyle: true,
+                                onToggle: (index) {
+                                  transact = index;
+                                },
+                              ),
                             ],
                           ),
                           SizedBox(height: 15),
-                          _field('textarea', 'Description'),
+                          _field('textarea', 'Description', _descriptionCtrl),
                         ],
                       ),
                     ),
@@ -238,19 +355,138 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                 ),
               ),
             ),
-            Footer(
-                height: height,
-                childLeft: FooterChildLeft(),
-                childRight: "Enregistrer",
-                saveForm: _saveCarrierAnnounce)
+            Container(
+              height: height * 0.1,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+                color: WeezlyColors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.26),
+                    spreadRadius: 1,
+                    blurRadius: 15,
+                    offset: Offset(0, 1), // changes position of shadow
+                  )
+                ],
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FooterChildLeft(),
+                    ElevatedButton(
+                        onPressed: () => _saveCarrierAnnounce(user),
+                        child: Text(
+                          "Enregistrer".toUpperCase(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          primary: Theme.of(context).buttonColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)),
+                        ))
+                  ]),
+            )
           ],
         ),
       ),
     );
   }
 
+  Widget _setTransportation(Transportation transportation) {
+    int index = transportation.id;
+    bool selected = index == _currentSelectedIndexTransportation;
+    Color tileColor = selected ? WeezlyColors.blue6 : Colors.white;
+
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                child: ClipOval(
+                    child: GestureDetector(
+                        child: CircleAvatar(
+                            radius: 27,
+                            backgroundColor: tileColor,
+                            child: Image(
+                                width: 45,
+                                image: NetworkImage(
+                                    'http://10.0.2.2:5000/images/' +
+                                        transportation.name! +
+                                        ".png"))),
+                        onTap: () {
+                          setState(() {
+                            _currentSelectedIndexTransportation = index;
+                            Transportation transportationSelected =
+                                transportation;
+                          });
+                        })),
+                radius: 30,
+                backgroundColor: WeezlyColors.primary,
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _setSize(PackageSize size) {
+    int index = size.id;
+    bool selected;
+    if (_currentSelectedIndexSize.contains(index))
+      selected = true;
+    else
+      selected = false;
+    Color tileColor = selected ? WeezlyColors.blue6 : Colors.white;
+    String image = size.name == "très grand"
+        ? 'http://10.0.2.2:5000/images/tresgrand.png'
+        : 'http://10.0.2.2:5000/images/' + size.name + ".png";
+
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                child: ClipOval(
+                    child: GestureDetector(
+                        child: CircleAvatar(
+                            radius: 27,
+                            backgroundColor: tileColor,
+                            child:
+                                Image(width: 45, image: NetworkImage(image))),
+                        onTap: () {
+                          setState(() {
+                            if (!_currentSelectedIndexSize.contains(index)) {
+                              _currentSelectedIndexSize.add(index);
+                              sizes.add(size);
+                            } else {
+                              _currentSelectedIndexSize.remove(index);
+                              sizes.removeAt(sizes
+                                  .indexWhere(((size) => size.id == index)));
+                            }
+                          });
+                        })),
+                radius: 30,
+                backgroundColor: WeezlyColors.primary,
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   Column _buildDateOrTime(String label, TextEditingController controller,
-      String hintText, String type, String typeTime) {
+      String hintText, String type, String typeTime, bool departure) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -258,8 +494,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         Expanded(
             child: GestureDetector(
           onTap: type == 'date'
-              ? () => openDatePicker(context, _selectDate, typeTime: typeTime)
-              : () => openTimePicker(context, _selectTime, typeTime),
+              ? () => _selectDate(context, controller, departure)
+              : () => _selectTime(context, controller, departure),
           child: AbsorbPointer(
             child: TextFormField(
               style: TextStyle(height: 0),
@@ -292,41 +528,9 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
     );
   }
 
-  Expanded _buildDebate(String text, String key) {
-    return Expanded(
-      child: Container(
-        height: 43,
-        width: 95,
-        margin: EdgeInsets.only(right: 10, top: 20),
-        child: InkWell(
-          onTap: () =>
-              text == 'Oui' ? _setDebate('yes', 'no') : _setDebate('no', 'yes'),
-          splashColor: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(21.5),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ),
-        decoration: BoxDecoration(
-          color: debate[key] == true
-              ? Color.fromRGBO(127, 205, 243, 0.95)
-              : Colors.transparent,
-          border: Border.all(
-              width: 1,
-              color: debate[key] == true ? Colors.transparent : Colors.black),
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(
-            Radius.circular(110.0),
-          ),
-        ),
-      ),
-    );
-  }
-
-  TextFormField _field(String type, String label, {String field = 'field'}) {
+  TextFormField _field(
+      String type, String label, TextEditingController controller,
+      {String field = 'field'}) {
     TextInputType textInputType = TextInputType.name;
     switch (type) {
       case "number":
@@ -346,6 +550,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         break;
     }
     return TextFormField(
+      controller: controller,
       keyboardType: textInputType,
       textInputAction: textInputType != TextInputType.multiline
           ? TextInputAction.next
@@ -391,7 +596,9 @@ class FooterChildLeft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {Navigator.pushNamed(context, '/');},
+      onPressed: () {
+        Navigator.pushNamed(context, '/');
+      },
       child: Text(
         "Annuler".toUpperCase(),
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -405,7 +612,7 @@ class FooterChildLeft extends StatelessWidget {
   }
 }
 
-Widget _buildPopupSavedCarrierAnnounce(BuildContext context) {
+Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce) {
   return new Dialog(
     child: Container(
       width: MediaQuery.of(context).size.width,
@@ -443,7 +650,7 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context) {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                       side: BorderSide(color: WeezlyColors.primary)),
-                  onPressed: null,
+                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments: announce),
                   child: const Text("VOIR L'ANNONCE"),
                 ),
               ),
@@ -462,12 +669,23 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context) {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22.5),
                   ),
-                  onPressed: null,
+                  onPressed: () => Navigator.pushNamed(context, Search.routeName,
+                      arguments: 'sending'),
                   child: const Text("TROUVER UN COLIS"),
                 ),
               ),
             ]),
           ]),
+    ),
+  );
+}
+
+Widget _buildLoadingScreen() {
+  return Center(
+    child: Container(
+      width: 20,
+      height: 20,
+      child: CircularProgressIndicator(),
     ),
   );
 }

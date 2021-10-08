@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/PackageSize.dart';
 
 import 'announce/search_announce_detail.dart';
 
@@ -40,6 +41,10 @@ class SearchResults {
   }
 
   Widget oneResult(BuildContext context, Announce announce) {
+
+    String? sizesList = sizes(announce);
+    print (sizesList);
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, SearchAnnounceDetail.routeName,
@@ -58,7 +63,7 @@ class SearchResults {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             contact(),
-            packageInformations(announce, context),
+            packageInformations(announce, context, sizesList!),
             price(announce),
           ],
         ),
@@ -79,11 +84,6 @@ class SearchResults {
               radius: 30, //MediaQuery.of(context).size.width/15,
               foregroundImage: NetworkImage(
                   "https://images.assetsdelivery.com/compings_v2/macrovector/macrovector1901/macrovector190100030.jpg"),
-            ),
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 7,
-              child: SvgPicture.asset("assets/images/svg/check.svg"),
             ),
           ],
         ),
@@ -111,7 +111,7 @@ class SearchResults {
     );
   }
 
-  Widget packageInformations(Announce announce, BuildContext context) {
+  Widget packageInformations(Announce announce, BuildContext context, String? sizes) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.5,
       child: Column(
@@ -128,6 +128,7 @@ class SearchResults {
             SizedBox(
               width: 10,
             ),
+            if (announce.userAnnounce!.moyenneAvis != 0)
             Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -148,12 +149,13 @@ class SearchResults {
                   ),
                 ]))
           ]),
+          if (sizes != null)
           Text(
-            "Dimensions : " + announce.package.size.first.name,
+            "Dimensions : " + sizes,
             style: TextStyle(fontSize: 14, color: Colors.indigo[900]),
           ),
           Text(
-            "Poids : " + weight(announce.package.kgAvailable),
+            "Poids : " + announce.package.kgAvailable.toString() + " kg",
             style: TextStyle(fontSize: 14, color: Colors.indigo[900]),
           ),
           Row(children: [
@@ -229,7 +231,19 @@ class SearchResults {
   Widget carryIcon() {
     return CircleAvatar(
       backgroundColor: Colors.amber,
-      child: SvgPicture.asset("assets/images/svg/delivery.svg"),
     );
   }
+}
+
+String? sizes (Announce announce) {
+  String? sizes;
+  for (PackageSize size in announce.package.size) {
+    if (sizes == null) {
+      sizes = size.name;
+    }
+
+    else
+      sizes = sizes + ", " + size.name;
+  }
+  return sizes;
 }

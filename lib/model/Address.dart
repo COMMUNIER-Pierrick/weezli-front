@@ -6,22 +6,22 @@ String StatusToJson(Address data) => json.encode(data.toJson());
 
 class Address {
   Address ({
-    required this.id,
-    required this.name,
-    required this.number,
-    required this.street,
+    this.id,
+    this.name,
+    this.number,
+    this.street,
     this.additionalAddress,
-    required this.zipCode,
+    this.zipCode,
     required this.city,
     this.country,
   });
 
-  int id;
-  String name;
-  int number;
-  String street;
+  int? id;
+  String? name;
+  int? number;
+  String? street;
   String? additionalAddress;
-  String zipCode;
+  String? zipCode;
   String city;
   String? country;
 

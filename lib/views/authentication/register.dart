@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/announce/create.dart';
 import 'package:weezli/service/user/createAccount.dart';
 
 class Register extends StatefulWidget {
@@ -16,7 +17,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _storage = FlutterSecureStorage();
   final _formKey = GlobalKey<FormState>();
   bool _condition = false;
   final double _separator = 20;
@@ -27,7 +27,13 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
   DateTime dateOfBirthday = DateTime.now();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _zipCodeController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
 
   // Fonction qui teste le mdp selon une regex (minimum 8 lettres avec au moins une majuscule et un chiffre)
   bool validateStructurePassWord(String value) {
@@ -55,6 +61,7 @@ class _RegisterState extends State<Register> {
     if (picked != null && picked != dateOfBirthday)
       setState(() {
         dateOfBirthday = picked;
+        _birthdayController.text = DateFormat.yMd('fr_FR').format(picked);
       });
   }
 
@@ -128,6 +135,16 @@ class _RegisterState extends State<Register> {
           "Veuillez renseigner un email valable", 1),
       _field(_usernameController, "Nom d'utilisateur *",
           "Veuillez renseigner votre nom d'utilisateur", 0),
+      _field(_numberController, "Numéro de rue *",
+          "Veuillez renseigner votre numéro de rue", 0),
+      _field(_streetController, "Nom de rue *",
+          "Veuillez renseigner votre nom de rue", 0),
+      _field(_zipCodeController, "Code postal *",
+          "Veuillez renseigner votre code postal", 0),
+      _field(_cityController, "Ville *",
+          "Veuillez renseigner votre ville", 0),
+      _field(_countryController, "Pays *",
+          "Veuillez renseigner votre pays", 0),
     ];
 
     final List<TextFormField> _hiddenFieldList = [
@@ -209,14 +226,29 @@ class _RegisterState extends State<Register> {
             for (TextFormField field in _fieldList) field,
             for (TextFormField hiddenField in _hiddenFieldList) hiddenField,
             Row(children: [
-              IconButton(
-                onPressed: () => _selectDate(context), // Refer step 3
-                icon: Icon(
-                  WeezlyIcon.calendar2,
-                ),
+              Icon(
+                WeezlyIcon.calendar2,
               ),
-              Text("Date de naissance",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400))
+              SizedBox(width: 10),
+              Expanded(
+                  child: GestureDetector(
+                onTap: () => _selectDate(context),
+                child: AbsorbPointer(
+                    child: TextFormField(
+                      decoration: InputDecoration (
+                        labelText: "Date de naissance"
+                      ),
+                  style: TextStyle(height: 0),
+                  controller: _birthdayController,
+                  keyboardType: TextInputType.datetime,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Veuillez renseigner une valeur";
+                    }
+                    return null;
+                  },
+                )),
+              )),
             ]),
             SizedBox(
               height: _separator,
@@ -258,7 +290,14 @@ class _RegisterState extends State<Register> {
                         password: password,
                         email: email,
                         username: username,
-                        dateOfBirthday: dateOfBirthday);
+                        dateOfBirthday: dateOfBirthday,
+                        address: Address (
+                          number: int.parse(_numberController.text),
+                          street: _streetController.text,
+                          zipCode: _zipCodeController.text,
+                          city: _cityController.text,
+                          country: _countryController.text
+                        ));
                     var response = await createUser(user);
                     if (response.statusCode == 201)
                       ScaffoldMessenger.of(context).showSnackBar(

@@ -2,6 +2,7 @@ import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,80 +18,8 @@ class Announces extends StatefulWidget {
 class AnnouncesState extends State<Announces> {
   final TextEditingController _searchController = TextEditingController();
 
-  /*late Future<List<Announce>> announceFuture;
-  List<Announce> announceList = [];
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    announceFuture = readAllAnnounces();
-    inspect(announceFuture);
-    announceFutureToList();
-  }
-  announceFutureToList(){
-    announceFuture.then((value) {
-      value.forEach((announce) {
-        setState(() {
-          announceList.add(announce);
-        });
-      });
-    });
-  }*/
   //----------------------  Début brut  ----------------------------------------
-  final List<Announce> _listTransporterAnnounce = [
-    /*Announce(
-      id: 215545454,
-      package: Package(
-          id: 132565,
-          addressDeparture: Address(
-              id: 12,
-              number: 2,
-              street: 'rue de Merville',
-              zipCode: '59160',
-              city: 'Rome'),
-          addressArrival: Address(
-              id: 45,
-              number: 3,
-              street: 'allée de la cour baleine',
-              zipCode: '95500',
-              city: 'Paris'),
-          datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-          dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-          kgAvailable: 0.8,
-          transportation: Transportation(id: 2, name: 'Avion'),
-          description:
-              "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          size: [PackageSize (id : 1, name : "Petit")],
-          price: Price(
-            id: 2,
-            kgPrice: 50.0,
-          )),
-      finalPrice: FinalPrice(
-          id: 2,
-          proposition: 45,
-          accept: true,
-          ),
-      views: 15,
-      user: User(
-          id: 1,
-          firstname: 'Noémie',
-          lastname: "Contant",
-          username: 'STid',
-          email: 'noemie.contant@gmail.com',
-          phone: '0627155307',
-          active: true,
-          rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-          urlProfilPicture: 'oiogdfpogkfdiojo',
-          formule: Formule(
-              id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-          check: Check(
-              id: 1,
-              statusIdentity: true,
-              statusPhone: true,
-              imgIdCard: 'lkjgfùdfgùjdfg')), transact: false, type: Type (id : 2, name : "Envoi"), price: 45,
-      //idOrder: 1,
-    )*/
-  ];
+  final List<Announce> _listTransporterAnnounce = [];
 
   //----------------------  Fin   brut  ----------------------------------------
   @override
@@ -152,7 +81,7 @@ class AnnouncesState extends State<Announces> {
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Icon(Icons.arrow_right_alt),
-                Text(announce.package.addressArrival.city,
+                Text(announce.package.addressArrival!.city,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Spacer(),
@@ -174,7 +103,7 @@ class AnnouncesState extends State<Announces> {
               Row(
                 children: [
                   Text("Moyen de transport : "),
-                  Text(announce.package.transportation!.name,
+                  Text(announce.package.transportation!.name!,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
@@ -200,6 +129,9 @@ class AnnouncesState extends State<Announces> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
         title: Text("Mes annonces"),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(70),

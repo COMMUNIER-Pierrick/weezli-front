@@ -5,7 +5,7 @@ import 'PackageSize.dart';
 import 'Transportation.dart';
 
 class Package {
-  int id;
+  int? id;
   Address addressDeparture;
   Address addressArrival;
   DateTime? datetimeDeparture;
@@ -16,7 +16,7 @@ class Package {
   List<PackageSize> size; // Faire liste
 
   Package({
-    required this.id,
+    this.id,
     required this.addressDeparture,
     required this.addressArrival,
     this.datetimeDeparture,

@@ -1,7 +1,7 @@
 import 'package:weezli/commons/colorSwatch.dart';
 import 'package:flutter/material.dart';
 
-Future openDatePicker(BuildContext context, Function selectDate,
+Future openDatePicker(BuildContext context,
     {String? typeTime}) {
   return showDatePicker(
     context: context,
@@ -9,20 +9,20 @@ Future openDatePicker(BuildContext context, Function selectDate,
     initialDate: DateTime.now(),
     firstDate: DateTime.now(),
     lastDate: DateTime(DateTime.now().year + 30),
-  ).then(
+  );/*.then(
     (pickedDate) {
       if (pickedDate == null) {
         return;
       }
       typeTime != null
           ? selectDate(pickedDate, typeTime)
-          : selectDate(pickedDate);
-    },
-  );
+          : selectDate(pickedDate);*/
+    /*},
+  );*/
 }
 
 Future openTimePicker(
-    BuildContext context, Function selectTime, String typeTime) {
+    BuildContext context, String typeTime) {
   return showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -38,12 +38,12 @@ Future openTimePicker(
             child: child!,
           ),
         );
-      }).then(
+      });/*.then(
     (pickedTime) {
       if (pickedTime == null) {
         return;
       }
       selectTime(pickedTime, typeTime);
     },
-  );
+  );*/
 }
