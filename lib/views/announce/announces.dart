@@ -81,7 +81,7 @@ class AnnouncesState extends State<Announces> {
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Icon(Icons.arrow_right_alt),
-                Text(announce.package.addressArrival!.city,
+                Text(announce.package.addressArrival.city,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Spacer(),

@@ -15,8 +15,8 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
   try {
     var addressDeparture = {};
     var resBodyAddressDeparture = {};
-    resBodyAddressDeparture ["city"] = newAnnounce.package.addressDeparture!.city;
-    resBodyAddressDeparture["country"] = newAnnounce.package.addressDeparture!.country;
+    resBodyAddressDeparture ["city"] = newAnnounce.package.addressDeparture.city;
+    resBodyAddressDeparture["country"] = newAnnounce.package.addressDeparture.country;
     resBodyAddressDeparture["idInfo"] = 1;
     resBodyAddressDeparture["number"] = '';
     resBodyAddressDeparture["street"] = '';
@@ -26,8 +26,8 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
 
     var addressArrival = {};
     var resBodyAddressArrival = {};
-    resBodyAddressArrival ["city"] = newAnnounce.package.addressArrival!.city;
-    resBodyAddressArrival["country"] = newAnnounce.package.addressArrival!.country;
+    resBodyAddressArrival ["city"] = newAnnounce.package.addressArrival.city;
+    resBodyAddressArrival["country"] = newAnnounce.package.addressArrival.country;
     resBodyAddressArrival["idInfo"] = 2;
     resBodyAddressArrival["number"] = '';
     resBodyAddressArrival["street"] = '';

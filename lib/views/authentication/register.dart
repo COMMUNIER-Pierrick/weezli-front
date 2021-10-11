@@ -291,13 +291,13 @@ class _RegisterState extends State<Register> {
                         email: email,
                         username: username,
                         dateOfBirthday: dateOfBirthday,
-                        address: Address (
+                        address: [Address (
                           number: int.parse(_numberController.text),
                           street: _streetController.text,
                           zipCode: _zipCodeController.text,
                           city: _cityController.text,
                           country: _countryController.text
-                        ));
+                        )]);
                     var response = await createUser(user);
                     if (response.statusCode == 201)
                       ScaffoldMessenger.of(context).showSnackBar(
