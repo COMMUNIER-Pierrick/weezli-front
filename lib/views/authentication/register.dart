@@ -128,9 +128,9 @@ class _RegisterState extends State<Register> {
     }
 
     final List<TextFormField> _fieldList = [
-      _field(_lastnameController, "Nom *", "Veuillez renseigner votre nom", 0),
-      _field(_firstnameController, "Prénom *",
-          "Veuillez renseigner votre prénom", 0),
+      //_field(_lastnameController, "Nom *", "Veuillez renseigner votre nom", 0),
+      //_field(_firstnameController, "Prénom *",
+      //    "Veuillez renseigner votre prénom", 0),
       _field(_emailController, "Adresse email *",
           "Veuillez renseigner un email valable", 1),
       _field(_usernameController, "Nom d'utilisateur *",
@@ -223,6 +223,57 @@ class _RegisterState extends State<Register> {
             SizedBox(
               height: _separator,
             ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                      child: TextFormField(
+                        controller: _lastnameController,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: WeezlyColors.blue3,
+                            ),
+                          ),
+                          labelText: "Nom *",
+                          labelStyle: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Veuillez renseigner votre Nom";
+                          }
+                          return null;
+                        },
+                      )
+                  ),
+                ]),
+                Spacer(),
+                Expanded(
+                    child: TextFormField(
+                      controller: _firstnameController,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: WeezlyColors.blue3,
+                          ),
+                        ),
+                        labelText: "Prénom *",
+                        labelStyle: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Veuillez renseigner votre Prénom";
+                        }
+                        return null;
+                      },
+                    )
+                ),
             for (TextFormField field in _fieldList) field,
             for (TextFormField hiddenField in _hiddenFieldList) hiddenField,
             Row(children: [
