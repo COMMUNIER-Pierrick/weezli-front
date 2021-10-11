@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/PackageSize.dart';
@@ -43,7 +44,6 @@ class SearchResults {
   Widget oneResult(BuildContext context, Announce announce) {
 
     String? sizesList = sizes(announce);
-    print (sizesList);
 
     return GestureDetector(
       onTap: () {

@@ -179,7 +179,7 @@ class _SearchOrdersState extends State<SearchOrders> {
                 children: [
                   Text(order.announce.package.addressDeparture.city),
                   Icon(Icons.arrow_right_alt),
-                  Text(order.announce.package.addressArrival!.city),
+                  Text(order.announce.package.addressArrival.city),
                   Spacer(),
                   Icon(
                     WeezlyIcon.arrow_right_square,

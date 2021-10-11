@@ -1,24 +1,9 @@
-import 'dart:convert';
 
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/model/Address.dart';
-import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/FinalPrice.dart';
-import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Opinion.dart';
-import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/Package.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/Payment.dart';
-import 'package:weezli/model/Status.dart';
-import 'package:weezli/model/Transportation.dart';
-import 'package:weezli/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:weezli/model/Type.dart';
 
 class Opinions extends StatefulWidget {
   const Opinions({Key? key}) : super(key: key);
@@ -297,7 +282,7 @@ class _AvisState extends State<Opinions> {
                         children: [
                           Text(
                             opinion
-                                .order.announce.package.addressDeparture!.city,
+                                .order.announce.package.addressDeparture.city,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -305,7 +290,7 @@ class _AvisState extends State<Opinions> {
                           ),
                           Icon(Icons.arrow_right_alt),
                           Text(
-                            opinion.order.announce.package.addressArrival!.city,
+                            opinion.order.announce.package.addressArrival.city,
                           ),
                         ],
                       ),

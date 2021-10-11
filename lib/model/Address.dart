@@ -47,3 +47,21 @@ class Address {
     "country" : country,
   };
 }
+
+class AddressList {
+  final List<Address> addresses;
+
+  AddressList({
+    required this.addresses,
+  });
+
+  factory AddressList.fromJson(List<dynamic> parsedJson) {
+    List<Address> addresses = [];
+    parsedJson.forEach((element) {
+      Address address = Address.fromJson(element);
+      addresses.add(address);
+    });
+
+    return new AddressList(addresses: addresses);
+  }
+}

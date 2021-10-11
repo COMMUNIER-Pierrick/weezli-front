@@ -162,7 +162,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                         SizedBox(width: 12),
                                         Text(
                                           announce
-                                              .package.addressDeparture!.city,
+                                              .package.addressDeparture.city,
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
@@ -170,7 +170,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                         ),
                                         Icon(Icons.arrow_right_alt),
                                         Text(
-                                          announce.package.addressArrival!.city,
+                                          announce.package.addressArrival.city,
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,

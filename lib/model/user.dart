@@ -50,7 +50,7 @@ class User {
   DateTime? choiceDateStarted;
   DateTime? choiceDateEnd;
   DateTime? dateOfBirthday;
-  Address? address;
+  List <Address>? address;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -76,7 +76,7 @@ class User {
             ? DateTime.parse(json['dateOfBirthday'])
             : null,
         address: (json['address'] != null)
-            ? Address.fromJson(json["address"])
+            ? AddressList.fromJson(json["address"]).addresses
             : null,
       );
 
