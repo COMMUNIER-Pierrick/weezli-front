@@ -14,6 +14,7 @@ class Address {
     this.zipCode,
     required this.city,
     this.country,
+    this.idInfo,
   });
 
   int? id;
@@ -24,6 +25,7 @@ class Address {
   String? zipCode;
   String city;
   String? country;
+  int? idInfo;
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
     id: json["id"],
@@ -31,9 +33,10 @@ class Address {
     number: json["number"],
     street: json["street"],
     additionalAddress: json["additional_address"],
-    zipCode: json["zipcode"],
+    zipCode: json["zipCode"],
     city: json["city"],
-    country : json ["country"]
+    country : json ["country"],
+    idInfo: json["idInfo"]
   );
 
   Map<String, dynamic> toJson() => {

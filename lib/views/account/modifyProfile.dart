@@ -143,7 +143,9 @@ class _PersonalState extends State<Personal> {
                 street: _streetController.text,
                 zipCode: _zipCodeController.text,
                 city: _cityController.text,
-                country: _countryController.text
+                country: _countryController.text,
+                additionalAddress : '',
+                id : user.address![0].id,
             )]
         ));
         if (response.statusCode == 200) {

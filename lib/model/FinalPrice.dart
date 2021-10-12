@@ -1,12 +1,6 @@
 
 import 'dart:convert';
 
-import 'dart:ffi';
-
-import 'package:weezli/model/user.dart';
-
-import 'Price.dart';
-
 FinalPrice PropositionPriceFromJson(String str) => FinalPrice.fromJson(json.decode(str));
 
 String FinalPriceToJson(FinalPrice data) => json.encode(data.toJson());
