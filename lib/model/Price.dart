@@ -1,8 +1,6 @@
 
 import 'dart:convert';
 
-import 'dart:ffi';
-
 Price PriceFromJson(String str) => Price.fromJson(json.decode(str));
 
 String PriceToJson(Price data) => json.encode(data.toJson());

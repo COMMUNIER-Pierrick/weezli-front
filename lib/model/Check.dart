@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'dart:ffi';
-
 Check checkFromJson(String str) => Check.fromJson(json.decode(str));
 String checkToJson(Check data) => json.encode(data.toJson());
 

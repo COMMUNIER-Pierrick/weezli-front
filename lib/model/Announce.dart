@@ -24,7 +24,7 @@ class Announce {
 
   int? id;
   Package package;
-  User? userAnnounce;
+  User userAnnounce;
   int? views;
   int? idOrder;
   int type;
@@ -36,7 +36,7 @@ class Announce {
   factory Announce.fromJson(Map<String, dynamic> json) {
     return Announce(
       id: json["id"],
-      userAnnounce: (json['userAnnounce'] != null) ? User.fromJson(json["userAnnounce"]) : null,
+      userAnnounce: User.fromJson(json["userAnnounce"]),
       package: Package.fromJson(json["packages"]),
       views: json["views"],
       type: json["idType"],
