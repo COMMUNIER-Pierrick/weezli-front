@@ -161,6 +161,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                           width: width,
                           image: NetworkImage('http://10.0.2.2:5000/images/' +
                               announce.imgUrl!)),
+
                     ],
                   )
 

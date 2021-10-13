@@ -67,6 +67,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+
     TextFormField _field(TextEditingController controller, String label,
         String errorText, int mode) {
       return TextFormField(
@@ -127,24 +128,30 @@ class _RegisterState extends State<Register> {
           });
     }
 
+    final _fieldNumber = _field(_numberController, "Numéro de rue *", "Veuillez renseigner votre numéro de rue", 0);
+    final _fieldStreet = _field(_streetController, "Nom de rue *", "Veuillez renseigner votre nom de rue", 0);
+    final _fieldZipCode = _field(_zipCodeController, "Code postal *", "Veuillez renseigner votre code postal", 0);
+    final _fieldCity = _field(_cityController, "Ville *","Veuillez renseigner votre ville", 0);
+    final _fieldCountry = _field(_countryController, "Pays *", "Veuillez renseigner votre pays", 0);
+
     final List<TextFormField> _fieldList = [
-      //_field(_lastnameController, "Nom *", "Veuillez renseigner votre nom", 0),
-      //_field(_firstnameController, "Prénom *",
-      //    "Veuillez renseigner votre prénom", 0),
+      _field(_lastnameController, "Nom *", "Veuillez renseigner votre nom", 0),
+      _field(_firstnameController, "Prénom *",
+          "Veuillez renseigner votre prénom", 0),
       _field(_emailController, "Adresse email *",
           "Veuillez renseigner un email valable", 1),
       _field(_usernameController, "Nom d'utilisateur *",
           "Veuillez renseigner votre nom d'utilisateur", 0),
-      _field(_numberController, "Numéro de rue *",
-          "Veuillez renseigner votre numéro de rue", 0),
-      _field(_streetController, "Nom de rue *",
-          "Veuillez renseigner votre nom de rue", 0),
-      _field(_zipCodeController, "Code postal *",
-          "Veuillez renseigner votre code postal", 0),
-      _field(_cityController, "Ville *",
-          "Veuillez renseigner votre ville", 0),
-      _field(_countryController, "Pays *",
-          "Veuillez renseigner votre pays", 0),
+      //_field(_numberController, "Numéro de rue *",
+      //    "Veuillez renseigner votre numéro de rue", 0),
+      //_field(_streetController, "Nom de rue *",
+      //    "Veuillez renseigner votre nom de rue", 0),
+      //_field(_zipCodeController, "Code postal *",
+      //    "Veuillez renseigner votre code postal", 0),
+      //_field(_cityController, "Ville *",
+      //    "Veuillez renseigner votre ville", 0),
+      //_field(_countryController, "Pays *",
+      //   "Veuillez renseigner votre pays", 0),
     ];
 
     final List<TextFormField> _hiddenFieldList = [
@@ -185,8 +192,7 @@ class _RegisterState extends State<Register> {
                       color: WeezlyColors.white,
                     ),
                   ),
-                ],
-              ),
+                ]),
               fillColor: WeezlyColors.facebook,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(22.5),
@@ -223,58 +229,28 @@ class _RegisterState extends State<Register> {
             SizedBox(
               height: _separator,
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: TextFormField(
-                        controller: _lastnameController,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: WeezlyColors.blue3,
-                            ),
-                          ),
-                          labelText: "Nom *",
-                          labelStyle: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Veuillez renseigner votre Nom";
-                          }
-                          return null;
-                        },
-                      )
-                  ),
-                ]),
-                Spacer(),
-                Expanded(
-                    child: TextFormField(
-                      controller: _firstnameController,
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: WeezlyColors.blue3,
-                          ),
-                        ),
-                        labelText: "Prénom *",
-                        labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Veuillez renseigner votre Prénom";
-                        }
-                        return null;
-                      },
-                    )
-                ),
             for (TextFormField field in _fieldList) field,
+            Row(
+              children: [
+                Expanded(
+                    child: _fieldNumber,
+                ),
+                SizedBox(width: 50),
+                Expanded(
+                    child: _fieldStreet,
+                ),
+              ]),
+            Row(
+              children: [
+                Expanded(
+                  child: _fieldZipCode,
+                ),
+                SizedBox(width: 50),
+                Expanded(
+                  child: _fieldCity,
+                ),
+              ]),
+            _fieldCountry,
             for (TextFormField hiddenField in _hiddenFieldList) hiddenField,
             Row(children: [
               Icon(

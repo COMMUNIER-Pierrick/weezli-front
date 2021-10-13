@@ -114,6 +114,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
+    final width = (mediaQuery.size.width);
     User user = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
         appBar: appBar,
@@ -224,7 +225,14 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                             ElevatedButton (
                               onPressed: pickImageFromGallery,
                               child: Text ("Ajouter une image"),
-                            )
+                            ),
+                              Column(
+                                children: [
+                                  Text("Photos : ",
+                                      style: TextStyle(fontWeight: FontWeight.bold)),
+                                  //_viewImage(),
+                                ],
+                             ),
                           ],
                         ),
                       ),
@@ -272,6 +280,15 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
           )
         ])));
   }
+
+  /*Widget _viewImage() {
+    if (imgList.isNotEmpty) {
+      for (int i = 0; i < imgList.length; i++) {
+        return Image.file(imgList[i]);
+      }
+    }
+    return Text("Pas d'image selectionner!");
+  }*/
 
   Widget _setSize(PackageSize size) {
     int index = size.id;
