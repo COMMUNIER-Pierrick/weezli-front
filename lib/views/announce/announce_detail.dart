@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
+import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
@@ -165,26 +166,32 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                           image: NetworkImage('http://10.0.2.2:5000/images/' +
                               announce.imgUrl!)),
                     ],
+                  ),
+                if (announce.transact == 0)
+                  TextButton(
+                    onPressed: () async {
+                      var response = await deleteAnnounce(announce.id);
+                      if (response.statusCode == 200)
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Annonce supprimée !')),
+                        );
+                      Navigator.pushNamed(context, '/mes_annonces');
+                    },
+                    child: Text(
+                      "SUPPRIMER L'ANNONCE",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                      backgroundColor: WeezlyColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.5),
+                      ),
+                    ),
                   )
-
-                /*TextButton(
-              onPressed: () {
-                deleteAnnounce(announce.id);
-              },
-              child: Text(
-                "SUPPRIMER L'ANNONCE",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
-                backgroundColor: WeezlyColors.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(22.5),
-                ),
-              ),
-            )*/
               ],
             ),
           )),
@@ -193,7 +200,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 }
 
 Widget _order(Announce announce, BuildContext context) {
-  if (announce.idOrder == null) {
+  if (announce.transact == 1) {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
         child: Container(
@@ -242,17 +249,16 @@ Widget _order(Announce announce, BuildContext context) {
     );
 }
 
-_createOrder (Announce announce, BuildContext context) async {
-  Order order = Order (
-      status: Status (id : 1, name: 'En cours'),
-    dateOrder: DateTime.now(),
-    user: announce.userAnnounce,
-    announce: announce);
-    var response = await createOrder(order);
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Commande créée !')),
-      );
-    }
+_createOrder(Announce announce, BuildContext context) async {
+  Order order = Order(
+      status: Status(id: 1, name: 'En cours'),
+      dateOrder: DateTime.now(),
+      user: announce.userAnnounce,
+      announce: announce);
+  var response = await createOrder(order);
+  if (response.statusCode == 200) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Commande créée !')),
+    );
+  }
 }

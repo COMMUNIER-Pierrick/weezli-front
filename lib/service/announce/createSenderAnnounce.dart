@@ -48,9 +48,9 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
     package["sizes"] = sizeslist;
 
     var userAnnounce = {};
-    userAnnounce["id"] = newAnnounce.userAnnounce!.id;
-    userAnnounce["firstname"] = newAnnounce.userAnnounce!.firstname;
-    userAnnounce["lastname"] = newAnnounce.userAnnounce!.lastname;
+    userAnnounce["id"] = newAnnounce.userAnnounce.id;
+    userAnnounce["firstname"] = newAnnounce.userAnnounce.firstname;
+    userAnnounce["lastname"] = newAnnounce.userAnnounce.lastname;
 
 
     var resBody = {};

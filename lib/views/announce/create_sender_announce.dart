@@ -43,7 +43,6 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
   final picker = ImagePicker();
 
   pickImageFromGallery() async {
-    print ("Coucou");
     final image = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {

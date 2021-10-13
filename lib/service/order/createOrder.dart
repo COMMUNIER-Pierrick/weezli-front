@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
-import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/PackageSize.dart';
 
 Future<Response> createOrder(Order newOrder) async {
   var str;

@@ -320,7 +320,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                             ],
                           ),
                           SizedBox(height: 15),
-                          Text("Votre proposition est-elle négociable ?",
+                          /*Text("Votre proposition est-elle négociable ?",
                               style: Theme.of(context).textTheme.headline5),
                           SizedBox(height: 15),
                           Row(
@@ -344,7 +344,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                 },
                               ),
                             ],
-                          ),
+                          ),*/
                           SizedBox(height: 15),
                           _field('textarea', 'Description', _descriptionCtrl),
                         ],
