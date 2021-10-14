@@ -233,7 +233,8 @@ class _RegisterState extends State<Register> {
             Row(
               children: [
                 Expanded(
-                    child: _fieldNumber,
+                    child:
+                    _fieldNumber,
                 ),
                 SizedBox(width: 50),
                 Expanded(

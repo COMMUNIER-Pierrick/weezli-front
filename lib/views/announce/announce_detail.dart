@@ -157,13 +157,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                     children: [
                       Text("Photos : ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      Image(
-                          width: width,
-                          image: NetworkImage('http://10.0.2.2:5000/images/' +
-                              announce.imgUrl!)),
-
                     ],
-                  )
+                  ),
+                for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
 
                 /*TextButton(
               onPressed: () {
@@ -186,6 +182,32 @@ class _AnnounceDetail extends State<AnnounceDetail> {
               ],
             ),
           )),
+    );
+  }
+
+  //Récupération de la liste d'image
+  _listImage(Announce announce) {
+    List <String> listImage = announce.imgUrl!.split(",");
+    return listImage;
+  }
+
+  // Affichage d'une image dans la liste d'image
+  _image(Announce announce, int number){
+
+    List <String> listImage = _listImage(announce);
+    print("$listImage");
+    if (number <= listImage.length-1) {
+      return Column(
+          children:[
+            Image(
+                image: NetworkImage('http://10.0.2.2:5000/images/' +
+                    listImage[number])),
+            SizedBox(height: 10)
+          ]
+      );
+    }
+    return Column(
+        children:[]
     );
   }
 }

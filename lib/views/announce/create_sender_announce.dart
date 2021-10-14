@@ -44,11 +44,15 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
 
   pickImageFromGallery() async {
     print ("Coucou");
-    final image = await picker.pickImage(source: ImageSource.gallery);
+    var number = "5";
 
-    setState(() {
-      imgList.add(File(image!.path));
-    });
+    if(_compteurImage().toString() != number) {
+      final image = await picker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        imgList.add(File(image!.path));
+      });
+    }
   }
 
   Future<List<PackageSize>> getSizes() async {
@@ -226,13 +230,16 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                               onPressed: pickImageFromGallery,
                               child: Text ("Ajouter une image"),
                             ),
-                              Column(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("Photos : ",
-                                      style: TextStyle(fontWeight: FontWeight.bold)),
-                                  //_viewImage(),
+                                  Text("Photos (" +_compteurImage() +"/5) : ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.bold,)
+                                  ),
                                 ],
                              ),
+                            for(int i = 0; i <= 4; i++) _image(i), // Affiche chaque image de la liste d'image
                           ],
                         ),
                       ),
@@ -281,14 +288,33 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
         ])));
   }
 
-  /*Widget _viewImage() {
-    if (imgList.isNotEmpty) {
-      for (int i = 0; i < imgList.length; i++) {
-        return Image.file(imgList[i]);
-      }
+  // Affiche le nombre d'image dans la liste d'image
+  _compteurImage(){
+    var compteur = imgList.length;
+      if (compteur <= 5) {
+        return compteur.toString();
+      }else if( compteur > 5){
+      compteur = 5;
+      return compteur.toString();
     }
-    return Text("Pas d'image selectionner!");
-  }*/
+    compteur = 0;
+    return compteur.toString();
+}
+
+// Affiche une image présente dans la liste d'image
+  _image(int number){
+    if (imgList.isNotEmpty && number <= imgList.length-1) {
+      return Column(
+          children:[
+          Image.file(imgList[number]),
+      SizedBox(height: 10)
+          ]
+      );
+    }
+    return Column(
+        children:[]
+    );
+  }
 
   Widget _setSize(PackageSize size) {
     int index = size.id;

@@ -276,17 +276,15 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                 textAlign: TextAlign.left,
                                 style: TextStyle(height: 1.3),
                               ),
+                              SizedBox(height: 10),
                               if ((announce.type == 1) && (announce.imgUrl != ''))
                                 Column(
                                   children: [
                                     Text("Photos : ",
                                         style: TextStyle(fontWeight: FontWeight.bold)),
-                                    Image(
-                                        width: width,
-                                        image: NetworkImage('http://10.0.2.2:5000/images/' +
-                                            announce.imgUrl!)),
                                   ],
-                                )
+                                ),
+                              for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                             ],
                           ),
                         ),
@@ -360,6 +358,32 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                   } else
                     return _buildLoadingScreen();
                 })));
+  }
+
+  //Récupération de la liste d'image
+  _listImage(Announce announce) {
+    List <String> listImage = announce.imgUrl!.split(",");
+    return listImage;
+  }
+
+  // Affichage d'une image dans la liste d'image
+  _image(Announce announce, int number){
+
+    List <String> listImage = _listImage(announce);
+    print("$listImage");
+    if (number <= listImage.length-1) {
+      return Column(
+          children:[
+            Image(
+                image: NetworkImage('http://10.0.2.2:5000/images/' +
+                    listImage[number])),
+            SizedBox(height: 10)
+          ]
+      );
+    }
+    return Column(
+        children:[]
+    );
   }
 
   RichText _buildCustomText(
