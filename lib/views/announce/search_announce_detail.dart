@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -16,6 +18,7 @@ import 'package:weezli/views/account/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weezli/views/orders/order_details.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -293,9 +296,9 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   children: [
                                     Text("Photos : ",
                                         style: TextStyle(fontWeight: FontWeight.bold)),
+                                    for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                                   ],
                                 ),
-                              for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                             ],
                           ),
                         ),
@@ -578,7 +581,10 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Commande validée !')),
         );
-        Navigator.pushNamed(context, '/');
+        //var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+        //Order newOrder = Order.fromJson(mapOrder);
+
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: order); //newOrder
       }
     }
   }

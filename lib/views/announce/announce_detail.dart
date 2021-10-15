@@ -161,9 +161,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                     children: [
                       Text("Photos : ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
+                      for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                     ],
                   ),
-                for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                 if (announce.idOrder != null)
                   Column (
                     children: [
