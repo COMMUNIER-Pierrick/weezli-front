@@ -1,6 +1,7 @@
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Check.dart';
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
@@ -65,13 +66,21 @@ class CardItem extends StatelessWidget {
 
     type: 2,
     transact: 0,
-    price: 60, dateCreated: new DateTime.now(),
+    price: 60, dateCreated: new DateTime.now(), finalPrice: FinalPrice (
+    user: User (
+      firstname: 'Noémie',
+      lastname: 'Contant'
+    ),
+    proposition: 30,
+    accept: 1
+  ),
 
     //idOrder: 1,
   );
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, SearchAnnounceDetail.routeName, arguments: announce),
       child: Container(

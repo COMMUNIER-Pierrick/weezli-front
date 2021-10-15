@@ -15,8 +15,6 @@ Future<List<Announce>> findAllByUser(int? id) async {
 
   List<Announce> announcesList = [];
   final parsed = jsonDecode(response.body);
-  print (parsed);
-
   var announcesListMap = AnnouncesListMap.fromJson(parsed).list;
   announcesList = AnnouncesList.fromJson(announcesListMap).announcesList;
   return announcesList;

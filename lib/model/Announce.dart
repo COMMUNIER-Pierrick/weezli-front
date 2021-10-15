@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/user.dart';
 
 import 'Package.dart';
@@ -15,11 +16,13 @@ class Announce {
     required this.package,
     required this.userAnnounce,
     this.views,
+    this.idOrder,
     required this.type,
     this.price,
     this.transact,
     this.imgUrl,
     this.dateCreated,
+    required this.finalPrice,
   });
 
   int? id;
@@ -32,6 +35,7 @@ class Announce {
   int? transact;
   String? imgUrl;
   DateTime? dateCreated;
+  FinalPrice finalPrice;
 
   factory Announce.fromJson(Map<String, dynamic> json) {
     return Announce(
@@ -39,11 +43,13 @@ class Announce {
       userAnnounce: User.fromJson(json["userAnnounce"]),
       package: Package.fromJson(json["packages"]),
       views: json["views"],
+      idOrder: (json["idOrder"] != null) ? json ["idOrder"] : null,
       type: json["idType"],
       price: json["price"],
       transact: json["transact"],
       imgUrl: json["imgUrl"],
       dateCreated: DateTime.parse(json["dateCreated"]),
+      finalPrice: FinalPrice.fromJson(json["finalPrice"])
     );
   }
 

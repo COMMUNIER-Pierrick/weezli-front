@@ -200,7 +200,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 }
 
 Widget _order(Announce announce, BuildContext context) {
-  if (announce.transact == 1) {
+  if ((announce.transact == 1) &  (announce.idOrder == null)) {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
         child: Container(
@@ -215,7 +215,7 @@ Widget _order(Announce announce, BuildContext context) {
                 height: 5,
               ),
               Text(
-                "Commande reçue",
+                "Proposition reçue",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
@@ -254,7 +254,8 @@ _createOrder(Announce announce, BuildContext context) async {
       status: Status(id: 1, name: 'En cours'),
       dateOrder: DateTime.now(),
       user: announce.userAnnounce,
-      announce: announce);
+      announce: announce,
+      finalPrice: announce.finalPrice);
   var response = await createOrder(order);
   if (response.statusCode == 200) {
     ScaffoldMessenger.of(context).showSnackBar(

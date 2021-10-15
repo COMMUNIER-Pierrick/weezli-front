@@ -2,12 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/createTransact.dart';
 import 'package:weezli/service/announce/findById.dart';
+import 'package:weezli/service/announce/updateFinalPrice.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/userProfile.dart';
@@ -412,6 +414,15 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
               context, announce, announce.price, buttonTitle, text, user);
         });
       }
+      else {
+        String buttonTitle = "Proposition";
+        String text = "Vous pouvez faire une proposition de prix pour le transport";
+        showDialog(
+            context: context, builder: (BuildContext context) {
+          return _buildPopupCounterOffer(
+              context, announce, announce.price, buttonTitle, text, user);
+        });
+      }
     }
   }
 
@@ -518,7 +529,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                     ),
-                    onPressed: () => _setTransact(context, announce, user),
+                    onPressed: () => announce.type == 2 ? _setTransact(context, announce, user )
+                    : _setProposition (context, announce, user, myController),
                     child: const Text("VALIDER"),
                   ),
                 ),
@@ -538,7 +550,8 @@ _setTransact(BuildContext context, Announce announce, User user) async {
           status: Status(id: 1, name: 'Payé'),
           dateOrder: DateTime.now(),
           user: user,
-          announce: announce);
+          announce: announce,
+          finalPrice: announce.finalPrice);
       var response = await createOrder(order);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -548,5 +561,18 @@ _setTransact(BuildContext context, Announce announce, User user) async {
       }
     }
   }
-}
+
+  _setProposition(BuildContext context, Announce announce, User user, TextEditingController priceController) async {
+
+    FinalPrice finalPrice = FinalPrice(id : announce.finalPrice.id, proposition: double.parse(priceController.text), accept: 0, user: user);
+
+    var response = await updateFinalPrice(announce.id!, finalPrice);
+    if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Proposition envoyée !')),
+        );
+        Navigator.pushNamed(context, '/');
+      }
+    }
+  }
 
