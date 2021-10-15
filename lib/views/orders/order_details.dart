@@ -58,9 +58,9 @@ class OrderDetailState extends State<OrderDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(order.announce.package.addressDeparture!.city +
+        title: Text(order.announce.package.addressDeparture.city +
             " - " +
-            order.announce.package.addressArrival!.city),
+            order.announce.package.addressArrival.city),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -91,9 +91,9 @@ class OrderDetailState extends State<OrderDetail> {
                   SizedBox(
                     width: 20,
                   ),
-                  Text(order.announce.package.addressDeparture!.city),
+                  Text(order.announce.package.addressDeparture.city),
                   Icon(Icons.arrow_right_alt),
-                  Text(order.announce.package.addressArrival!.city),
+                  Text(order.announce.package.addressArrival.city),
                 ],
               ),
               SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/PackageSize.dart';
@@ -43,7 +44,6 @@ class SearchResults {
   Widget oneResult(BuildContext context, Announce announce) {
 
     String? sizesList = sizes(announce);
-    print (sizesList);
 
     return GestureDetector(
       onTap: () {
@@ -119,7 +119,7 @@ class SearchResults {
         children: [
           Row(children: [
             Text(
-              announce.userAnnounce!.firstname!,
+              announce.userAnnounce.firstname!,
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -128,7 +128,7 @@ class SearchResults {
             SizedBox(
               width: 10,
             ),
-            if (announce.userAnnounce!.moyenneAvis != 0)
+            if (announce.userAnnounce.moyenneAvis != 0)
             Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -141,7 +141,7 @@ class SearchResults {
                     size: 12,
                   ),
                   Text(
-                    announce.userAnnounce!.moyenneAvis.toString(),
+                    announce.userAnnounce.moyenneAvis.toString(),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -237,6 +237,7 @@ class SearchResults {
 
 String? sizes (Announce announce) {
   String? sizes;
+
   for (PackageSize size in announce.package.size) {
     if (sizes == null) {
       sizes = size.name;

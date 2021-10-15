@@ -98,7 +98,6 @@ class _SearchState extends State<Search> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(prefs);
     if (user != null) {
-      print (user);
       searchType == "sending"
           ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: user)
           : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: user);

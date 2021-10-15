@@ -8,32 +8,54 @@ Future<Response> modifyProfile(User account) async {
   String str = "";
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
+
+    var address = {};
+    var resBodyAddress = {};
+    resBodyAddress ["city"] = account.address![0].city;
+    resBodyAddress["country"] = account.address![0].country;
+    resBodyAddress["number"] = account.address![0].number;
+    resBodyAddress["street"] = account.address![0].street;
+    resBodyAddress["zipCode"] = account.address![0].zipCode;
+    resBodyAddress["name"] = '';
+    resBodyAddress["additionalAddress"] = '';
+    resBodyAddress["idInfo"] = 3;
+    resBodyAddress["id"] = account.address![0].id;
+    address = resBodyAddress;
+
     var resBody = {};
     resBody["firstname"] = account.firstname;
     resBody["lastname"] =  account.lastname;
     resBody["phone"] =  account.phone;
     resBody["email"] =  account.email;
     resBody["url_profile_img"] = "";
+    resBody["address"] = address;
     resBody ["check"] = {
       "id" : 13,
       "imgIdentity" : "picture789.png"
     };
-    var user = {};
-    user["User"] = resBody;
-    str = encoder.convert(user);
+
+    str = encoder.convert(resBody);
     print(str);
-    print ("http://10.0.2.2:5000/user/update-profile/" + account.id.toString());
   } catch(e) {
     print(e);
   }
-  final Response response =
-  await http.put(Uri.parse("http://10.0.2.2:5000/user/update-profile/" + account.id.toString()),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8",
-        "Accept": "application/json",
-      },
-      body: str
-  );
+
+  String url = "http://10.0.2.2:5000/user/update-profile/" + account.id.toString();
+  print (url);
+
+  var request = http.MultipartRequest('PUT', Uri.parse(url));
+  Map<String, String> headers = {
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+  };
+
+  request.headers.addAll(headers);
+
+  request.fields['User'] = str;
+
+  http.Response response = await http.Response.fromStream(await request.send());
+
+  print (response.statusCode);
 
   return response;
 

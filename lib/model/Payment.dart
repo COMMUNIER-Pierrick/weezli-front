@@ -1,6 +1,5 @@
 
 import 'dart:convert';
-import 'dart:ffi';
 
 Payment PaymentFromJson(String str) => Payment.fromJson(json.decode(str));
 

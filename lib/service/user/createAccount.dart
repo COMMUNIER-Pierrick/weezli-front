@@ -13,11 +13,11 @@ Future<Response> createUser(User account) async {
 
     var address = {};
     var resBodyAddress = {};
-    resBodyAddress ["city"] = account.address!.city;
-    resBodyAddress["country"] = account.address!.country;
-    resBodyAddress["number"] = account.address!.number;
-    resBodyAddress["street"] = account.address!.street;
-    resBodyAddress["zipCode"] = account.address!.zipCode;
+    resBodyAddress ["city"] = account.address![0].city;
+    resBodyAddress["country"] = account.address![0].country;
+    resBodyAddress["number"] = account.address![0].number;
+    resBodyAddress["street"] = account.address![0].street;
+    resBodyAddress["zipCode"] = account.address![0].zipCode;
     resBodyAddress["name"] = '';
     resBodyAddress["additionalAddress"] = '';
     resBodyAddress["idInfo"] = 3;

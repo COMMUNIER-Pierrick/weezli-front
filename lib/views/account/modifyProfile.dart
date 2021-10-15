@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/authentication/logout.dart';
 import 'package:weezli/service/user/modifyProfile.dart';
@@ -46,6 +47,11 @@ class _PersonalState extends State<Personal> {
     final firstNameController = TextEditingController(text : user.firstname);
     final emailController = TextEditingController(text : user.email);
     final phoneController = TextEditingController (text : user.phone);
+    final TextEditingController _numberController = TextEditingController(text : user.address![0].number.toString());
+    final TextEditingController _streetController = TextEditingController(text : user.address![0].street);
+    final TextEditingController _zipCodeController = TextEditingController(text : user.address![0].zipCode);
+    final TextEditingController _cityController = TextEditingController(text : user.address![0].city);
+    final TextEditingController _countryController = TextEditingController(text : user.address![0].country);
 
     final Row _avatarField = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,6 +138,15 @@ class _PersonalState extends State<Personal> {
           firstname: firstNameController.text,
           phone: phoneController.text,
           email: emailController.text,
+            address: [Address (
+                number: int.parse(_numberController.text),
+                street: _streetController.text,
+                zipCode: _zipCodeController.text,
+                city: _cityController.text,
+                country: _countryController.text,
+                additionalAddress : '',
+                id : user.address![0].id,
+            )]
         ));
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -192,7 +207,8 @@ class _PersonalState extends State<Personal> {
                         controller: lastNameController,
                         onTap: () => lastNameController.clear(),
                         decoration: InputDecoration (
-                          suffixIcon: suffixIcon(lastNameController)
+                          suffixIcon: suffixIcon(lastNameController),
+                          hintText: user.lastname,
                         ),
                       ),
                       TextFormField(
@@ -214,6 +230,40 @@ class _PersonalState extends State<Personal> {
                         onTap: () => phoneController.clear(),
                         decoration: InputDecoration (
                             suffixIcon: suffixIcon(phoneController)
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _numberController,
+                        onTap: () => _numberController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(_numberController)
+                        )),
+                        TextFormField(
+                          controller: _streetController,
+                          onTap: () => _streetController.clear(),
+                          decoration: InputDecoration (
+                              suffixIcon: suffixIcon(_streetController)
+                          ),
+                      ),
+                      TextFormField(
+                        controller: _zipCodeController,
+                        onTap: () => _zipCodeController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(_zipCodeController)
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _cityController,
+                        onTap: () => _cityController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(_cityController)
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _countryController,
+                        onTap: () => _countryController.clear(),
+                        decoration: InputDecoration (
+                            suffixIcon: suffixIcon(_countryController)
                         ),
                       ),
                       SizedBox(
