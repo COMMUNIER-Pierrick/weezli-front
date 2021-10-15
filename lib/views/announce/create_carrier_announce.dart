@@ -6,6 +6,7 @@ import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Transportation.dart';
@@ -136,6 +137,10 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         price: double.parse(_priceCtrl.text),
         transact: transact,
         userAnnounce: user,
+        finalPrice: FinalPrice (
+          accept: 1,
+          proposition: double.parse(_priceCtrl.text),
+          user: user)
       );
       var response = await createCarrierAnnounce(announce);
       if (response.statusCode == 200) {
@@ -320,7 +325,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                             ],
                           ),
                           SizedBox(height: 15),
-                          Text("Votre proposition est-elle négociable ?",
+                          /*Text("Votre proposition est-elle négociable ?",
                               style: Theme.of(context).textTheme.headline5),
                           SizedBox(height: 15),
                           Row(
@@ -344,7 +349,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                 },
                               ),
                             ],
-                          ),
+                          ),*/
                           SizedBox(height: 15),
                           _field('textarea', 'Description', _descriptionCtrl),
                         ],

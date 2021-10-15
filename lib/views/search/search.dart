@@ -98,7 +98,6 @@ class _SearchState extends State<Search> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(prefs);
     if (user != null) {
-      print (user);
       searchType == "sending"
           ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: user)
           : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: user);
@@ -305,6 +304,7 @@ class _SearchState extends State<Search> {
                       return Container(
                           child: Column(children: [
                         for (Announce announce in announcesList)
+                          if (announce.transact == 0)
                           SearchResults().oneResult(context, announce)
                       ]));
                     }

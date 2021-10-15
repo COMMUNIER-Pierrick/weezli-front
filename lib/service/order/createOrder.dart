@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
-import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/PackageSize.dart';
 
 Future<Response> createOrder(Order newOrder) async {
   var str;
@@ -20,12 +18,16 @@ Future<Response> createOrder(Order newOrder) async {
     var transporter = {};
     transporter["id"] = newOrder.user.id;
 
+    var finalPrice = {};
+    finalPrice["id"] = newOrder.announce.finalPrice.id;
+
     var resBody = {};
     resBody["announce"] = announce;
     resBody["status"] = status;
     resBody["dateOrder"] = newOrder.dateOrder.toIso8601String();
     resBody["transporter"] = transporter;
     resBody["qrCode"] = '';
+    resBody["finalPrice"] = finalPrice;
 
     var order = {};
 

@@ -1,12 +1,15 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/service/announce/findAllByUser.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 class Announces extends StatefulWidget {
   @override
@@ -17,11 +20,14 @@ class Announces extends StatefulWidget {
 
 class AnnouncesState extends State<Announces> {
   final TextEditingController _searchController = TextEditingController();
+  List<Announce> _listAnnounces = [];
 
-  //----------------------  Début brut  ----------------------------------------
-  final List<Announce> _listTransporterAnnounce = [];
+  Future<List<Announce>> getAnnouncesList() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    return _listAnnounces = await findAllByUser(user!.id);
+  }
 
-  //----------------------  Fin   brut  ----------------------------------------
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
@@ -77,6 +83,11 @@ class AnnouncesState extends State<Announces> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
+                announce.type == 2
+                    ? Text("Transport")
+                    : Text("Expédition")
+              ]),
+              Row(children: [
                 Text(announce.package.addressDeparture.city,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
@@ -96,31 +107,33 @@ class AnnouncesState extends State<Announces> {
               Row(children: [
                 Icon(WeezlyIcon.calendar2, size: 15),
                 SizedBox(width: 5),
-                Text("Date de départ : "),
+                announce.type == 2
+                    ? Text("Date de départ : ")
+                    : Text("Date limite : "),
                 Text(format(announce.package.datetimeDeparture),
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
-              Row(
-                children: [
-                  Text("Moyen de transport : "),
-                  Text(announce.package.transportation!.name!,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
+              if (announce.type == 2)
+                Row(
+                  children: [
+                    Text("Moyen de transport : "),
+                    Text(announce.package.transportation!.name!,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
               Row(children: [
                 Text("Dimensions : "),
                 Text(announce.package.size.first.name,
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
-              Row(
-                children: [
-                  Text("Commission : "),
-                  Text(
-                      announce.price!.toStringAsFixed(0) +
-                          " €",
-                      style: TextStyle(fontWeight: FontWeight.bold))
-                ],
-              )
+              if (announce.type == 2)
+                Row(
+                  children: [
+                    Text("Commission : "),
+                    Text(announce.price!.toStringAsFixed(0) + " €",
+                        style: TextStyle(fontWeight: FontWeight.bold))
+                  ],
+                )
             ],
           ),
         ),
@@ -142,18 +155,36 @@ class AnnouncesState extends State<Announces> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  for (Announce item in _listTransporterAnnounce)
-                    _cardannounce(item), //Version Brut
-                  //for (Colis item in announceList) _cardColis(item),
-                ],
-              ),
-            ),
+                padding: EdgeInsets.all(20.0),
+                child: FutureBuilder(
+                    future: getAnnouncesList(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        List<Announce> _listAnnounces =
+                            snapshot.data as List<Announce>;
+                        return Column(
+                          children: [
+                            for (Announce item in _listAnnounces)
+                              _cardannounce(item),
+                          ],
+                        );
+                      } else
+                        return _buildLoadingScreen();
+                    })),
           ],
         ),
       ),
     );
   }
+}
+
+Widget _buildLoadingScreen() {
+  return Center(
+    child: Container(
+      width: 50,
+      height: 50,
+      child: CircularProgressIndicator(),
+    ),
+  );
 }
