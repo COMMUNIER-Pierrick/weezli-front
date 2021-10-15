@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:weezli/model/Announce.dart';
 
-Future<Response> createTransact(Announce currentAnnounce) async {
+Future<Response> createTransactwithFinalPrice(Announce currentAnnounce) async {
   var str;
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {

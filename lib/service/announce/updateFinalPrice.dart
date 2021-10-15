@@ -20,6 +20,7 @@ Future<Response> updateFinalPrice(int id, FinalPrice finalPrice) async {
     var resBody = {};
     resBody["id"] = id;
     resBody["finalPrice"] = resBodyfinalPrice;
+    resBody["transact"] = 1;
 
     var announce = {};
     announce["Announce"] = resBody;
@@ -31,7 +32,7 @@ Future<Response> updateFinalPrice(int id, FinalPrice finalPrice) async {
   }
 
   final Response response =
-  await http.put(Uri.parse("http://10.0.2.2:5000/announce/" + id.toString() + "/setFinalPrice"),
+  await http.put(Uri.parse("http://10.0.2.2:5000/announce/" + id.toString() + "/setTransact"),
       headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8",
         "Accept": "application/json",
