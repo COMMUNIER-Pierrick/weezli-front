@@ -144,6 +144,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
       );
       var response = await createCarrierAnnounce(announce);
       if (response.statusCode == 200) {
+        print("Réponse : " + response.body);
         var mapAnnounce = AnnouncesListDynamic
             .fromJson(jsonDecode(response.body))
             .announcesListDynamic;
