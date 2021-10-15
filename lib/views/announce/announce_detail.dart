@@ -167,14 +167,21 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                               announce.imgUrl!)),
                     ],
                   ),
+                if (announce.idOrder != null)
+                  Column (
+                    children: [
+                      Text("La commande " +
+                          announce.idOrder.toString() +
+                          " est en cours"),
+                    ],
+                  ),
                 if (announce.transact == 0)
                   TextButton(
                     onPressed: () async {
                       var response = await deleteAnnounce(announce.id);
                       if (response.statusCode == 200)
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Annonce supprimée !')),
+                          const SnackBar(content: Text('Annonce supprimée !')),
                         );
                       Navigator.pushNamed(context, '/mes_annonces');
                     },
@@ -200,7 +207,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 }
 
 Widget _order(Announce announce, BuildContext context) {
-  if ((announce.transact == 1) &  (announce.idOrder == null)) {
+  if ((announce.transact == 1) && (announce.idOrder == null)) {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
         child: Container(
@@ -215,12 +222,16 @@ Widget _order(Announce announce, BuildContext context) {
                 height: 5,
               ),
               Text(
-                "Proposition reçue",
+                "Proposition reçue de " +
+                    announce.finalPrice.user.firstname! +
+                    " " +
+                    announce.finalPrice.user.lastname!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
               ),
+              Text(announce.finalPrice.proposition.toString() + " €"),
               SizedBox(
                 height: 10,
               ),
@@ -250,8 +261,10 @@ Widget _order(Announce announce, BuildContext context) {
 }
 
 _createOrder(Announce announce, BuildContext context) async {
+  announce.finalPrice.accept = 1;
+  announce.price = announce.finalPrice.proposition;
   Order order = Order(
-      status: Status(id: 1, name: 'En cours'),
+      status: Status(id: 1, name: 'Payé'),
       dateOrder: DateTime.now(),
       user: announce.userAnnounce,
       announce: announce,

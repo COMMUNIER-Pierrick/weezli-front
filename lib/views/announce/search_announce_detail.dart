@@ -544,7 +544,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
 
 _setTransact(BuildContext context, Announce announce, User user) async {
 
-    var response = await createTransact(announce);
+    var response = await createTransactwithFinalPrice(announce);
     if (response.statusCode == 200) {
       Order order = Order(
           status: Status(id: 1, name: 'Payé'),

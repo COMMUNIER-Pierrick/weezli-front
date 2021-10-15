@@ -166,8 +166,7 @@ class AnnouncesState extends State<Announces> {
                         return Column(
                           children: [
                             for (Announce item in _listAnnounces)
-                              _cardannounce(item), //Version Brut
-                            //for (Colis item in announceList) _cardColis(item),
+                              _cardannounce(item),
                           ],
                         );
                       } else

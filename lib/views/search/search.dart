@@ -304,6 +304,7 @@ class _SearchState extends State<Search> {
                       return Container(
                           child: Column(children: [
                         for (Announce announce in announcesList)
+                          if (announce.transact == 0)
                           SearchResults().oneResult(context, announce)
                       ]));
                     }
