@@ -56,7 +56,7 @@ class User {
         lastname: json["lastname"],
         username: json["username"],
         email: json["email"],
-        phone: json["phone"],
+        phone: (json["phone"] != null) ? json["phone"] : null,
         active: json["active"],
         payment: (json['payment'] != null)
             ? Payment.fromJson(json["payment"])
@@ -68,8 +68,9 @@ class User {
         opinions: json["id_opinion"],
         moyenneAvis: json["average_opinion"],
         password: json["password"],
-        choiceDateStarted: json["choiceDateStarted"],
-        choiceDateEnd: json["choiceDateEnd"],
+        choiceDateStarted: (json["choiceDateStarted"] != null) ? DateTime.parse(json['choiceDateStarted'])
+            : null,
+        choiceDateEnd: (json["choiceDateEnd"] != null) ? DateTime.parse(json['choiceDateEnd']) : null,
         dateOfBirthday: (json['dateOfBirthday'] != null)
             ? DateTime.parse(json['dateOfBirthday'])
             : null,

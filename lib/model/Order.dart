@@ -43,7 +43,7 @@ class Order {
         validationCode: json ["validation_code"],
         dateOrder: DateTime.parse(json["date_order"]),
         user: User.fromJson(json["user"]),
-        qrCode: json ["qr_code"],
+        qrCode: (json["qr_code"] != null) ? json["qr_code"] : null,
         finalPrice: json["id_final_price"]
     );
   }

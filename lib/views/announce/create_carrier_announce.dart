@@ -269,16 +269,27 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                     snapshot.hasData) {
                                   List<Transportation> transportations =
                                       snapshot.data as List<Transportation>;
-                                  return Row(
+                                  return Column(
+                                    children:[ Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         for (var transportation
                                             in transportations)
                                           if (transportation.name !=
-                                              "non-identifier")
+                                              "non-identifier" && transportation.id < 5)
                                             _setTransportation(transportation)
-                                      ]);
+                                      ]),
+                                  Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                      children: [
+                                        for (var transportation
+                                        in transportations)
+                                          if (transportation.name !=
+                                              "non-identifier" && transportation.id > 4)
+                                            _setTransportation(transportation)
+                                      ])]);
                                 }
                                 return _buildLoadingScreen();
                               }),
@@ -352,6 +363,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           ),*/
                           SizedBox(height: 15),
                           _field('textarea', 'Description', _descriptionCtrl),
+                          SizedBox(height: 15),
                         ],
                       ),
                     ),
