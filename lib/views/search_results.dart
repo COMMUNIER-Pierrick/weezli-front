@@ -222,7 +222,7 @@ class SearchResults {
     return CircleAvatar(
       backgroundColor: Colors.blue,
       child: SvgPicture.asset(
-        "assets/images/svg/send.svg",
+        "assets/images/moyens.png",
         color: Colors.white,
       ),
     );

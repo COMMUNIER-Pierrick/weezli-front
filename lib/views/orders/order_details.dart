@@ -17,18 +17,6 @@ class OrderDetail extends StatefulWidget {
 }
 
 class OrderDetailState extends State<OrderDetail> {
-  late Future<Order> ordersFuture;
-  late Order thisOrder;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    ordersFuture = readOneOrder(2);
-    ordersFuture.then((value) {
-      setState(() => thisOrder = value);
-    });
-  }
 
   double _separator = 15;
 
@@ -171,8 +159,8 @@ class OrderDetailState extends State<OrderDetail> {
               Row(
                 children: [
                   Text("Statut : "),
-                  order.status.name == 'En cours'
-                      ? Text("En cours")
+                  order.status.name == 'Payé'
+                      ? Text("Payé")
                       : Text("Terminé"),
                   order.status.name == 'En cours'
                       ? Icon(

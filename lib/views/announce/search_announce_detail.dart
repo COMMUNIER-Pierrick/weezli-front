@@ -1,3 +1,5 @@
+
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -16,6 +18,7 @@ import 'package:weezli/views/account/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weezli/views/orders/order_details.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -287,20 +290,15 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                 textAlign: TextAlign.left,
                                 style: TextStyle(height: 1.3),
                               ),
-                              if ((announce.type == 1) &&
-                                  (announce.imgUrl != ''))
+                              SizedBox(height: 10),
+                              if ((announce.type == 1) && (announce.imgUrl != ''))
                                 Column(
                                   children: [
                                     Text("Photos : ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    Image(
-                                        width: width,
-                                        image: NetworkImage(
-                                            'http://10.0.2.2:5000/images/' +
-                                                announce.imgUrl!)),
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                                   ],
-                                )
+                                ),
                             ],
                           ),
                         ),
@@ -357,6 +355,32 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                   } else
                     return _buildLoadingScreen();
                 })));
+  }
+
+  //Récupération de la liste d'image
+  _listImage(Announce announce) {
+    List <String> listImage = announce.imgUrl!.split(",");
+    return listImage;
+  }
+
+  // Affichage d'une image dans la liste d'image
+  _image(Announce announce, int number){
+
+    List <String> listImage = _listImage(announce);
+    print("$listImage");
+    if (number <= listImage.length-1) {
+      return Column(
+          children:[
+            Image(
+                image: NetworkImage('http://10.0.2.2:5000/images/' +
+                    listImage[number])),
+            SizedBox(height: 10)
+          ]
+      );
+    }
+    return Column(
+        children:[]
+    );
   }
 
   RichText _buildCustomText(BuildContext context, String firstText,
@@ -557,7 +581,12 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Commande validée !')),
         );
-        Navigator.pushNamed(context, '/');
+        var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+        print (mapOrder);
+        Order newOrder = Order.fromJson(mapOrder);
+
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
+
       }
     }
   }
