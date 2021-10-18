@@ -22,9 +22,9 @@ class Payment {
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
     id: json["id"],
-    name: json["name"],
-    IBAN: json["IBAN"],
-    numberCard : json ["numberCard"],
+    name: (json ["name"] != null) ? json ["name"] : null,
+    IBAN: (json ["IBAN"] != null) ? json ["IBAN"] : null,
+    numberCard : (json ["numberCard"] != null) ? json ["numberCard"] : null,
     expiredDateCard : (json['expired_date_card'] != null) ? DateTime.parse(json['expired_date_card']): null,
 
   );

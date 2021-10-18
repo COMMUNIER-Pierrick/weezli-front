@@ -292,12 +292,12 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               ),
                               SizedBox(height: 10),
                               if ((announce.type == 1) && (announce.imgUrl != ''))
-                                Column (
-                                    children : [
-                                      Text("Photos : ",
-                                          style: TextStyle(fontWeight: FontWeight.bold)),
-                                      for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
-                                    ]
+                                Column(
+                                  children: [
+                                    Text("Photos : ",
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
+                                  ],
                                 ),
                             ],
                           ),
