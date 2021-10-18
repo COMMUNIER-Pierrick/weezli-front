@@ -1,5 +1,5 @@
-import 'dart:convert';
 
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -383,8 +383,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  RichText _buildCustomText(
-      BuildContext context, String firstText, String secondText) {
+  RichText _buildCustomText(BuildContext context, String firstText,
+      String secondText) {
     return RichText(
       text: TextSpan(
         style: Theme
@@ -586,6 +586,7 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         Order newOrder = Order.fromJson(mapOrder);
 
         Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
+
       }
     }
   }
