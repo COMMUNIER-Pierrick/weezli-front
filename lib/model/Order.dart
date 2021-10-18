@@ -35,16 +35,19 @@ class Order {
   FinalPrice finalPrice;
 
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
-    id: json["id"],
-    announce : json ["id_announce"],
-    status : json ["id_status"],
-    validationCode: json ["validation_code"],
-    dateOrder: DateTime.parse(json["date_order"]),
-    user : json ["id_user"],
-    qrCode: json ["qr_code"],
-    finalPrice: json["id_final_price"]
-  );
+  factory Order.fromJson(Map<String, dynamic> json){
+    return Order(
+        id: json["id"],
+        announce: Announce.fromJson(json["announce"]),
+        status: Status.fromJson(json["status"]),
+        validationCode: json ["codeValidated"],
+        dateOrder: DateTime.parse(json["dateOrder"]),
+        user: User.fromJson(json["buyer"]),
+        qrCode: json ["qrCode"],
+        finalPrice: FinalPrice.fromJson(json["finalPrice"])
+    );
+  }
+
 
   Map<String, dynamic> toJson() => {
     "id": id,
@@ -55,4 +58,57 @@ class Order {
     "id_user" : user,
     "qr_code" : qrCode
   };
+}
+
+// Récupère une liste dynamique à partir de la map renvoyée par le json.
+
+class OrdersListMap {
+  OrdersListMap({
+    required this.list,
+  });
+
+  List <dynamic> list;
+
+  factory OrdersListMap.fromJson(Map<String, dynamic> json) {
+    return OrdersListMap(
+        list: json ["Orders"]);
+  }
+}
+
+// Passe d'une liste dynamique à un objet map pour créer une annonce.
+
+class OrdersListDynamic {
+  OrdersListDynamic({
+    required this.ordersListDynamic,
+  });
+
+  Map <String, dynamic> ordersListDynamic;
+
+  factory OrdersListDynamic.fromJson(Map<String, dynamic> json) {
+    return OrdersListDynamic(
+        ordersListDynamic: json ["Order"]);
+  }
+}
+
+class OrdersList {
+  OrdersList({
+    required this.ordersList,
+  });
+
+  List<Order> ordersList;
+
+  //Récupère une liste dynamique pour créer annonce par annonce, puis recréer une liste d'annonces.
+
+  factory OrdersList.fromJson(List<dynamic> parsedJson) {
+    List<Order> orders = [];
+    parsedJson.forEach((element) {
+      var mapOrder = OrdersListDynamic.fromJson(element).ordersListDynamic;
+      Order order = Order.fromJson(mapOrder);
+      orders.add(order);
+    });
+
+    return new OrdersList(
+        ordersList: orders
+    );
+  }
 }

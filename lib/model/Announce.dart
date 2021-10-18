@@ -5,9 +5,9 @@ import 'package:weezli/model/user.dart';
 
 import 'Package.dart';
 
-Announce AnnounceFromJSon(String str) => Announce.fromJson(json.decode(str));
+Announce announceFromJSon(String str) => Announce.fromJson(json.decode(str));
 
-String AnnounceToJson(Announce data) => json.encode(data.toJson());
+String announceToJson(Announce data) => json.encode(data.toJson());
 
 
 class Announce {

@@ -1,3 +1,5 @@
+
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -289,12 +291,12 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               ),
                               SizedBox(height: 10),
                               if ((announce.type == 1) && (announce.imgUrl != ''))
-                                Column (
-                                    children : [
-                                      Text("Photos : ",
-                                          style: TextStyle(fontWeight: FontWeight.bold)),
-                                      for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
-                                    ]
+                                Column(
+                                  children: [
+                                    Text("Photos : ",
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
+                                  ]
                                 ),
                             ],
                           ),
@@ -380,8 +382,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  RichText _buildCustomText(
-      BuildContext context, String firstText, String secondText) {
+  RichText _buildCustomText(BuildContext context, String firstText,
+      String secondText) {
     return RichText(
       text: TextSpan(
         style: Theme
@@ -578,7 +580,12 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Commande validée !')),
         );
-        Navigator.pushNamed(context, '/');
+        var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+        print (mapOrder);
+        Order newOrder = Order.fromJson(mapOrder);
+
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
+
       }
     }
   }
