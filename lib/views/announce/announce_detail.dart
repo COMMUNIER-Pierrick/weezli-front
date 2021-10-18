@@ -26,7 +26,10 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final announce = ModalRoute.of(context)!.settings.arguments as Announce;
+    final announce = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Announce;
     String? sizes;
     for (PackageSize size in announce.package.size) {
       if (sizes != null)
@@ -176,11 +179,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       if (announce.idOrder != null)
                       TextButton (
                       onPressed: () async {
-                        var response = await findById(announce.idOrder!);
-                        var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-                        Order newOrder = Order.fromJson(mapOrder);
+                      var order = await findById(announce.idOrder!);
 
-                        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder.id);
+                      Navigator.pushNamed(context, OrderDetail.routeName, arguments: order.id);
                       },
                       child: Text(
                         "DETAIL DE LA COMMANDE",
@@ -229,18 +230,19 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
   //Récupération de la liste d'image
   _listImage(Announce announce) {
-    List <String> listImage = announce.imgUrl!.split(",");
-    return listImage;
+    if (announce.imgUrl != '') {
+      List <String> listImage = announce.imgUrl!.split(",");
+      return listImage;
+    }
   }
 
   // Affichage d'une image dans la liste d'image
-  _image(Announce announce, int number){
-
+  _image(Announce announce, int number) {
     List <String> listImage = _listImage(announce);
     print("$listImage");
-    if (number <= listImage.length-1) {
+    if (number <= listImage.length - 1) {
       return Column(
-          children:[
+          children: [
             Image(
                 image: NetworkImage('http://10.0.2.2:5000/images/' +
                     listImage[number])),
@@ -249,78 +251,82 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       );
     }
     return Column(
-        children:[]
+        children: []
     );
   }
 }
 
-Widget _order(Announce announce, BuildContext context) {
-  if ((announce.transact == 1) && (announce.idOrder == null)) {
-    return Padding(
-        padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          width: MediaQuery.of(context).size.width,
-          decoration: new BoxDecoration(
-              borderRadius: new BorderRadius.circular(16.0),
-              color: WeezlyColors.grey1),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "Proposition reçue de " +
-                    announce.finalPrice.user.firstname! +
-                    " " +
-                    announce.finalPrice.user.lastname!,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+  Widget _order(Announce announce, BuildContext context) {
+    if ((announce.transact == 1) && (announce.idOrder == null)) {
+      return Padding(
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            decoration: new BoxDecoration(
+                borderRadius: new BorderRadius.circular(16.0),
+                color: WeezlyColors.grey1),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 5,
                 ),
-              ),
-              Text(announce.finalPrice.proposition.toString() + " €"),
-              SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                onPressed: () => _createOrder(announce, context),
-                child: Text(
-                  "VALIDER",
+                Text(
+                  "Proposition reçue de " +
+                      announce.finalPrice.user.firstname! +
+                      " " +
+                      announce.finalPrice.user.lastname!,
                   style: TextStyle(
-                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
                   ),
                 ),
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
-                  backgroundColor: WeezlyColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22.5),
-                  ),
+                Text(announce.finalPrice.proposition.toString() + " €"),
+                SizedBox(
+                  height: 10,
                 ),
-              )
-            ],
-          ),
-        ));
-  } else
-    return SizedBox(
-      height: 0,
-    );
-}
-
-_createOrder(Announce announce, BuildContext context) async {
-  announce.finalPrice.accept = 1;
-  announce.price = announce.finalPrice.proposition;
-  Order order = Order(
-      status: Status(id: 1, name: 'Payé'),
-      dateOrder: DateTime.now(),
-      user: announce.userAnnounce,
-      announce: announce,
-      finalPrice: announce.finalPrice);
-  var response = await createOrder(order);
-  if (response.statusCode == 200) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Commande créée !')),
-    );
+                TextButton(
+                  onPressed: () => _createOrder(announce, context),
+                  child: Text(
+                    "VALIDER",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    backgroundColor: WeezlyColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ));
+    } else
+      return SizedBox(
+        height: 0,
+      );
   }
-}
+
+  _createOrder(Announce announce, BuildContext context) async {
+    announce.finalPrice.accept = 1;
+    announce.price = announce.finalPrice.proposition;
+    Order order = Order(
+        status: Status(id: 1, name: 'Payé'),
+        dateOrder: DateTime.now(),
+        user: announce.userAnnounce,
+        announce: announce,
+        finalPrice: announce.finalPrice);
+    var response = await createOrder(order);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Commande créée !')),
+      );
+    }
+  }
+
