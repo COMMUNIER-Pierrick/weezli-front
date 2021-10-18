@@ -581,10 +581,11 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Commande validée !')),
         );
-        //var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-        //Order newOrder = Order.fromJson(mapOrder);
+        var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+        print (mapOrder);
+        Order newOrder = Order.fromJson(mapOrder);
 
-        Navigator.pushNamed(context, OrderDetail.routeName, arguments: order); //newOrder
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
       }
     }
   }

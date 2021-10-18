@@ -40,11 +40,11 @@ class Order {
         id: json["id"],
         announce: Announce.fromJson(json["announce"]),
         status: Status.fromJson(json["status"]),
-        validationCode: json ["validation_code"],
-        dateOrder: DateTime.parse(json["date_order"]),
-        user: User.fromJson(json["user"]),
-        qrCode: json ["qr_code"],
-        finalPrice: json["id_final_price"]
+        validationCode: json ["codeValidated"],
+        dateOrder: DateTime.parse(json["dateOrder"]),
+        user: User.fromJson(json["buyer"]),
+        qrCode: json ["qrCode"],
+        finalPrice: FinalPrice.fromJson(json["finalPrice"])
     );
   }
 
