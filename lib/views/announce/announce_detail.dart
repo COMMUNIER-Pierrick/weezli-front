@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +7,7 @@ import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/service/order/findById.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
@@ -165,7 +164,6 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                 ]),
                 if (announce.type == 1 && announce.imgUrl != '')
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Photos : ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
@@ -313,20 +311,23 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       );
   }
 
-  _createOrder(Announce announce, BuildContext context) async {
-    announce.finalPrice.accept = 1;
-    announce.price = announce.finalPrice.proposition;
-    Order order = Order(
-        status: Status(id: 1, name: 'Payé'),
-        dateOrder: DateTime.now(),
-        user: announce.userAnnounce,
-        announce: announce,
-        finalPrice: announce.finalPrice);
-    var response = await createOrder(order);
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Commande créée !')),
-      );
-    }
-  }
+_createOrder(Announce announce, BuildContext context) async {
+  announce.finalPrice.accept = 1;
+  announce.price = announce.finalPrice.proposition;
+  Order order = Order(
+      status: Status(id: 1, name: 'Payé'),
+      dateOrder: DateTime.now(),
+      user: announce.userAnnounce,
+      announce: announce,
+      finalPrice: announce.finalPrice);
+  var response = await createOrder(order);
+  if (response.statusCode == 200) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Commande créée !')),
+    );
+    var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+    Order newOrder = Order.fromJson(mapOrder);
 
+    Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
+  }
+}
