@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,7 @@ import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
 
@@ -297,5 +300,9 @@ _createOrder(Announce announce, BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Commande créée !')),
     );
+    var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+    Order newOrder = Order.fromJson(mapOrder);
+
+    Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
   }
 }

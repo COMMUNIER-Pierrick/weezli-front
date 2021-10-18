@@ -18,6 +18,7 @@ import 'package:weezli/views/account/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weezli/views/orders/order_details.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -581,7 +582,6 @@ _setTransact(BuildContext context, Announce announce, User user) async {
           const SnackBar(content: Text('Commande validée !')),
         );
         var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-        print (mapOrder);
         Order newOrder = Order.fromJson(mapOrder);
 
         Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
