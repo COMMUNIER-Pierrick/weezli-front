@@ -44,11 +44,15 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
   final picker = ImagePicker();
 
   pickImageFromGallery() async {
-    final image = await picker.pickImage(source: ImageSource.gallery);
+    var number = "5";
 
-    setState(() {
-      imgList.add(File(image!.path));
-    });
+    if(_compteurImage().toString() != number) {
+      final image = await picker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        imgList.add(File(image!.path));
+      });
+    }
   }
 
   Future<List<PackageSize>> getSizes() async {
@@ -118,6 +122,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
+    final width = (mediaQuery.size.width);
     User user = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
         appBar: appBar,
@@ -228,7 +233,17 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                             ElevatedButton (
                               onPressed: pickImageFromGallery,
                               child: Text ("Ajouter une image"),
-                            )
+                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Photos (" +_compteurImage() +"/5) : ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.bold,)
+                                  ),
+                                ],
+                             ),
+                            for(int i = 0; i <= 4; i++) _image(i), // Affiche chaque image de la liste d'image
                           ],
                         ),
                       ),
@@ -275,6 +290,34 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
             ],
           )
         ])));
+  }
+
+  // Affiche le nombre d'image dans la liste d'image
+  _compteurImage(){
+    var compteur = imgList.length;
+      if (compteur <= 5) {
+        return compteur.toString();
+      }else if( compteur > 5){
+      compteur = 5;
+      return compteur.toString();
+    }
+    compteur = 0;
+    return compteur.toString();
+}
+
+// Affiche une image présente dans la liste d'image
+  _image(int number){
+    if (imgList.isNotEmpty && number <= imgList.length-1) {
+      return Column(
+          children:[
+          Image.file(imgList[number]),
+      SizedBox(height: 10)
+          ]
+      );
+    }
+    return Column(
+        children:[]
+    );
   }
 
   Widget _setSize(PackageSize size) {
