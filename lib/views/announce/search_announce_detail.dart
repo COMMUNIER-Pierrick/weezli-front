@@ -297,7 +297,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                     Text("Photos : ",
                                         style: TextStyle(fontWeight: FontWeight.bold)),
                                     for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
-                                  ],
+                                  ]
                                 ),
                             ],
                           ),
@@ -582,7 +582,6 @@ _setTransact(BuildContext context, Announce announce, User user) async {
           const SnackBar(content: Text('Commande validée !')),
         );
         var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-        print (mapOrder);
         Order newOrder = Order.fromJson(mapOrder);
 
         Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
