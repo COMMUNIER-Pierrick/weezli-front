@@ -687,7 +687,7 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce)
                     borderRadius: BorderRadius.circular(22.5),
                   ),
                   onPressed: () => Navigator.pushNamed(context, Search.routeName,
-                      arguments: 'sending'),
+                      arguments: 'transfer'),
                   child: const Text("TROUVER UN COLIS"),
                 ),
               ),
