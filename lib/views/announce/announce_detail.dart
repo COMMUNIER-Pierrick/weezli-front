@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
@@ -176,9 +177,12 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       if (announce.idOrder != null)
                         TextButton (
                           onPressed: () async {
-                            var order = await findById(announce.idOrder!);
+                            print(announce.idOrder);
+                            Response response = (await findById(announce.idOrder!)) as Response;
+                            var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+                            Order newOrder = Order.fromJson(mapOrder);
 
-                            Navigator.pushNamed(context, OrderDetail.routeName, arguments: order.id);
+                            Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder.id);
                           },
                       child: Text(
                         "DETAIL DE LA COMMANDE",
