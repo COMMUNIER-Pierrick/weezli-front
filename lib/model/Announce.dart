@@ -43,7 +43,7 @@ class Announce {
       userAnnounce: User.fromJson(json["userAnnounce"]),
       package: Package.fromJson(json["packages"]),
       views: json["views"],
-      idOrder: json["idOrder"],
+      idOrder: (json["idOrder"] != null) ? json ["idOrder"] : null,
       type: json["idType"],
       price: json["price"],
       transact: json["transact"],

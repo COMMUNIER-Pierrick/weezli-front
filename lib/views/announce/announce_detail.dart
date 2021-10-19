@@ -8,6 +8,7 @@ import 'package:weezli/model/Status.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/service/order/findById.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
@@ -249,7 +250,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       );
     }
     return Column(
-        children: []
+        children:[]
     );
   }
 }
