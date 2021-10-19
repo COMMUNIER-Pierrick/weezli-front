@@ -174,14 +174,12 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       if (announce.idOrder != null)
-                      TextButton (
-                      onPressed: () async {
-                        var response = await findById(announce.idOrder!);
-                        var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-                        Order newOrder = Order.fromJson(mapOrder);
+                        TextButton (
+                          onPressed: () async {
+                            var order = await findById(announce.idOrder!);
 
-                        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder.id);
-                      },
+                            Navigator.pushNamed(context, OrderDetail.routeName, arguments: order.id);
+                          },
                       child: Text(
                         "DETAIL DE LA COMMANDE",
                         style: TextStyle(
