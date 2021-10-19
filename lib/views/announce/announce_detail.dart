@@ -184,7 +184,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
                       Navigator.pushNamed(context, OrderDetail.routeName, arguments: order);
                       },
-                      child: Text(
+                        child: Text(
                         "DETAIL DE LA COMMANDE",
                         style: TextStyle(
                           color: Colors.white,

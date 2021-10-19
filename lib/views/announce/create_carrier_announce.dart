@@ -273,7 +273,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                   return Column(
                                     children:[ Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         for (var transportation
                                             in transportations)
@@ -294,6 +294,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                 }
                                 return _buildLoadingScreen();
                               }),
+                          SizedBox(height: 15),
                           Text("Tailles d'objets possibles"),
                           FutureBuilder(
                               future: getSizes(),

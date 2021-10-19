@@ -584,7 +584,7 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
         Order newOrder = Order.fromJson(mapOrder);
 
-        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder.id);
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder);
       }
     }
   }
