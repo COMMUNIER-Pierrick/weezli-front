@@ -51,7 +51,7 @@ class User {
   List <Address>? address;
 
   factory User.fromJson(Map<String, dynamic> json) {
-    var user = User(
+    return User(
 
       id: json["id"],
       firstname: json["firstname"],
@@ -81,7 +81,6 @@ class User {
           .addresses
           : null,
     );
-    return user;
   }
 
     Map<String, dynamic> toJson() => {

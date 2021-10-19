@@ -503,7 +503,7 @@ Widget _buildPopupSavedSenderAnnounce(BuildContext context, Announce? announce) 
                     borderRadius: BorderRadius.circular(22.5),
                   ),
                   onPressed: () => Navigator.pushNamed(context, Search.routeName,
-                      arguments: 'transfer'),
+                      arguments: 'sending'),
                   child: const Text("TROUVER UN TRANSPORTEUR"),
                 ),
               ),
