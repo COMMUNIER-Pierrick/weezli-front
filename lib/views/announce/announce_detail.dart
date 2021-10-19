@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +9,6 @@ import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
-import 'package:weezli/service/order/findById.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
@@ -163,68 +161,46 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                 ]),
                 if (announce.type == 1 && announce.imgUrl != '')
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Photos : ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                if (announce.idOrder != null)
+                  Column (
                     children: [
-                      if (announce.idOrder != null)
-                        TextButton (
-                          onPressed: () async {
-                            print(announce.idOrder);
-                            Response response = (await findById(announce.idOrder!)) as Response;
-                            var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-                            Order newOrder = Order.fromJson(mapOrder);
-
-                            Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder.id);
-                          },
-                      child: Text(
-                        "DETAIL DE LA COMMANDE",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
-                        backgroundColor: WeezlyColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22.5),
-                        ),
-                      ),
+                      Text("La commande " +
+                          announce.idOrder.toString() +
+                          " est en cours"),
+                    ],
                   ),
-                      SizedBox(height: 10),
-                      if (announce.transact == 0)
-                      TextButton(
-                        onPressed: () async {
-                          var response = await deleteAnnounce(announce.id);
-                          if (response.statusCode == 200)
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Annonce supprimée !')),
-                            );
-                          Navigator.pushNamed(context, '/mes_annonces');
-                        },
-                        child: Text(
-                          "SUPPRIMER L'ANNONCE",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
-                          backgroundColor: WeezlyColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(22.5),
-                          ),
-                        ),
-                    )]
-                  ),
-            ]),
+                if (announce.transact == 0)
+                  TextButton(
+                    onPressed: () async {
+                      var response = await deleteAnnounce(announce.id);
+                      if (response.statusCode == 200)
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Annonce supprimée !')),
+                        );
+                      Navigator.pushNamed(context, '/mes_annonces');
+                    },
+                    child: Text(
+                      "SUPPRIMER L'ANNONCE",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                      backgroundColor: WeezlyColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.5),
+                      ),
+                    ),
+                  )
+              ],
+            ),
           )),
     );
   }
@@ -324,5 +300,9 @@ _createOrder(Announce announce, BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Commande créée !')),
     );
+    var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+    Order newOrder = Order.fromJson(mapOrder);
+
+    Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
   }
 }

@@ -1,26 +1,14 @@
 import 'dart:developer';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/model/Address.dart';
-import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/Formule.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/Package.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Price.dart';
-import 'package:weezli/model/FinalPrice.dart';
-import 'package:weezli/model/Payment.dart';
-import 'package:weezli/model/Status.dart';
-import 'package:weezli/model/Transportation.dart';
-import 'package:weezli/model/Type.dart';
-import 'package:weezli/model/user.dart';
-import 'package:weezli/service/colis/read_all.dart';
-import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/service/order/findOrdersByUserCarrier.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
 
 import 'delivery_details.dart';
 
@@ -34,110 +22,14 @@ class SearchDeliveries extends StatefulWidget {
 
 class _SearchDeliveriesState extends State<SearchDeliveries> {
   final TextEditingController _searchController = TextEditingController();
-  late Future<List<Announce>> announceFuture;
+  List listOrders = [];
 
-  /* List<Announce> announceList = [];
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    announceFuture = readAllPackages();
-    inspect(announceFuture);
-    AnnounceFutureToList();
+  Future<List<Order>> getOrdersList() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    return listOrders = await findOrdersByUserCarrier(user!.id);
   }
-  AnnounceFutureToList(){
-    announceFuture.then((value) {
-      value.forEach((announce) {
-        setState(() {
-          announceList.add(announce);
-        });
-      });
-    });
-  }*/
-  //----------------------  Début brut  ----------------------------------------
-  final List<Order> _listOrders = [
-    /*Order(
-      id: 215545454,
-      announce: Announce(
-          id: 233123,
-          package: Package(
-              id: 132565,
-              addressDeparture: Address(
-                  id: 12,
-                  number: 2,
-                  street: 'rue de Merville',
-                  zipCode: '59160',
-                  city: 'Nantes'),
-              addressArrival: Address(
-                  id: 45,
-                  number: 3,
-                  street: 'allée de la cour baleine',
-                  zipCode: '95500',
-                  city: 'Dakar'),
-              datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
-              dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
-              kgAvailable: 0.8,
-              transportation: Transportation(id: 2, name: 'Avion'),
-              description:
-                  "'Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              size: [PackageSize (id : 1, name : "Petit")],
-              price: Price(
-                id: 2,
-                kgPrice: 50.0,
-              )),
-          finalPrice: FinalPrice(
-            id: 2,
-            proposition: 45,
-            accept: true,
-          ),
-          views: 15,
-          user: User(
-              id: 2,
-              firstname: 'Marie',
-              lastname: "Corrales",
-              username: 'Nino',
-              email: 'noemie.contant@gmail.com',
-              phone: '0627155307',
-              active: true,
-              rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-              urlProfilPicture: 'oiogdfpogkfdiojo',
-              formule: Formule(
-                  id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-              check: Check(
-                  id: 1,
-                  statusIdentity: true,
-                  statusPhone: true,
-                  imgIdCard: 'lkjgfùdfgùjdfg')),
-          type: Type(id: 1, name: "Transport"),
-          transact: true,
-          price: 50),
-      status: Status(
-        id: 1,
-        name: "En cours",
-      ),
-      validationCode: 2315,
-      dateOrder: DateTime.parse('2021-08-05 17:30:04Z'),
-      user: User(
-          id: 1,
-          firstname: 'Noémie',
-          lastname: "Contant",
-          username: 'STid',
-          email: 'noemie.contant@gmail.com',
-          phone: '0627155307',
-          active: true,
-          rib: RIB(id: 5, name: 'RIB', IBAN: '46116465654'),
-          urlProfilPicture: 'oiogdfpogkfdiojo',
-          formule: Formule(
-              id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
-          check: Check(
-              id: 1,
-              statusIdentity: true,
-              statusPhone: true,
-              imgIdCard: 'lkjgfùdfgùjdfg')),
-    )*/
-  ];
 
-  //----------------------  Fin   brut  ----------------------------------------
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
@@ -242,24 +134,29 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                       Text("Montant: ",
                           style: Theme.of(context).textTheme.headline5),
                       Text(
-                        order.announce.price!
-                                .toStringAsFixed(0) +
-                            "€",
+                        order.finalPrice.proposition.toString() + "€",
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Text(order.status.name),
-                      order.status.name == "En cours"
-                          ? Icon(
-                              Icons.circle,
-                              color: WeezlyColors.yellow,
-                            )
-                          : Icon(
-                              WeezlyIcon.check_circle,
-                              color: WeezlyColors.green,
-                            ),
+                      order.status.name == "Payé"
+                          ? Row(children: [
+                              Icon(
+                                Icons.circle,
+                                color: WeezlyColors.yellow,
+                              ),
+                              SizedBox(width: 10),
+                              Text("En cours"),
+                            ])
+                          : Row(children: [
+                              Icon(
+                                Icons.circle,
+                                color: WeezlyColors.green,
+                              ),
+                              SizedBox(width: 10),
+                              Text("Livré"),
+                            ])
                     ],
                   ),
                 ],
@@ -283,17 +180,34 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
           children: [
             Container(
               padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  for (Order item in _listOrders) _cardOrder(item),
-                  //Version Brut
-                  //for (Announce item in announceList) _cardAnnounce(item),
-                ],
-              ),
-            ),
+              child: FutureBuilder(
+                  future: getOrdersList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      List<Order> _listOrders = snapshot.data as List<Order>;
+                      return Column(
+                        children: [
+                          for (Order item in _listOrders) _cardOrder(item),
+                        ],
+                      );
+                    } else
+                      return _buildLoadingScreen();
+                  }),
+            )
           ],
         ),
       ),
     );
   }
+}
+
+Widget _buildLoadingScreen() {
+  return Center(
+    child: Container(
+      width: 50,
+      height: 50,
+      child: CircularProgressIndicator(),
+    ),
+  );
 }

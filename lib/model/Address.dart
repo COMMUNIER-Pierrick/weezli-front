@@ -59,12 +59,14 @@ class AddressList {
   });
 
   factory AddressList.fromJson(List<dynamic> parsedJson) {
+    print (parsedJson);
     List<Address> addresses = [];
     parsedJson.forEach((element) {
       Address address = Address.fromJson(element);
       addresses.add(address);
-    });
-
+    }
+    );
+    print (addresses);
     return new AddressList(addresses: addresses);
   }
 }

@@ -50,47 +50,52 @@ class User {
   DateTime? dateOfBirthday;
   List <Address>? address;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        username: json["username"],
-        email: json["email"],
-        phone: (json["phone"] != null) ? json["phone"] : null,
-        active: json["active"],
-        payment: (json['payment'] != null)
-            ? Payment.fromJson(json["payment"])
-            : null,
-        urlProfilPicture: json["url_profil_img"],
-        formule:
-            (json['choice'] != null) ? Formule.fromJson(json["choice"]) : null,
-        check: (json['check'] != null) ? Check.fromJson(json["check"]) : null,
-        opinions: json["id_opinion"],
-        moyenneAvis: json["average_opinion"],
-        password: json["password"],
-        choiceDateStarted: (json["choiceDateStarted"] != null) ? DateTime.parse(json['choiceDateStarted'])
-            : null,
-        choiceDateEnd: (json["choiceDateEnd"] != null) ? DateTime.parse(json['choiceDateEnd']) : null,
-        dateOfBirthday: (json['dateOfBirthday'] != null)
-            ? DateTime.parse(json['dateOfBirthday'])
-            : null,
-        address: (json['address'] != null)
-            ? AddressList.fromJson(json["address"]).addresses
-            : null,
-      );
+  factory User.fromJson(Map<String, dynamic> json) {
+    var user = User(
 
-  Map<String, dynamic> toJson() => {
-        "id": this.id,
-        "firstname": this.firstname,
-        "lastname": this.lastname,
-        "username": this.username,
-        "password": this.password,
-        "email": this.email,
-        "dateOfBirthday": this.dateOfBirthday != null
-            ? this.dateOfBirthday!.toIso8601String()
-            : null,
-      };
-}
+      id: json["id"],
+      firstname: json["firstname"],
+      lastname: json["lastname"],
+      username: json["username"],
+      email: json["email"],
+      phone: json["phone"],
+      active: json["active"],
+      payment: (json['payment'] != null)
+          ? Payment.fromJson(json["payment"])
+          : null,
+      urlProfilPicture: json["url_profil_img"],
+      formule:
+      (json['choice'] != null) ? Formule.fromJson(json["choice"]) : null,
+      check: (json['check'] != null) ? Check.fromJson(json["check"]) : null,
+      opinions: json["id_opinion"],
+      moyenneAvis: json["average_opinion"],
+      password: json["password"],
+      choiceDateStarted: json["choiceDateStarted"],
+      choiceDateEnd: json["choiceDateEnd"],
+      dateOfBirthday: (json['dateOfBirthday'] != null)
+          ? DateTime.parse(json['dateOfBirthday'])
+          : null,
+      address: (json['address'] != null)
+          ? AddressList
+          .fromJson(json["address"])
+          .addresses
+          : null,
+    );
+    return user;
+  }
+
+    Map<String, dynamic> toJson() => {
+      "id": this.id,
+      "firstname": this.firstname,
+      "lastname": this.lastname,
+      "username": this.username,
+      "password": this.password,
+      "email": this.email,
+      "dateOfBirthday": this.dateOfBirthday != null
+          ? this.dateOfBirthday!.toIso8601String()
+          : null,
+    };
+  }
 
 class UserDynamic {
   UserDynamic({

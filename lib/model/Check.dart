@@ -10,7 +10,9 @@ class Check {
     required this.statusPhone,
     required this.statusIdentity,
     required this.statusEmail,
-    this.imgIdCard,
+    this.filename,
+    this.status,
+    this.code,
 
   });
 
@@ -18,22 +20,28 @@ class Check {
   int statusPhone;
   int statusIdentity;
   int statusEmail;
-  String? imgIdCard;
+  String? filename;
+  String? status;
+  String? code;
 
 
-  factory Check.fromJson(Map<String, dynamic> json) => Check(
-    id: json["id"],
-    statusPhone: json ["statusPhone"],
-    statusIdentity: json ["statusIdentity"],
-    statusEmail: json ["statusMail"],
-    imgIdCard: json ["imgIdCard"]
-  );
+  factory Check.fromJson(Map<String, dynamic> json) {
+    return Check(
+      id: json["id"],
+      statusPhone: json ["statusPhone"],
+      statusIdentity: json ["statusIdentity"],
+      statusEmail: json ["statusMail"],
+      filename: json ["filename"],
+      status: json["status"],
+      code: json["code"],
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "statusPhone": statusPhone,
-    "statusIdentity": statusIdentity,
-    "statusEmail" : statusEmail,
-    "imgIdCard": imgIdCard,
-  };
-}
+    Map<String, dynamic> toJson() => {
+      "id": id,
+      "statusPhone": statusPhone,
+      "statusIdentity": statusIdentity,
+      "statusEmail" : statusEmail,
+      "filename": filename,
+    };
+  }

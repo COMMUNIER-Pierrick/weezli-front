@@ -110,7 +110,6 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
   request.headers.addAll(headers);
 
   request.fields['Announce'] = str;
-  print (request.fields);
 
   http.Response response = await http.Response.fromStream(await request.send());
 

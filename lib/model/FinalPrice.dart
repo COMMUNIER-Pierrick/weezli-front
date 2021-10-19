@@ -16,20 +16,26 @@ class FinalPrice {
   });
 
   int? id;
-  num proposition;
-  int accept;
+  num? proposition;
+  int? accept;
   User user;
 
-  factory FinalPrice.fromJson(Map<String, dynamic> json) => FinalPrice(
-    id: json["id"],
-    proposition: json["proposition"],
-    accept: json["accept"],
-    user : User.fromJson(json["user"])
-  );
+  factory FinalPrice.fromJson(Map<String, dynamic> json) {
+    print (json["user"]);
+    var fp = FinalPrice(
+        id: json["id"],
+        proposition: (json["proposition"] != null)
+            ? json ["proposition"]
+            : null,
+        accept: (json["accept"] != null) ? json ["accept"] : null,
+        user: User.fromJson(json["user"])
+    );
+    return fp;
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "proposition": proposition,
-    "accept": accept,
-  };
-}
+    Map<String, dynamic> toJson() => {
+      "id": id,
+      "proposition": proposition,
+      "accept": accept,
+    };
+  }

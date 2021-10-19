@@ -1,11 +1,8 @@
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/commons/weight.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/service/colis/read_one.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'colis_avis.dart';
 
@@ -98,12 +95,12 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.kg, "Poids : ",
-                  weight(order.announce.package.kgAvailable)),
+                  order.announce.package.kgAvailable.toString() + " kg"),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.announce.price!.toStringAsFixed(0) + "€"),
+                  order.finalPrice.proposition.toString() + "€"),
               SizedBox(
                 height: _separator,
               ),

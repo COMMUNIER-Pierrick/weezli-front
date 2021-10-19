@@ -13,11 +13,13 @@ class Formule {
   });
 
   factory Formule.fromJson(Map<String, dynamic> json) {
-    return Formule(
+    var f = Formule(
       id: json['id'] as int,
       name: json['name'] as String,
-      description: (json['description'] != null) ? json["userAnnounce"] : null,
+      description: (json['description'] != null) ? json["description"] : null,
       price: json['price'],
     );
+    print (f);
+    return f;
   }
 }
