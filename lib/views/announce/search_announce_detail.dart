@@ -1,5 +1,5 @@
-
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -584,8 +584,7 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
         Order newOrder = Order.fromJson(mapOrder);
 
-        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
-
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder.id);
       }
     }
   }
