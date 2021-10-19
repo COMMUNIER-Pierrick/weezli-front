@@ -40,16 +40,16 @@ class Announce {
   factory Announce.fromJson(Map<String, dynamic> json) {
     return Announce(
       id: json["id"],
-      userAnnounce: User.fromJson(json["userAnnounce"]),
       package: Package.fromJson(json["packages"]),
+      userAnnounce: User.fromJson(json["userAnnounce"]),
       views: json["views"],
+      finalPrice: FinalPrice.fromJson(json["finalPrice"]),
       idOrder: (json["idOrder"] != null) ? json ["idOrder"] : null,
       type: json["idType"],
-      price: json["price"],
+      price: (json["price"] != null) ? json ["price"] : null,
       transact: json["transact"],
       imgUrl: json["imgUrl"],
-      dateCreated: DateTime.parse(json["dateCreated"]),
-      finalPrice: FinalPrice.fromJson(json["finalPrice"])
+      dateCreated: DateTime.parse(json["dateCreated"])
     );
   }
 

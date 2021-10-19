@@ -61,7 +61,7 @@ class CardItem extends StatelessWidget {
             statusIdentity: 1,
             statusPhone: 1,
             statusEmail : 1,
-            imgIdCard: 'lkjgfùdfgùjdfg'),
+            code: 'lkjgfùdfgùjdfg'),
         moyenneAvis: 4),
 
     type: 2,

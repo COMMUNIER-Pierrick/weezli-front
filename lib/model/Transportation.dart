@@ -9,14 +9,17 @@ class Transportation {
   Transportation ({
     required this.id,
     this.name,
+    this.filename,
   });
 
   int id;
   String? name;
+  String? filename;
 
   factory Transportation.fromJson(Map<String, dynamic> json) => Transportation(
     id: json["id"],
     name: json["name"],
+    filename : json["filename"]
   );
 
   Map<String, dynamic> toJson() => {
