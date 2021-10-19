@@ -383,8 +383,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  RichText _buildCustomText(
-      BuildContext context, String firstText, String secondText) {
+  RichText _buildCustomText(BuildContext context, String firstText,
+      String secondText) {
     return RichText(
       text: TextSpan(
         style: Theme

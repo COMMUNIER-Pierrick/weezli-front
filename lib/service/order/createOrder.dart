@@ -34,7 +34,7 @@ Future<Response> createOrder(Order newOrder) async {
     order["Order"] = resBody;
 
     str = encoder.convert(order);
-    print (str);
+
   } catch(e) {
     print(e);
   }
