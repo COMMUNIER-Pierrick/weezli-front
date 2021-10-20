@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
@@ -18,8 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/widgets/travelMode.dart';
-
 import 'announce_detail.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class CreateSenderAnnounce extends StatefulWidget {
   static const routeName = '/sender-announce';
@@ -108,7 +107,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
       showDialog(
         context: context,
         builder: (BuildContext context) =>
-            _buildPopupSavedSenderAnnounce(context, newAnnounce),
+            _buildPopupSavedSenderAnnounce(context, newAnnounce, user),
       );
       _formKey.currentState!.save();
     }
@@ -243,7 +242,20 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                                   ),
                                 ],
                              ),
-                            for(int i = 0; i <= 4; i++) _image(i), // Affiche chaque image de la liste d'image
+                            //for(int i = 0; i <= 4; i++) _image(i), // Affiche chaque image de la liste d'image
+                            if(imgList.length != 0)
+                            CarouselSlider.builder(
+                              itemCount: imgList.length,
+                              options: CarouselOptions(
+                                height: 200,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: false,
+                              ),
+                              itemBuilder: (context, index, realIndex) {
+                                final image = imgList[index];
+                                return _buildImage(image, index);
+                              },
+                            )
                           ],
                         ),
                       ),
@@ -290,6 +302,17 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
             ],
           )
         ])));
+  }
+
+  Widget _buildImage(File image, int index){
+    return Container(
+      //margin: EdgeInsets.symmetric(horizontal: 4),
+      color: Colors.grey,
+      child: Image.file(
+        image,
+        fit: BoxFit.cover,
+      ),
+    );
   }
 
   // Affiche le nombre d'image dans la liste d'image
@@ -445,7 +468,7 @@ class FooterChildLeft extends StatelessWidget {
   }
 }
 
-Widget _buildPopupSavedSenderAnnounce(BuildContext context, Announce? announce) {
+Widget _buildPopupSavedSenderAnnounce(BuildContext context, Announce? announce, User user) {
   return new Dialog(
     child: Container(
       width: MediaQuery.of(context).size.width,
@@ -483,7 +506,10 @@ Widget _buildPopupSavedSenderAnnounce(BuildContext context, Announce? announce) 
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                       side: BorderSide(color: WeezlyColors.primary)),
-                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments: announce),
+                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments:{
+                    'announce': announce,
+                    'user': user
+                  },),
                   child: const Text("VOIR L'ANNONCE"),
                 ),
               ),

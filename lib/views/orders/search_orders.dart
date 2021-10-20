@@ -23,15 +23,16 @@ class _SearchOrdersState extends State<SearchOrders> {
 
   List listOrders = [];
 
-  Future<List<Order>> getOrdersList() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = getUserInfo(prefs);
-    return listOrders = await findOrdersByUserSender(user!.id);
+
+
+  Future<List<Order>> getOrdersList(int idUser) async {
+    return listOrders = await findOrdersByUserSender(idUser);
   }
 
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
+    final idUser = ModalRoute.of(context)!.settings.arguments as int;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
         bottom: 15.0,
@@ -68,11 +69,14 @@ class _SearchOrdersState extends State<SearchOrders> {
       ),
     );
 
-    GestureDetector _cardOrder(Order order) {
+    GestureDetector _cardOrder(Order order, int idUser) {
       return GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, OrderDetail.routeName,
-                arguments: order);
+                arguments: {
+                  'order': order,
+                  'userId': idUser
+                },);
           },
           child: Container(
             margin: EdgeInsets.only(bottom: 20),
@@ -185,14 +189,14 @@ class _SearchOrdersState extends State<SearchOrders> {
             Container(
               padding: EdgeInsets.all(20.0),
               child: FutureBuilder(
-                  future: getOrdersList(),
+                  future: getOrdersList(idUser),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData) {
                       List<Order> _listOrders = snapshot.data as List<Order>;
                       return Column(
                         children: [
-                          for (Order item in _listOrders) _cardOrder(item),
+                          for (Order item in _listOrders) _cardOrder(item, idUser),
                         ],
                       );
                     } else

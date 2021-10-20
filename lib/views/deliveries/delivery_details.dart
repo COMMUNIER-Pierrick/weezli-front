@@ -33,7 +33,9 @@ class DeliveryDetailState extends State<DeliveryDetail> {
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
-    final order = ModalRoute.of(context)!.settings.arguments as Order;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Order order= arg['order'];
+    int idUser= arg['userId'];
 
     Row mix(IconData icon, String key, String value) {
       return Row(

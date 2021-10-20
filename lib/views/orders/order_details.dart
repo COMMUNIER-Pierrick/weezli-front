@@ -152,7 +152,7 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              //if(order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname! == )
+              if(order.user.id == idUser)
               Row(
                 children: [
                   Column(
@@ -172,13 +172,18 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              Text(
-                  "Code à transmettre au destinaire du colis uniquement",
-              style: TextStyle (
-                fontSize: 12,
-              )),
-              SizedBox(
-                height: _separator,
+              if(order.user.id == idUser)
+              Row(
+                children: [
+                  Text(
+                      "Code à transmettre au destinaire du colis uniquement",
+                      style: TextStyle (
+                        fontSize: 12,
+                      )),
+                  SizedBox(
+                    height: _separator,
+                  ),
+                ],
               ),
               Divider(
                 thickness: 2,

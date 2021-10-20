@@ -153,7 +153,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         showDialog(
           context: context,
           builder: (BuildContext context) =>
-              _buildPopupSavedCarrierAnnounce(context, newAnnounce),
+              _buildPopupSavedCarrierAnnounce(context, newAnnounce, user.id!),
         );
       }
       _formKey.currentState!.save();
@@ -630,7 +630,7 @@ class FooterChildLeft extends StatelessWidget {
   }
 }
 
-Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce) {
+Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce, int? idUser) {
   return new Dialog(
     child: Container(
       width: MediaQuery.of(context).size.width,
@@ -668,7 +668,10 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce)
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                       side: BorderSide(color: WeezlyColors.primary)),
-                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments: announce),
+                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments:{
+                    'announce': announce,
+                    'userId': idUser
+                  },),
                   child: const Text("VOIR L'ANNONCE"),
                 ),
               ),

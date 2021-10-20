@@ -47,7 +47,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
-            onPressed: () => Navigator.pushNamed(context, '/mes_annonces')),
+            onPressed: () => Navigator.pushNamed(context, '/mes_annonces', arguments: idUser)),
         title: Text("Détail"),
       ),
       body: Container(
