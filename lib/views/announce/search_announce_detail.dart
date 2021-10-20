@@ -45,6 +45,15 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     return announce;
   }
 
+  Future<int?> getActualUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user != null) {
+      return user.id;
+    } else
+      return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -55,14 +64,20 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     final width = mediaQuery.size.width;
 
     return Scaffold(
-        appBar: appBar,
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+              onPressed: () => Navigator.pushNamed(context, '/')),
+          title: Text("Détail"),
+        ),
         body: SingleChildScrollView(
             child: FutureBuilder(
-                future: getAnnounce(),
-                builder: (context, snapshot) {
+                future: Future.wait([getActualUser(), getAnnounce()]),
+                builder: (context, AsyncSnapshot<List> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
                       snapshot.hasData) {
-                    Announce announce = snapshot.data as Announce;
+                    int? userId = snapshot.data![0] as int?;
+                    Announce announce = snapshot.data![1] as Announce;
                     num? price = announce.price;
                     String? sizes;
                     for (PackageSize size in announce.package.size) {
@@ -303,6 +318,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                           ),
                         ),
                       ),
+                      if (userId != announce.userAnnounce.id)
                       Container(
                         height: height * 0.1,
                         decoration: BoxDecoration(
@@ -324,9 +340,9 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              if (announce.price != 0)
+                              if ((announce.price !=null) && (announce.price != 0))
                                 Text(
-                                  price!.toStringAsFixed(2) + " €",
+                                  price!.toString() + " €",
                                   style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold),

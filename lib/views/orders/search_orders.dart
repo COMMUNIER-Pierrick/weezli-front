@@ -70,8 +70,10 @@ class _SearchOrdersState extends State<SearchOrders> {
 
     GestureDetector _cardOrder(Order order) {
       return GestureDetector(
-          onTap: () => Navigator.pushNamed(context, OrderDetail.routeName,
-              arguments: order),
+          onTap: () {
+            Navigator.pushNamed(context, OrderDetail.routeName,
+                arguments: order);
+          },
           child: Container(
             margin: EdgeInsets.only(bottom: 20),
             padding: EdgeInsets.all(10),
