@@ -19,23 +19,14 @@ class OrderDetail extends StatefulWidget {
 
 class OrderDetailState extends State<OrderDetail> {
 
-  Future<User?> getUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = await getUserInfo(prefs);
-    if (user == null)
-      Navigator.pushNamed(context, '/login');
-    else
-      return user;
-  }
-
-  late Future<User?> user;
-
   double _separator = 15;
 
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
-    final order = ModalRoute.of(context)!.settings.arguments as Order;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Order order= arg['order'];
+    int idUser= arg['userId'];
 
     Row mix(IconData icon, String key, String value) {
       return Row(
@@ -156,11 +147,12 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.user.firstname! + " " + order.user.lastname!),
+                  order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname!
+                ),
               SizedBox(
                 height: _separator,
               ),
-              if(order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname! == )
+              //if(order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname! == )
               Row(
                 children: [
                   Column(

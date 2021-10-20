@@ -28,10 +28,9 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final announce = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as Announce;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Announce announce= arg['announce'];
+    int idUser= arg['userId'];
     String? sizes;
     for (PackageSize size in announce.package.size) {
       if (sizes != null)
@@ -153,7 +152,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                             fontSize: 15, fontWeight: FontWeight.bold))
                   ],
                 ),
-                _order(announce, context),
+                _order(announce, context, idUser),
                 SizedBox(height: 10),
                 Row(children: [
                   Text("Description : ",
@@ -182,7 +181,10 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       onPressed: () async {
                       var order = await findById(announce.idOrder!);
 
-                      Navigator.pushNamed(context, OrderDetail.routeName, arguments: order);
+                      Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+                        'order': order,
+                        'userId': idUser
+                      },);
                       },
                         child: Text(
                         "DETAIL DE LA COMMANDE",
@@ -257,7 +259,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
   }
 }
 
-  Widget _order(Announce announce, BuildContext context) {
+  Widget _order(Announce announce, BuildContext context, idUser) {
     if ((announce.transact == 1) && (announce.idOrder == null)) {
       return Padding(
           padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
@@ -290,7 +292,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                   height: 10,
                 ),
                 TextButton(
-                  onPressed: () => _createOrder(announce, context),
+                  onPressed: () => _createOrder(announce, context, idUser),
                   child: Text(
                     "VALIDER",
                     style: TextStyle(
@@ -314,7 +316,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       );
   }
 
-_createOrder(Announce announce, BuildContext context) async {
+_createOrder(Announce announce, BuildContext context, int idUser) async {
   announce.finalPrice.accept = 1;
   announce.price = announce.finalPrice.proposition;
   Order order = Order(
@@ -331,6 +333,9 @@ _createOrder(Announce announce, BuildContext context) async {
     var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
     Order newOrder = Order.fromJson(mapOrder);
 
-    Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
+    Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+      'order': newOrder,
+      'userId': idUser
+    },); //newOrder
   }
 }
