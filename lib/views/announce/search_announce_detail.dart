@@ -1,5 +1,5 @@
-import 'dart:convert';
 
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';

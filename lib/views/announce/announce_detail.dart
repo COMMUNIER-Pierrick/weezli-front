@@ -10,7 +10,6 @@ import 'package:weezli/model/Status.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';
-import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/service/order/findById.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
@@ -166,6 +165,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                 ]),
                 if (announce.type == 1 && announce.imgUrl != '')
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Photos : ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
@@ -186,7 +186,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                         'userId': idUser
                       },);
                       },
-                        child: Text(
+                      child: Text(
                         "DETAIL DE LA COMMANDE",
                         style: TextStyle(
                           color: Colors.white,
@@ -233,19 +233,18 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
   //Récupération de la liste d'image
   _listImage(Announce announce) {
-    if (announce.imgUrl != '') {
-      List <String> listImage = announce.imgUrl!.split(",");
-      return listImage;
-    }
+    List <String> listImage = announce.imgUrl!.split(",");
+    return listImage;
   }
 
   // Affichage d'une image dans la liste d'image
-  _image(Announce announce, int number) {
+  _image(Announce announce, int number){
+
     List <String> listImage = _listImage(announce);
     print("$listImage");
-    if (number <= listImage.length - 1) {
+    if (number <= listImage.length-1) {
       return Column(
-          children: [
+          children:[
             Image(
                 image: NetworkImage('http://10.0.2.2:5000/images/' +
                     listImage[number])),
