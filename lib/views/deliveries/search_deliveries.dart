@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/order/findOrdersByUserCarrier.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 import 'delivery_details.dart';
 
@@ -192,7 +192,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                         ],
                       );
                     } else
-                      return _buildLoadingScreen();
+                      return buildLoadingScreen();
                   }),
             )
           ],
@@ -202,12 +202,4 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
   }
 }
 
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 50,
-      height: 50,
-      child: CircularProgressIndicator(),
-    ),
-  );
-}
+

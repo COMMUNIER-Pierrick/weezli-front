@@ -9,6 +9,8 @@ Future<Response> createOrder(Order newOrder) async {
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
 
+    //On créé peu à peu les différents éléments du json
+
     var announce = {};
     announce["id"] = newOrder.announce.id;
 
@@ -20,6 +22,8 @@ Future<Response> createOrder(Order newOrder) async {
 
     var finalPrice = {};
     finalPrice["id"] = newOrder.announce.finalPrice.id;
+
+    // Corps de l'order qui contient tous ses éléments
 
     var resBody = {};
     resBody["announce"] = announce;

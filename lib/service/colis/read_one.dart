@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/Package.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 

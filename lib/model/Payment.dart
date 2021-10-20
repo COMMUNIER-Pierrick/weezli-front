@@ -1,10 +1,4 @@
 
-import 'dart:convert';
-
-Payment PaymentFromJson(String str) => Payment.fromJson(json.decode(str));
-
-String PaymentToJson(Payment data) => json.encode(data.toJson());
-
 class Payment {
   Payment ({
     this.id,

@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weezli/views/orders/order_details.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -369,7 +370,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                       )
                     ]);
                   } else
-                    return _buildLoadingScreen();
+                    return buildLoadingScreen();
                 })));
   }
 
@@ -429,19 +430,9 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  Widget _buildLoadingScreen() {
-    return Center(
-      child: Container(
-        width: 50,
-        height: 50,
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
   _contact(Announce announce) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = getUserInfo(prefs);
+    User? user = getUserInfo(prefs); //Vérifie si on a quelque chose en sharedpreferences (et donc si l'user est connecté). Le redirige vers le login sinon.
     if (user == null)
       Navigator.pushNamed(context, "/login");
     else {

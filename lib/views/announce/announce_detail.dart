@@ -1,18 +1,16 @@
 import 'dart:convert';
 
 import 'package:weezli/commons/format.dart';
+import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';
-import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/service/order/findById.dart';
-import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
 
@@ -32,13 +30,8 @@ class _AnnounceDetail extends State<AnnounceDetail> {
         .of(context)!
         .settings
         .arguments as Announce;
-    String? sizes;
-    for (PackageSize size in announce.package.size) {
-      if (sizes != null)
-        sizes = sizes + ", " + size.name;
-      else
-        sizes = size.name;
-    }
+
+    String? sizes = sizesList(announce.package.size); //Fonction qui retourne une chaîne de caractères avec tous les éléments de la liste
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
     final height = (mediaQuery.size.height -
@@ -135,7 +128,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                           size: 20, color: WeezlyColors.blue3),
                       SizedBox(width: widthSeparator),
                       Text("Commission de base : "),
-                      Text(announce.price!.toStringAsFixed(0) + " €",
+                      Text(announce.price!.toString() + " €",
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
@@ -153,7 +146,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                             fontSize: 15, fontWeight: FontWeight.bold))
                   ],
                 ),
-                _order(announce, context),
+                _order(announce, context), //Apparait s'il y a une proposition d'un transporteur.
                 SizedBox(height: 10),
                 Row(children: [
                   Text("Description : ",
@@ -177,10 +170,10 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (announce.idOrder != null)
+                      if (announce.idOrder != null) //S'il y a une commande sur cette annonce, on peut aller la voir.
                       TextButton (
                       onPressed: () async {
-                      var order = await findById(announce.idOrder!);
+                      var order = await findById(announce.idOrder!); //On récupère la commande pour l'envoyer à la route.
 
                       Navigator.pushNamed(context, OrderDetail.routeName, arguments: order);
                       },
@@ -199,7 +192,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       ),
                   ),
                       SizedBox(height: 10),
-                      if (announce.transact == 0)
+                      if (announce.transact == 0) // Tant qu'il n'y a pas de commande ou de proposition, on peut supprimer l'annonce.
                       TextButton(
                         onPressed: () async {
                           var response = await deleteAnnounce(announce.id);
@@ -257,6 +250,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
   }
 }
 
+  // S'affiche s'il y a une proposition pas encore acceptée, indique la proposition
   Widget _order(Announce announce, BuildContext context) {
     if ((announce.transact == 1) && (announce.idOrder == null)) {
       return Padding(
@@ -290,7 +284,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                   height: 10,
                 ),
                 TextButton(
-                  onPressed: () => _createOrder(announce, context),
+                  onPressed: () => _createOrder(announce, context), // Va créer la commande si la proposition est acceptée.
                   child: Text(
                     "VALIDER",
                     style: TextStyle(
@@ -314,20 +308,22 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       );
   }
 
+  // Création de l'objet order à envoyer au back
 _createOrder(Announce announce, BuildContext context) async {
-  announce.finalPrice.accept = 1;
-  announce.price = announce.finalPrice.proposition;
+  announce.finalPrice.accept = 1; // Proposition acceptée
+  announce.price = announce.finalPrice.proposition; //Prix updaté
   Order order = Order(
       status: Status(id: 1, name: 'Payé'),
       dateOrder: DateTime.now(),
-      user: announce.userAnnounce,
+      user: announce.userAnnounce, // Vu que l'annonce part de l'expéditeur et donc du payeur, c'est lui qui est indiqué dans l'order.
       announce: announce,
       finalPrice: announce.finalPrice);
-  var response = await createOrder(order);
+  var response = await createOrder(order); // Envoi de l'order au service et réception de la réponse
   if (response.statusCode == 200) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Commande créée !')),
     );
+    // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
     var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
     Order newOrder = Order.fromJson(mapOrder);
 

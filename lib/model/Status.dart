@@ -1,9 +1,4 @@
 
-import 'dart:convert';
-
-Status StatusFromJson(String str) => Status.fromJson(json.decode(str));
-
-String StatusToJson(Status data) => json.encode(data.toJson());
 
 class Status {
   Status ({

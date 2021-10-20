@@ -13,7 +13,7 @@ class Opinions extends StatefulWidget {
 }
 
 class _AvisState extends State<Opinions> {
-  final List<Opinion> list_opinions = [
+  final List<Opinion> listOpinions = [
     /*Opinion(
         id: 1,
         number: 5,
@@ -388,14 +388,14 @@ class _AvisState extends State<Opinions> {
                 ],
               ),
             ),
-            Text(list_opinions.length.toString() + " avis"),
+            Text(listOpinions.length.toString() + " avis"),
             Container(
               margin: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Divider(
                 thickness: 2,
               ),
             ),
-            for (Opinion opinion in list_opinions) _opinionCard(opinion)
+            for (Opinion opinion in listOpinions) _opinionCard(opinion)
           ],
         ),
       ),

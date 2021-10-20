@@ -1,10 +1,3 @@
-
-import 'dart:convert';
-
-Transportation TransportationFromJson(String str) => Transportation.fromJson(json.decode(str));
-
-String TransportationToJson(Transportation data) => json.encode(data.toJson());
-
 class Transportation {
   Transportation ({
     required this.id,

@@ -1,9 +1,3 @@
-import 'dart:convert';
-
-PackageSize SizeFromJson(String str) => PackageSize.fromJson(json.decode(str));
-
-String SizeToJson(PackageSize data) => json.encode(data.toJson());
-
 class SizesList {
   final List<PackageSize> sizes;
 

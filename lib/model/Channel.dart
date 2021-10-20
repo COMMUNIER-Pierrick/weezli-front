@@ -1,13 +1,6 @@
 
-import 'dart:convert';
-
 import 'package:weezli/model/user.dart';
 
-
-
-Channel ChannelFromJson(String str) => Channel.fromJson(json.decode(str));
-
-String ChannelToJson(Channel data) => json.encode(data.toJson());
 
 class Channel {
   Channel ({

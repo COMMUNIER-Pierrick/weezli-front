@@ -10,6 +10,7 @@ import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 class Announces extends StatefulWidget {
   @override
@@ -170,7 +171,7 @@ class AnnouncesState extends State<Announces> {
                           ],
                         );
                       } else
-                        return _buildLoadingScreen();
+                        return buildLoadingScreen();
                     })),
           ],
         ),
@@ -179,12 +180,4 @@ class AnnouncesState extends State<Announces> {
   }
 }
 
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 50,
-      height: 50,
-      child: CircularProgressIndicator(),
-    ),
-  );
-}
+

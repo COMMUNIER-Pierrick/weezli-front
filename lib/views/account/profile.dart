@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,11 +8,10 @@ import 'package:weezli/service/authentication/logout.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/announce/announces.dart';
-import 'package:weezli/views/authentication/login.dart';
 import 'package:weezli/views/deliveries/search_deliveries.dart';
 import 'package:weezli/views/orders/search_orders.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -27,7 +25,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   Future<User?> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = await getUserInfo(prefs);
+    User? user = getUserInfo(prefs);
     if (user == null)
       Navigator.pushNamed(context, '/login');
     else
@@ -155,7 +153,7 @@ class _ProfileState extends State<Profile> {
                           _customButton(item[0], item[1], user.id),
                       ]));
                     }
-                    return _buildLoadingScreen();
+                    return buildLoadingScreen();
                   }),
             ]),
           ),
@@ -165,12 +163,3 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 20,
-      height: 20,
-      child: CircularProgressIndicator(),
-    ),
-  );
-}
