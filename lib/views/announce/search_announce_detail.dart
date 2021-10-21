@@ -602,7 +602,7 @@ _setTransact(BuildContext context, Announce announce, User user, int idUser) asy
 
         Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
         'order': newOrder,
-        'userId': idUser
+        'idUser': idUser
         },);
       }
     }

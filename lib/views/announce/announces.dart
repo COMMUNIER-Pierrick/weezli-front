@@ -3,9 +3,11 @@ import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findAllByUser.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +30,7 @@ class AnnouncesState extends State<Announces> {
 
   @override
   Widget build(BuildContext context) {
-    final idUser = ModalRoute.of(context)!.settings.arguments as int;
+    final int idUser = ModalRoute.of(context)!.settings.arguments as int;
     final Size _mediaQuery = MediaQuery.of(context).size;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
@@ -71,7 +73,7 @@ class AnnouncesState extends State<Announces> {
         onTap: () => Navigator.pushNamed(context, AnnounceDetail.routeName,
             arguments: {
           'announce': announce,
-          'userId': idUser
+          'idUser': idUser
           },),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
@@ -125,7 +127,7 @@ class AnnouncesState extends State<Announces> {
                 ),
               Row(children: [
                 Text("Dimensions : "),
-                Text(announce.package.size.first.name,
+                Text(_sizes(announce),
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
               if (announce.type == 2)
@@ -179,6 +181,17 @@ class AnnouncesState extends State<Announces> {
       ),
     );
   }
+}
+
+_sizes(announce){
+  var sizes;
+  for (PackageSize size in announce.package.size) {
+    if (sizes != null)
+      sizes = sizes + ", " + size.name;
+    else
+      sizes = size.name;
+  }
+  return sizes;
 }
 
 Widget _buildLoadingScreen() {

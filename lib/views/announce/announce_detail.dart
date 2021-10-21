@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
+import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';
@@ -14,6 +15,8 @@ import 'package:weezli/service/order/findById.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class AnnounceDetail extends StatefulWidget {
   static const routeName = '/seller-announce-detail';
@@ -24,12 +27,14 @@ class AnnounceDetail extends StatefulWidget {
 
 class _AnnounceDetail extends State<AnnounceDetail> {
   double widthSeparator = 20;
+  int activeIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Announce announce= arg['announce'];
-    int idUser= arg['userId'];
+    int idUser= arg['idUser'];
     String? sizes;
     for (PackageSize size in announce.package.size) {
       if (sizes != null)
@@ -42,7 +47,6 @@ class _AnnounceDetail extends State<AnnounceDetail> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    final width = (mediaQuery.size.width);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -58,6 +62,29 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (announce.type == 1 && announce.imgUrl != '')
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CarouselSlider.builder(
+                        itemCount: _listImage(announce).length,
+                        options: CarouselOptions(
+                          height: 170,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                          onPageChanged: (index, reason) =>
+                              setState(() => activeIndex = index),
+                        ),
+                        itemBuilder: (context, index, realIndex) {
+                          final image = _listImage(announce)[index];
+                          return _buildImage(image);
+                        },
+                      ),
+                      SizedBox(height: 5),
+                      _buildIndicator(announce),
+                    ],
+                  ),
+                SizedBox(height: 10),
                 Row(
                   children: [
                     Icon(WeezlyIcon.card_plane,
@@ -163,15 +190,6 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       child: Text(announce.package.description,
                           textAlign: TextAlign.justify))
                 ]),
-                if (announce.type == 1 && announce.imgUrl != '')
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Photos : ",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
-                    ],
-                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,9 +201,8 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
                       Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
                         'order': order,
-                        'userId': idUser
-                      },);
-                      },
+                        'idUser': idUser
+                      },);},
                       child: Text(
                         "DETAIL DE LA COMMANDE",
                         style: TextStyle(
@@ -209,7 +226,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Annonce supprimée !')),
                             );
-                          Navigator.pushNamed(context, '/mes_annonces');
+                          Navigator.pushNamed(context, '/mes_annonces', arguments: idUser);
                         },
                         child: Text(
                           "SUPPRIMER L'ANNONCE",
@@ -231,30 +248,34 @@ class _AnnounceDetail extends State<AnnounceDetail> {
     );
   }
 
+  // Afficher une image dans mon caroussel
+  Widget _buildImage(String image){
+    return Container(
+      color: Colors.grey,
+      child: Image(
+        image: NetworkImage('http://10.0.2.2:5000/images/' +
+        image),
+        width: MediaQuery.of(context).size.width * 0.70,
+        height: MediaQuery.of(context).size.height * 0.15,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  // Indicateur de position sous les images
+  Widget _buildIndicator(Announce announce) => AnimatedSmoothIndicator(
+    activeIndex: activeIndex,
+    count: _listImage(announce).length,
+    effect: JumpingDotEffect(
+      dotWidth: 10,
+      dotHeight: 10,
+    ),
+  );
+
   //Récupération de la liste d'image
   _listImage(Announce announce) {
     List <String> listImage = announce.imgUrl!.split(",");
     return listImage;
-  }
-
-  // Affichage d'une image dans la liste d'image
-  _image(Announce announce, int number){
-
-    List <String> listImage = _listImage(announce);
-    print("$listImage");
-    if (number <= listImage.length-1) {
-      return Column(
-          children:[
-            Image(
-                image: NetworkImage('http://10.0.2.2:5000/images/' +
-                    listImage[number])),
-            SizedBox(height: 10)
-          ]
-      );
-    }
-    return Column(
-        children:[]
-    );
   }
 }
 

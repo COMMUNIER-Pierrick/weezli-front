@@ -11,6 +11,7 @@ import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/createSenderAnnounce.dart';
 import 'package:weezli/service/announce/findAllSizes.dart';
+import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/search/search.dart';
 import 'package:weezli/widgets/custom_title.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/widgets/travelMode.dart';
 import 'announce_detail.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CreateSenderAnnounce extends StatefulWidget {
   static const routeName = '/sender-announce';
@@ -41,6 +43,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
   List<PackageSize> sizes = [];
   List <File> imgList = [];
   final picker = ImagePicker();
+  int activeIndex = 0;
 
   pickImageFromGallery() async {
     var number = "5";
@@ -227,11 +230,18 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                                   }
                                   return _buildLoadingScreen();
                                 }),
-                            SizedBox(height: height * 0.03),
+                            SizedBox(height: height * 0.01),
                             _field('textarea', 'Description', _descriptionCtrl),
+                            SizedBox(height: height * 0.03),
+                            if(imgList.length < 5)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children:[
                             ElevatedButton (
                               onPressed: pickImageFromGallery,
-                              child: Text ("Ajouter une image"),
+                              child:
+                                Text ("Ajouter une image"),
+                            )],
                             ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -242,19 +252,28 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                                   ),
                                 ],
                              ),
-                            //for(int i = 0; i <= 4; i++) _image(i), // Affiche chaque image de la liste d'image
+                            SizedBox(height: height * 0.03),
                             if(imgList.length != 0)
-                            CarouselSlider.builder(
-                              itemCount: imgList.length,
-                              options: CarouselOptions(
-                                height: 200,
-                                enlargeCenterPage: true,
-                                enableInfiniteScroll: false,
+                              Row(
+                                children: [
+                                  _image(0, user),
+                                  SizedBox(width: 10,),
+                                  _image(1, user)
+                                  ],
                               ),
-                              itemBuilder: (context, index, realIndex) {
-                                final image = imgList[index];
-                                return _buildImage(image, index);
-                              },
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                _image(2, user),
+                                SizedBox(width: 10,),
+                                _image(3, user)
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                _image(4, user), // Affiche chaque image de la liste d'image
+                              ],
                             )
                           ],
                         ),
@@ -304,17 +323,6 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
         ])));
   }
 
-  Widget _buildImage(File image, int index){
-    return Container(
-      //margin: EdgeInsets.symmetric(horizontal: 4),
-      color: Colors.grey,
-      child: Image.file(
-        image,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
   // Affiche le nombre d'image dans la liste d'image
   _compteurImage(){
     var compteur = imgList.length;
@@ -328,18 +336,100 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
     return compteur.toString();
 }
 
-// Affiche une image présente dans la liste d'image
-  _image(int number){
+// Affiche une image
+  _image(int number, User user){
     if (imgList.isNotEmpty && number <= imgList.length-1) {
-      return Column(
-          children:[
-          Image.file(imgList[number]),
-      SizedBox(height: 10)
-          ]
+      return GestureDetector(
+      onTap: () => _deleteImage(context, number, user),
+      child: Image.file(
+        imgList[number],
+        width: MediaQuery.of(context).size.width * 0.41,
+        height: MediaQuery.of(context).size.height * 0.15,
+        fit: BoxFit.cover,
+          )
       );
     }
-    return Column(
+    return Row(
         children:[]
+    );
+  }
+
+  _deleteImage(BuildContext context, int number, User user) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+          _buildPopupDeleteImage(context, number, user),
+    );
+  }
+
+  _buildPopupDeleteImage(BuildContext context, int number, User user){
+    return new Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width * 0.7,
+        padding: EdgeInsets.all(10),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    WeezlyIcon.check_circle,
+                    size: 60,
+                    color: Colors.green,
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [CustomTitle("SUPPRESSION IMAGE")],
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: 40,
+                  child: RawMaterialButton(
+                    fillColor: WeezlyColors.white,
+                    textStyle: TextStyle(
+                      color: WeezlyColors.primary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.5),
+                        side: BorderSide(color: WeezlyColors.primary)),
+                      onPressed: () =>
+                      {
+                        imgList.remove(imgList[number]),
+                        Navigator.pop(context),
+                      },
+                    child: const Text("SUPPRIMER"),
+                  ),
+                ),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: 40,
+                  child: RawMaterialButton(
+                    fillColor: WeezlyColors.primary,
+                    textStyle: TextStyle(
+                      color: WeezlyColors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                    ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("ANNULER"),
+                  ),
+                ),
+              ]),
+            ]),
+      ),
     );
   }
 
