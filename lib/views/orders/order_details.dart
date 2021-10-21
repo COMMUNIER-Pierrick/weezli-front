@@ -1,8 +1,12 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
 
 import 'colis_avis.dart';
 
@@ -20,7 +24,9 @@ class OrderDetailState extends State<OrderDetail> {
   @override
   Widget build(BuildContext context) {
     final Size _mediaQuery = MediaQuery.of(context).size;
-    final order = ModalRoute.of(context)!.settings.arguments as Order;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Order order= arg['order'];
+    int idUser= arg['idUser'];
 
     Row mix(IconData icon, String key, String value) {
       return Row(
@@ -84,13 +90,47 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              mix(WeezlyIcon.calendar2, "Date de départ : ",
-                  format(order.announce.package.datetimeDeparture)),
+              Row(
+                children: [
+                  Icon(
+                    WeezlyIcon.calendar2,
+                    color: WeezlyColors.blue3,
+                  ),
+                  SizedBox(
+                    width: _separator + 10,
+                  ),
+                  Text("Date de départ : "),
+                  Text(format(order.announce.package.datetimeDeparture),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      )
+                    //Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
               SizedBox(
                 height: _separator,
               ),
-              mix(WeezlyIcon.box, "Dimension : ",
-                  order.announce.package.size.first.name),
+              Row(
+                children: [
+                  Icon(
+                    WeezlyIcon.box,
+                    color: WeezlyColors.blue3,
+                  ),
+                  SizedBox(
+                    width: _separator + 10,
+                  ),
+                  Text("Dimension : "),
+                  Text(_listSize(order),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      )
+                      //Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
               SizedBox(
                 height: _separator,
               ),
@@ -105,10 +145,12 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.user.firstname! + " " + order.user.lastname!),
+                  order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname!
+                ),
               SizedBox(
                 height: _separator,
               ),
+              if(order.user.id == idUser)
               Row(
                 children: [
                   Column(
@@ -128,13 +170,18 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              Text(
-                  "Code à transmettre au destinaire du colis uniquement",
-              style: TextStyle (
-                fontSize: 12,
-              )),
-              SizedBox(
-                height: _separator,
+              if(order.user.id == idUser)
+              Row(
+                children: [
+                  Text(
+                      "Code à transmettre au destinaire du colis uniquement",
+                      style: TextStyle (
+                        fontSize: 12,
+                      )),
+                  SizedBox(
+                    height: _separator,
+                  ),
+                ],
               ),
               Divider(
                 thickness: 2,
@@ -192,6 +239,17 @@ class OrderDetailState extends State<OrderDetail> {
       ),
     );
   }
+}
+
+_listSize(Order order){
+  String? sizes;
+  for ( PackageSize size in order.announce.package.size) {
+    if (sizes != null)
+      sizes = sizes + ", " + size.name;
+    else
+      sizes = size.name;
+  }
+  return sizes;
 }
 
 Widget _opinion(Order order, BuildContext context) {
