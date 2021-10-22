@@ -36,7 +36,6 @@ class _UserProfileState extends State<UserProfile> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(prefs);
     if (user != null) {
-      print(user.id);
       return user.id;
     } else
       return null;
