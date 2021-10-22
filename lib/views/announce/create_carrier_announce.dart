@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
@@ -14,17 +11,14 @@ import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/createCarrierAnnounce.dart';
 import 'package:weezli/service/announce/findAllSizes.dart';
 import 'package:weezli/service/announce/findAllTransportations.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/search/search.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 import 'package:weezli/widgets/custom_title.dart';
-import 'package:weezli/widgets/footer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../widgets/sizes.dart';
 import '../../widgets/travelMode.dart';
 import '../../commons/weezly_colors.dart';
-import '../../widgets/calendar.dart';
 import 'announce_detail.dart';
 
 class CreateCarrierAnnounce extends StatefulWidget {
@@ -292,7 +286,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                             _setTransportation(transportation)
                                       ])]);
                                 }
-                                return _buildLoadingScreen();
+                                return buildLoadingScreen();
                               }),
                           SizedBox(height: 15),
                           Text("Tailles d'objets possibles"),
@@ -311,7 +305,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                         for (var size in sizes) _setSize(size)
                                       ]);
                                 }
-                                return _buildLoadingScreen();
+                                return buildLoadingScreen();
                               }),
                           _field(
                             'number',
@@ -701,12 +695,3 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce,
   );
 }
 
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 20,
-      height: 20,
-      child: CircularProgressIndicator(),
-    ),
-  );
-}

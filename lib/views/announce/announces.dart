@@ -1,17 +1,14 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
+import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findAllByUser.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
-import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 class Announces extends StatefulWidget {
   @override
@@ -127,7 +124,7 @@ class AnnouncesState extends State<Announces> {
                 ),
               Row(children: [
                 Text("Dimensions : "),
-                Text(_sizes(announce),
+                Text(sizesList(announce.package.size)!,
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
               if (announce.type == 2)
@@ -174,32 +171,11 @@ class AnnouncesState extends State<Announces> {
                           ],
                         );
                       } else
-                        return _buildLoadingScreen();
+                        return buildLoadingScreen();
                     })),
           ],
         ),
       ),
     );
   }
-}
-
-_sizes(announce){
-  var sizes;
-  for (PackageSize size in announce.package.size) {
-    if (sizes != null)
-      sizes = sizes + ", " + size.name;
-    else
-      sizes = size.name;
-  }
-  return sizes;
-}
-
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 50,
-      height: 50,
-      child: CircularProgressIndicator(),
-    ),
-  );
 }

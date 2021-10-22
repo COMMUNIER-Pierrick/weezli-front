@@ -26,7 +26,7 @@ class OrderDetailState extends State<OrderDetail> {
     final Size _mediaQuery = MediaQuery.of(context).size;
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Order order= arg['order'];
-    int idUser= arg['idUser'];
+    int idUser= arg['userId'];
 
     Row mix(IconData icon, String key, String value) {
       return Row(

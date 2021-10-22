@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:flutter/material.dart';

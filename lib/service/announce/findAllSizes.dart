@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:weezli/model/Announce.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/Transportation.dart';
 
 Future<List<PackageSize>> findAllSizes() async {
 

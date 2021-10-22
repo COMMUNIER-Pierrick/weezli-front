@@ -1,15 +1,11 @@
-import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/saveData.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/authentication/login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
-import 'package:weezli/views/authentication/register.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

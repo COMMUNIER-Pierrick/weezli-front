@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weezli/model/user.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
 
 Future<http.Response> logout() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();

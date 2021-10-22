@@ -2,13 +2,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/order/findOrdersByUserSender.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 class SearchOrders extends StatefulWidget {
   const SearchOrders({Key? key}) : super(key: key);
@@ -200,7 +200,7 @@ class _SearchOrdersState extends State<SearchOrders> {
                         ],
                       );
                     } else
-                      return _buildLoadingScreen();
+                      return buildLoadingScreen();
                   }),
             ),
           ],
@@ -210,12 +210,3 @@ class _SearchOrdersState extends State<SearchOrders> {
   }
 }
 
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 50,
-      height: 50,
-      child: CircularProgressIndicator(),
-    ),
-  );
-}
