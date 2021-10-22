@@ -6,13 +6,19 @@ import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/Order.dart';
+import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
+import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/service/order/findById.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class AnnounceDetail extends StatefulWidget {
   static const routeName = '/seller-announce-detail';
@@ -23,14 +29,14 @@ class AnnounceDetail extends StatefulWidget {
 
 class _AnnounceDetail extends State<AnnounceDetail> {
   double widthSeparator = 20;
+  int activeIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
-    final announce = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as Announce;
-
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Announce announce= arg['announce'];
+    int idUser= arg['idUser'];
     String? sizes = sizesList(announce.package.size); //Fonction qui retourne une chaîne de caractères avec tous les éléments de la liste
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
@@ -42,7 +48,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
-            onPressed: () => Navigator.pushNamed(context, '/mes_annonces')),
+            onPressed: () => Navigator.pushNamed(context, '/mes_annonces', arguments: idUser)),
         title: Text("Détail"),
       ),
       body: Container(
@@ -53,6 +59,29 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (announce.type == 1 && announce.imgUrl != '')
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CarouselSlider.builder(
+                        itemCount: _listImage(announce).length,
+                        options: CarouselOptions(
+                          height: 170,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                          onPageChanged: (index, reason) =>
+                              setState(() => activeIndex = index),
+                        ),
+                        itemBuilder: (context, index, realIndex) {
+                          final image = _listImage(announce)[index];
+                          return _buildImage(image);
+                        },
+                      ),
+                      SizedBox(height: 5),
+                      _buildIndicator(announce),
+                    ],
+                  ),
+                SizedBox(height: 10),
                 Row(
                   children: [
                     Icon(WeezlyIcon.card_plane,
@@ -146,7 +175,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                             fontSize: 15, fontWeight: FontWeight.bold))
                   ],
                 ),
-                _order(announce, context), //Apparait s'il y a une proposition d'un transporteur.
+                _order(announce, context, idUser),
                 SizedBox(height: 10),
                 Row(children: [
                   Text("Description : ",
@@ -175,8 +204,10 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       onPressed: () async {
                       var order = await findById(announce.idOrder!); //On récupère la commande pour l'envoyer à la route.
 
-                      Navigator.pushNamed(context, OrderDetail.routeName, arguments: order);
-                      },
+                      Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+                        'order': order,
+                        'idUser': idUser
+                      },);},
                       child: Text(
                         "DETAIL DE LA COMMANDE",
                         style: TextStyle(
@@ -200,7 +231,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Annonce supprimée !')),
                             );
-                          Navigator.pushNamed(context, '/mes_annonces');
+                          Navigator.pushNamed(context, '/mes_annonces', arguments: idUser);
                         },
                         child: Text(
                           "SUPPRIMER L'ANNONCE",
@@ -222,36 +253,38 @@ class _AnnounceDetail extends State<AnnounceDetail> {
     );
   }
 
-  //Récupération de la liste d'image
-  _listImage(Announce announce) {
-    if (announce.imgUrl != '') {
-      List <String> listImage = announce.imgUrl!.split(",");
-      return listImage;
-    }
+  // Afficher une image dans mon caroussel
+  Widget _buildImage(String image){
+    return Container(
+      color: Colors.grey,
+      child: Image(
+        image: NetworkImage('http://10.0.2.2:5000/images/' +
+        image),
+        width: MediaQuery.of(context).size.width * 0.70,
+        height: MediaQuery.of(context).size.height * 0.15,
+        fit: BoxFit.cover,
+      ),
+    );
   }
 
-  // Affichage d'une image dans la liste d'image
-  _image(Announce announce, int number) {
-    List <String> listImage = _listImage(announce);
-    print("$listImage");
-    if (number <= listImage.length - 1) {
-      return Column(
-          children: [
-            Image(
-                image: NetworkImage('http://10.0.2.2:5000/images/' +
-                    listImage[number])),
-            SizedBox(height: 10)
-          ]
-      );
-    }
-    return Column(
-        children:[]
-    );
+  // Indicateur de position sous les images
+  Widget _buildIndicator(Announce announce) => AnimatedSmoothIndicator(
+    activeIndex: activeIndex,
+    count: _listImage(announce).length,
+    effect: JumpingDotEffect(
+      dotWidth: 10,
+      dotHeight: 10,
+    ),
+  );
+
+  //Récupération de la liste d'image
+  _listImage(Announce announce) {
+    List <String> listImage = announce.imgUrl!.split(",");
+    return listImage;
   }
 }
 
-  // S'affiche s'il y a une proposition pas encore acceptée, indique la proposition
-  Widget _order(Announce announce, BuildContext context) {
+  Widget _order(Announce announce, BuildContext context, idUser) {
     if ((announce.transact == 1) && (announce.idOrder == null)) {
       return Padding(
           padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
@@ -284,7 +317,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                   height: 10,
                 ),
                 TextButton(
-                  onPressed: () => _createOrder(announce, context), // Va créer la commande si la proposition est acceptée.
+                  onPressed: () => _createOrder(announce, context, idUser),
                   child: Text(
                     "VALIDER",
                     style: TextStyle(
@@ -308,6 +341,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       );
   }
 
+_createOrder(Announce announce, BuildContext context, int idUser) async {
   // Création de l'objet order à envoyer au back
 _createOrder(Announce announce, BuildContext context) async {
   announce.finalPrice.accept = 1; // Proposition acceptée
@@ -327,6 +361,9 @@ _createOrder(Announce announce, BuildContext context) async {
     var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
     Order newOrder = Order.fromJson(mapOrder);
 
-    Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder); //newOrder
+    Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+      'order': newOrder,
+      'userId': idUser
+    },); //newOrder
   }
 }

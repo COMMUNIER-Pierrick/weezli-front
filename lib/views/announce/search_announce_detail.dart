@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +20,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weezli/views/orders/order_details.dart';
-import 'package:weezli/widgets/build_loading_screen.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -77,7 +77,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                 builder: (context, AsyncSnapshot<List> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
                       snapshot.hasData) {
-                    int? userId = snapshot.data![0] as int?;
+                    int? idUser = snapshot.data![0] as int?;
                     Announce announce = snapshot.data![1] as Announce;
                     num? price = announce.price;
                     String? sizes;
@@ -319,7 +319,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                           ),
                         ),
                       ),
-                      if (userId != announce.userAnnounce.id)
+                      if (idUser != announce.userAnnounce.id)
                       Container(
                         height: height * 0.1,
                         decoration: BoxDecoration(
@@ -349,7 +349,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ElevatedButton(
-                                  onPressed: () => _contact(announce),
+                                  onPressed: () => _contact(announce, idUser!),
                                   child: Text(
                                     "Contacter".toUpperCase(),
                                     style: TextStyle(
@@ -442,7 +442,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
         showDialog(
             context: context, builder: (BuildContext context) {
           return _buildPopupCounterOffer(
-              context, announce, announce.price, buttonTitle, text, user);
+              context, announce, announce.price, buttonTitle, text, user, idUser);
         });
       }
       else {
@@ -458,7 +458,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
   }
 
   Widget _buildPopupCounterOffer(BuildContext context, Announce announce,
-      num? price, String buttonTitle, String text, User user) {
+      num? price, String buttonTitle, String text, User user, int idUser) {
     var myController = TextEditingController();
     return new Dialog(
       child: Container(
@@ -560,7 +560,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                     ),
-                    onPressed: () => announce.type == 2 ? _setTransact(context, announce, user )
+                    onPressed: () => announce.type == 2 ? _setTransact(context, announce, user, idUser)
                     : _setProposition (context, announce, user, myController),
                     child: const Text("VALIDER"),
                   ),
@@ -573,7 +573,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-_setTransact(BuildContext context, Announce announce, User user) async {
+_setTransact(BuildContext context, Announce announce, User user, int idUser) async {
 
     var response = await createTransactwithFinalPrice(announce);
     if (response.statusCode == 200) {
@@ -591,7 +591,10 @@ _setTransact(BuildContext context, Announce announce, User user) async {
         var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
         Order newOrder = Order.fromJson(mapOrder);
 
-        Navigator.pushNamed(context, OrderDetail.routeName, arguments: newOrder);
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+        'order': newOrder,
+        'idUser': idUser
+        },);
       }
     }
   }

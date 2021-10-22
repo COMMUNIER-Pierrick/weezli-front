@@ -24,14 +24,13 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
   final TextEditingController _searchController = TextEditingController();
   List listOrders = [];
 
-  Future<List<Order>> getOrdersList() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = getUserInfo(prefs);
-    return listOrders = await findOrdersByUserCarrier(user!.id);
+  Future<List<Order>> getOrdersList(int idUser) async {
+    return listOrders = await findOrdersByUserCarrier(idUser);
   }
 
   @override
   Widget build(BuildContext context) {
+    final idUser = ModalRoute.of(context)!.settings.arguments as int;
     final Size _mediaQuery = MediaQuery.of(context).size;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
@@ -69,10 +68,13 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
       ),
     );
 
-    GestureDetector _cardOrder(Order order) {
+    GestureDetector _cardOrder(Order order, int idUser) {
       return GestureDetector(
         onTap: () => Navigator.pushNamed(context, DeliveryDetail.routeName,
-            arguments: order),
+            arguments: {
+              'order': order,
+              'userId': idUser
+            },),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
           padding: EdgeInsets.all(10),
@@ -181,14 +183,14 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
             Container(
               padding: EdgeInsets.all(20.0),
               child: FutureBuilder(
-                  future: getOrdersList(),
+                  future: getOrdersList(idUser),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData) {
                       List<Order> _listOrders = snapshot.data as List<Order>;
                       return Column(
                         children: [
-                          for (Order item in _listOrders) _cardOrder(item),
+                          for (Order item in _listOrders) _cardOrder(item, idUser),
                         ],
                       );
                     } else

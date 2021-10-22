@@ -147,7 +147,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         showDialog(
           context: context,
           builder: (BuildContext context) =>
-              _buildPopupSavedCarrierAnnounce(context, newAnnounce),
+              _buildPopupSavedCarrierAnnounce(context, newAnnounce, user.id!),
         );
       }
       _formKey.currentState!.save();
@@ -267,7 +267,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                   return Column(
                                     children:[ Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         for (var transportation
                                             in transportations)
@@ -288,6 +288,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                 }
                                 return buildLoadingScreen();
                               }),
+                          SizedBox(height: 15),
                           Text("Tailles d'objets possibles"),
                           FutureBuilder(
                               future: getSizes(),
@@ -623,7 +624,7 @@ class FooterChildLeft extends StatelessWidget {
   }
 }
 
-Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce) {
+Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce, int? idUser) {
   return new Dialog(
     child: Container(
       width: MediaQuery.of(context).size.width,
@@ -661,7 +662,10 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce)
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                       side: BorderSide(color: WeezlyColors.primary)),
-                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments: announce),
+                  onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments:{
+                    'announce': announce,
+                    'userId': idUser
+                  },),
                   child: const Text("VOIR L'ANNONCE"),
                 ),
               ),

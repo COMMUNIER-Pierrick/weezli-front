@@ -10,7 +10,6 @@ import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/widgets/build_loading_screen.dart';
 
 class Announces extends StatefulWidget {
   @override
@@ -23,14 +22,13 @@ class AnnouncesState extends State<Announces> {
   final TextEditingController _searchController = TextEditingController();
   List<Announce> _listAnnounces = [];
 
-  Future<List<Announce>> getAnnouncesList() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = getUserInfo(prefs);
-    return _listAnnounces = await findAllByUser(user!.id);
+  Future<List<Announce>> getAnnouncesList(int idUser) async {
+    return _listAnnounces = await findAllByUser(idUser);
   }
 
   @override
   Widget build(BuildContext context) {
+    final int idUser = ModalRoute.of(context)!.settings.arguments as int;
     final Size _mediaQuery = MediaQuery.of(context).size;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
@@ -68,10 +66,13 @@ class AnnouncesState extends State<Announces> {
       ),
     );
 
-    GestureDetector _cardannounce(Announce announce) {
+    GestureDetector _cardannounce(Announce announce, int idUser) {
       return GestureDetector(
         onTap: () => Navigator.pushNamed(context, AnnounceDetail.routeName,
-            arguments: announce),
+            arguments: {
+          'announce': announce,
+          'idUser': idUser
+          },),
         child: Container(
           margin: EdgeInsets.only(bottom: 20),
           padding: EdgeInsets.all(10),
@@ -124,7 +125,7 @@ class AnnouncesState extends State<Announces> {
                 ),
               Row(children: [
                 Text("Dimensions : "),
-                Text(announce.package.size.first.name,
+                Text(_sizes(announce),
                     style: TextStyle(fontWeight: FontWeight.bold))
               ]),
               if (announce.type == 2)
@@ -158,7 +159,7 @@ class AnnouncesState extends State<Announces> {
             Container(
                 padding: EdgeInsets.all(20.0),
                 child: FutureBuilder(
-                    future: getAnnouncesList(),
+                    future: getAnnouncesList(idUser),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
@@ -167,7 +168,7 @@ class AnnouncesState extends State<Announces> {
                         return Column(
                           children: [
                             for (Announce item in _listAnnounces)
-                              _cardannounce(item),
+                              _cardannounce(item, idUser),
                           ],
                         );
                       } else
@@ -179,5 +180,3 @@ class AnnouncesState extends State<Announces> {
     );
   }
 }
-
-
