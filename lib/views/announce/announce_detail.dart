@@ -12,9 +12,7 @@ import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';
-import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/service/order/findById.dart';
-import 'package:weezli/views/orders/order_details.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -187,14 +185,6 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       child: Text(announce.package.description,
                           textAlign: TextAlign.justify))
                 ]),
-                if (announce.type == 1 && announce.imgUrl != '')
-                  Column(
-                    children: [
-                      Text("Photos : ",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
-                    ],
-                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -343,27 +333,32 @@ class _AnnounceDetail extends State<AnnounceDetail> {
 
 _createOrder(Announce announce, BuildContext context, int idUser) async {
   // Création de l'objet order à envoyer au back
-_createOrder(Announce announce, BuildContext context) async {
-  announce.finalPrice.accept = 1; // Proposition acceptée
-  announce.price = announce.finalPrice.proposition; //Prix updaté
-  Order order = Order(
-      status: Status(id: 1, name: 'Payé'),
-      dateOrder: DateTime.now(),
-      user: announce.userAnnounce, // Vu que l'annonce part de l'expéditeur et donc du payeur, c'est lui qui est indiqué dans l'order.
-      announce: announce,
-      finalPrice: announce.finalPrice);
-  var response = await createOrder(order); // Envoi de l'order au service et réception de la réponse
-  if (response.statusCode == 200) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Commande créée !')),
-    );
-    // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
-    var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
-    Order newOrder = Order.fromJson(mapOrder);
+  _createOrder(Announce announce, BuildContext context) async {
+    announce.finalPrice.accept = 1; // Proposition acceptée
+    announce.price = announce.finalPrice.proposition; //Prix updaté
+    Order order = Order(
+        status: Status(id: 1, name: 'Payé'),
+        dateOrder: DateTime.now(),
+        user: announce.userAnnounce,
+        // Vu que l'annonce part de l'expéditeur et donc du payeur, c'est lui qui est indiqué dans l'order.
+        announce: announce,
+        finalPrice: announce.finalPrice);
+    var response = await createOrder(
+        order); // Envoi de l'order au service et réception de la réponse
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Commande créée !')),
+      );
+      // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
+      var mapOrder = OrdersListDynamic
+          .fromJson(jsonDecode(response.body))
+          .ordersListDynamic;
+      Order newOrder = Order.fromJson(mapOrder);
 
-    Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
-      'order': newOrder,
-      'userId': idUser
-    },); //newOrder
+      Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+        'order': newOrder,
+        'userId': idUser
+      },); //newOrder
+    }
   }
 }
