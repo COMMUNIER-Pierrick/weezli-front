@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Status.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
 import 'package:weezli/service/order/createOrder.dart';
 import 'package:weezli/views/orders/order_details.dart';

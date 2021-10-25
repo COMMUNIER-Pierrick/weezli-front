@@ -11,7 +11,6 @@ import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/createSenderAnnounce.dart';
 import 'package:weezli/service/announce/findAllSizes.dart';
-import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/search/search.dart';
 import 'package:weezli/widgets/custom_title.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,6 @@ import 'package:intl/intl.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/widgets/travelMode.dart';
 import 'announce_detail.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CreateSenderAnnounce extends StatefulWidget {
   static const routeName = '/sender-announce';
@@ -124,7 +121,6 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    final width = (mediaQuery.size.width);
     User user = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
         appBar: appBar,

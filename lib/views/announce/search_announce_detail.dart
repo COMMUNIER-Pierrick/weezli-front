@@ -1,6 +1,8 @@
 
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
@@ -19,6 +21,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weezli/views/orders/order_details.dart';
+import 'package:weezli/widgets/buildLoadingScreen.dart';
 
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
@@ -36,6 +39,9 @@ class SearchAnnounceDetail extends StatefulWidget {
 }
 
 class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
+
+  int activeIndex = 0;
+
   Future<Announce> getAnnounce() async {
     int? announceId = ModalRoute
         .of(context)!
@@ -97,6 +103,29 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              if (announce.type == 1 && announce.imgUrl != '')
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CarouselSlider.builder(
+                                      itemCount: _listImage(announce).length,
+                                      options: CarouselOptions(
+                                        height: 170,
+                                        enlargeCenterPage: true,
+                                        enableInfiniteScroll: false,
+                                        onPageChanged: (index, reason) =>
+                                            setState(() => activeIndex = index),
+                                      ),
+                                      itemBuilder: (context, index, realIndex) {
+                                        final image = _listImage(announce)[index];
+                                        return _buildImage(image);
+                                      },
+                                    ),
+                                    SizedBox(height: 5),
+                                    _buildIndicator(announce, activeIndex),
+                                  ],
+                                ),
+                              SizedBox(height: 10),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -306,14 +335,6 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                 style: TextStyle(height: 1.3),
                               ),
                               SizedBox(height: 10),
-                              if ((announce.type == 1) && (announce.imgUrl != ''))
-                                Column(
-                                  children: [
-                                    Text("Photos : ",
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
-                                    for(int i = 0; i <= 4; i++) _image(announce, i), // Affiche chaque image de la liste d'image
-                                  ]
-                                ),
                             ],
                           ),
                         ),
@@ -369,34 +390,38 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                       )
                     ]);
                   } else
-                    return _buildLoadingScreen();
+                    return buildLoadingScreen();
                 })));
   }
+
+  // Afficher une image dans mon caroussel
+  Widget _buildImage(String image){
+    return Container(
+      color: Colors.grey,
+      child: Image(
+        image: NetworkImage('http://10.0.2.2:5000/images/' +
+            image),
+        width: MediaQuery.of(context).size.width * 0.70,
+        height: MediaQuery.of(context).size.height * 0.15,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  // Indicateur de position sous les images
+  Widget _buildIndicator(Announce announce, int activeIndex) => AnimatedSmoothIndicator(
+    activeIndex: activeIndex,
+    count: _listImage(announce).length,
+    effect: JumpingDotEffect(
+      dotWidth: 10,
+      dotHeight: 10,
+    ),
+  );
 
   //Récupération de la liste d'image
   _listImage(Announce announce) {
     List <String> listImage = announce.imgUrl!.split(",");
     return listImage;
-  }
-
-  // Affichage d'une image dans la liste d'image
-  _image(Announce announce, int number){
-
-    List <String> listImage = _listImage(announce);
-    print("$listImage");
-    if (number <= listImage.length-1) {
-      return Column(
-          children:[
-            Image(
-                image: NetworkImage('http://10.0.2.2:5000/images/' +
-                    listImage[number])),
-            SizedBox(height: 10)
-          ]
-      );
-    }
-    return Column(
-        children:[]
-    );
   }
 
   RichText _buildCustomText(BuildContext context, String firstText,
@@ -426,16 +451,6 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
         SizedBox(width: 12),
         _buildCustomText(context, firstText, secondText)
       ],
-    );
-  }
-
-  Widget _buildLoadingScreen() {
-    return Center(
-      child: Container(
-        width: 50,
-        height: 50,
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 

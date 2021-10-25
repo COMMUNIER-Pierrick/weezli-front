@@ -245,7 +245,7 @@ class _SearchState extends State<Search> {
                           _displayTextFilter(
                               'Moyen de transport : ${_filters['travelMode']}'),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

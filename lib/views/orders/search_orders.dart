@@ -75,7 +75,7 @@ class _SearchOrdersState extends State<SearchOrders> {
             Navigator.pushNamed(context, OrderDetail.routeName,
                 arguments: {
                   'order': order,
-                  'userId': idUser
+                  'idUser': idUser
                 },);
           },
           child: Container(
