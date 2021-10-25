@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
-import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/FinalPrice.dart';
 
 Future<Response> updateFinalPrice(int id, FinalPrice finalPrice) async {

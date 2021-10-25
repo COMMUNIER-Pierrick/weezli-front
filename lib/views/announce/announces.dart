@@ -1,19 +1,14 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findAllByUser.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
-import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/widgets/buildLoadingScreen.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 
 class Announces extends StatefulWidget {
   @override
@@ -177,9 +172,7 @@ class AnnouncesState extends State<Announces> {
                         );
                       } else
                         return buildLoadingScreen();
-                    },
-                    )
-            ),
+                    })),
           ],
         ),
       ),

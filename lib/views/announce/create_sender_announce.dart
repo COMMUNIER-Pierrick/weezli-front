@@ -12,6 +12,7 @@ import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/createSenderAnnounce.dart';
 import 'package:weezli/service/announce/findAllSizes.dart';
 import 'package:weezli/views/search/search.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 import 'package:weezli/widgets/custom_title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -224,7 +225,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                                           for (var size in sizes) _setSize(size)
                                         ]);
                                   }
-                                  return _buildLoadingScreen();
+                                  return buildLoadingScreen();
                                 }),
                             SizedBox(height: height * 0.01),
                             _field('textarea', 'Description', _descriptionCtrl),
@@ -621,16 +622,6 @@ Widget _buildPopupSavedSenderAnnounce(BuildContext context, Announce? announce, 
               ),
             ]),
           ]),
-    ),
-  );
-}
-
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 20,
-      height: 20,
-      child: CircularProgressIndicator(),
     ),
   );
 }

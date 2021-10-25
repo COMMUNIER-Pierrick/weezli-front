@@ -1,8 +1,3 @@
-import 'dart:convert';
-
-Address AddressFromJson(String str) => Address.fromJson(json.decode(str));
-
-String StatusToJson(Address data) => json.encode(data.toJson());
 
 class Address {
   Address ({

@@ -1,12 +1,8 @@
-import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:weezli/commons/weezly_colors.dart';
-import 'package:weezli/views/announce/announce_detail.dart';
-import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/views/search/search.dart';
 

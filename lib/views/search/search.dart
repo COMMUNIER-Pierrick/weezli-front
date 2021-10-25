@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -9,6 +8,7 @@ import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';
+import 'package:weezli/widgets/build_loading_screen.dart';
 import 'package:weezli/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -309,7 +309,7 @@ class _SearchState extends State<Search> {
                       ]));
                     }
                     else
-                      return _buildLoadingScreen();
+                      return buildLoadingScreen();
                   }),
             ]),
           ],
@@ -324,14 +324,4 @@ class _SearchState extends State<Search> {
       style: TextStyle(color: Colors.white),
     );
   }
-}
-
-Widget _buildLoadingScreen() {
-  return Center(
-    child: Container(
-      width: 50,
-      height: 50,
-      child: CircularProgressIndicator(),
-    ),
-  );
 }
