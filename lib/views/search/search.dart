@@ -112,6 +112,12 @@ class _SearchState extends State<Search> {
     return announcesList = await findByType(type);
   }
 
+  Future<User?> getActualUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -295,17 +301,18 @@ class _SearchState extends State<Search> {
             SizedBox(height: 20),
             Row(children: [
               FutureBuilder(
-                  future: getAnnouncesList(),
-                  builder: (context, snapshot) {
+                  future: Future.wait([getAnnouncesList(), getActualUser()]),
+                  builder: (context, AsyncSnapshot<List> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData) {
                       List<Announce> announcesList =
-                          snapshot.data as List<Announce>;
+                          snapshot.data![0] as List<Announce>;
+                      User user = snapshot.data![1] as User;
                       return Container(
                           child: Column(children: [
                         for (Announce announce in announcesList)
                           if (announce.transact == 0)
-                          SearchResults().oneResult(context, announce)
+                          SearchResults().oneResult(context, announce, user)
                       ]));
                     }
                     else

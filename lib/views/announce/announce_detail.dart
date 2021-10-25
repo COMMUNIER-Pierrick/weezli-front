@@ -26,8 +26,8 @@ class AnnounceDetail extends StatefulWidget {
 
 class _AnnounceDetail extends State<AnnounceDetail> {
   double widthSeparator = 20;
-  int activeIndex = 0;
 
+  int activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    final width = (mediaQuery.size.width);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -56,28 +56,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (announce.type == 1 && announce.imgUrl != '')
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CarouselSlider.builder(
-                        itemCount: _listImage(announce).length,
-                        options: CarouselOptions(
-                          height: 170,
-                          enlargeCenterPage: true,
-                          enableInfiniteScroll: false,
-                          onPageChanged: (index, reason) =>
-                              setState(() => activeIndex = index),
-                        ),
-                        itemBuilder: (context, index, realIndex) {
-                          final image = _listImage(announce)[index];
-                          return _buildImage(image);
-                        },
-                      ),
-                      SizedBox(height: 5),
-                      _buildIndicator(announce),
-                    ],
-                  ),
+                _viewImage(announce),
                 SizedBox(height: 10),
                 Row(
                   children: [
@@ -240,6 +219,45 @@ class _AnnounceDetail extends State<AnnounceDetail> {
             ]),
           )),
     );
+  }
+
+  // Afficher les images sur la page
+  Widget _viewImage(Announce announce){
+    if (announce.type == 1 && announce.imgUrl != ''){
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (announce.type == 1 && announce.imgUrl != '')
+            CarouselSlider.builder(
+              itemCount: _listImage(announce).length,
+              options: CarouselOptions(
+                height: 170,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: false,
+                onPageChanged: (index, reason) =>
+                    setState(() => activeIndex = index),
+              ),
+              itemBuilder: (context, index, realIndex) {
+                final image = _listImage(announce)[index];
+                return _buildImage(image);
+              },
+            ),
+          SizedBox(height: 5),
+          _buildIndicator(announce),
+        ],
+      );
+    }else {
+      return Container(
+          alignment: Alignment.center,
+          child:
+          Image(
+            image: AssetImage("assets/images/no_picture.png"),
+            width: MediaQuery.of(context).size.width * 0.50,
+            height: MediaQuery.of(context).size.height * 0.15,
+            fit: BoxFit.cover,
+          )
+      );
+    }
   }
 
   // Afficher une image dans mon caroussel

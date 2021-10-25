@@ -595,7 +595,7 @@ Widget _buildPopupSavedSenderAnnounce(BuildContext context, Announce? announce, 
                       side: BorderSide(color: WeezlyColors.primary)),
                   onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments:{
                     'announce': announce,
-                    'user': user
+                    'idUser': user.id
                   },),
                   child: const Text("VOIR L'ANNONCE"),
                 ),
