@@ -338,36 +338,37 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (announce.type == 1 && announce.imgUrl != '')
-            CarouselSlider.builder(
-              itemCount: _listImage(announce).length,
-              options: CarouselOptions(
-                height: 170,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: false,
-                onPageChanged: (index, reason) =>
-                    setState(() => activeIndex = index),
-              ),
-              itemBuilder: (context, index, realIndex) {
-                final image = _listImage(announce)[index];
-                return _buildImage(image);
-              },
+          CarouselSlider.builder(
+            itemCount: _listImage(announce).length,
+            options: CarouselOptions(
+              height: 170,
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+              onPageChanged: (index, reason) =>
+                  setState(() => activeIndex = index),
             ),
+            itemBuilder: (context, index, realIndex) {
+              final image = _listImage(announce)[index];
+              return _buildImage(image);
+            },
+          ),
           SizedBox(height: 5),
           _buildIndicator(announce),
         ],
       );
-    }else {
+    }else if(announce.type == 1 && announce.imgUrl == null) {
       return Container(
-        alignment: Alignment.center,
+          alignment: Alignment.center,
           child:
           Image(
-           image: AssetImage("assets/images/no_picture.png"),
+            image: AssetImage("assets/images/no_picture.png"),
             width: MediaQuery.of(context).size.width * 0.50,
             height: MediaQuery.of(context).size.height * 0.15,
             fit: BoxFit.cover,
           )
       );
+    }else{
+      return Column();
     }
   }
 
@@ -603,8 +604,9 @@ _setTransact(BuildContext context, Announce announce, User user, int idUser) asy
   _setProposition(BuildContext context, Announce announce, User user, TextEditingController priceController) async {
 
     FinalPrice finalPrice = FinalPrice(id : announce.finalPrice.id, proposition: double.parse(priceController.text), accept: 0, user: user);
+    var transact = 1;
 
-    var response = await updateFinalPrice(announce.id!, finalPrice);
+    var response = await updateFinalPrice(announce.id!, finalPrice, transact);
     if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Proposition envoyée !')),

@@ -4,14 +4,14 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:weezli/model/FinalPrice.dart';
 
-Future<Response> updateFinalPrice(int id, FinalPrice finalPrice) async {
+Future<Response> updateFinalPrice(int id, FinalPrice finalPrice, int transact) async {
   var str;
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
 
     var resBodyfinalPrice = {};
     resBodyfinalPrice["id"] = finalPrice.id;
-    resBodyfinalPrice["accept"] = 0;
+    resBodyfinalPrice["accept"] = finalPrice.accept;
     resBodyfinalPrice["user"] = finalPrice.user;
     resBodyfinalPrice["proposition"] = finalPrice.proposition;
 
@@ -19,7 +19,7 @@ Future<Response> updateFinalPrice(int id, FinalPrice finalPrice) async {
     var resBody = {};
     resBody["id"] = id;
     resBody["finalPrice"] = resBodyfinalPrice;
-    resBody["transact"] = 1;
+    resBody["transact"] = transact;
 
     var announce = {};
     announce["Announce"] = resBody;

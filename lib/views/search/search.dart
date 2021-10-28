@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
@@ -8,6 +7,7 @@ import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';
+import 'package:weezli/widgets/bottomBar.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 import 'package:weezli/widgets/calendar.dart';
 import 'package:flutter/material.dart';

@@ -14,8 +14,7 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   final List<Widget> _widgetOptions = <Widget>[
     Home(),
     Search(),
