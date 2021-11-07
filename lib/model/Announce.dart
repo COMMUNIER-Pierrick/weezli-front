@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:weezli/model/FinalPrice.dart';
+import 'package:weezli/model/Proposition.dart';
 import 'package:weezli/model/user.dart';
 
 import 'Package.dart';
@@ -14,56 +14,50 @@ class Announce {
   Announce({
     this.id,
     required this.package,
-    required this.userAnnounce,
     this.views,
-    this.idOrder,
     required this.type,
     this.price,
-    this.transact,
     this.imgUrl,
     this.dateCreated,
-    required this.finalPrice,
+    required this.userAnnounce,
+    //required this.proposition
   });
 
   int? id;
   Package package;
-  User userAnnounce;
   int? views;
-  int? idOrder;
   int type;
   num? price;
-  int? transact;
   String? imgUrl;
   DateTime? dateCreated;
-  FinalPrice finalPrice;
+  User userAnnounce;
+  //Proposition proposition;
 
   factory Announce.fromJson(Map<String, dynamic> json) {
     return Announce(
       id: json["id"],
-      package: Package.fromJson(json["packages"]),
-      userAnnounce: User.fromJson(json["userAnnounce"]),
+      package: Package.fromJson(json["package"]),
       views: json["views"],
-      finalPrice: FinalPrice.fromJson(json["finalPrice"]),
-      idOrder: (json["idOrder"] != null) ? json ["idOrder"] : null,
       type: json["idType"],
       price: (json["price"] != null) ? json ["price"] : null,
-      transact: json["transact"],
       imgUrl: json["imgUrl"],
-      dateCreated: DateTime.parse(json["dateCreated"])
+      dateCreated: DateTime.parse(json["dateCreated"]),
+      userAnnounce: User.fromJson(json["userAnnounce"]),
+     // proposition: Proposition.fromJson(json["proposition"]),
     );
   }
 
   Map<String, dynamic> toJson() =>
       {
         "id": id,
-        "packages": package,
-        "userAnnounce": userAnnounce,
+        "package": package,
         "views": views,
         "price": price,
-        "transact": transact,
         "idType": type,
         "imgUrl": imgUrl,
         "dateCreated": dateCreated,
+        "userAnnounce": userAnnounce,
+        //"proposition": proposition
       };
 }
 

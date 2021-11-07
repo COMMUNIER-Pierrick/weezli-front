@@ -7,7 +7,6 @@ import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';
-import 'package:weezli/widgets/bottomBar.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 import 'package:weezli/widgets/calendar.dart';
 import 'package:flutter/material.dart';
@@ -105,11 +104,13 @@ class _SearchState extends State<Search> {
     else Navigator.pushNamed(context, "/login");
   }
 
-  Future<List <Announce>> getAnnouncesList() async {
+  Future<List<Announce>> getAnnouncesList() async {
     String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
     int type;
     searchType == "sending" ? type = 2 : type = 1;
-    return announcesList = await findByType(type);
+    announcesList = await findByType(type);
+    print(announcesList);
+    return announcesList;
   }
 
   Future<User?> getActualUser() async {
@@ -311,7 +312,6 @@ class _SearchState extends State<Search> {
                       return Container(
                           child: Column(children: [
                         for (Announce announce in announcesList)
-                          if (announce.transact == 0)
                           SearchResults().oneResult(context, announce, user)
                       ]));
                     }

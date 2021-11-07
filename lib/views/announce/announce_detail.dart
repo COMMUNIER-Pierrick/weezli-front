@@ -1,22 +1,11 @@
 import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/model/FinalPrice.dart';
-import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/Status.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/deleteAnnounce.dart';
-import 'package:weezli/service/announce/updateFinalPrice.dart';
-import 'package:weezli/service/order/createOrder.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
-import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/orders/order_details.dart';
-import 'package:weezli/service/order/findById.dart';
 import '../../commons/weezly_colors.dart';
 import '../../commons/weezly_icon_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -39,7 +28,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Announce announce= arg['announce'];
     int idUser= arg['idUser'];
-    final TextEditingController _counterofferPriceCtrl = TextEditingController(text: announce.finalPrice.proposition.toString());
+    //final TextEditingController _counterofferPriceCtrl = TextEditingController(text: announce.finalPrice.proposition.toString());
     String? sizes = sizesList(announce.package.size); //Fonction qui retourne une chaîne de caractères avec tous les éléments de la liste
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
@@ -157,8 +146,8 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                             fontSize: 15, fontWeight: FontWeight.bold))
                   ],
                 ),
-                _counteroffer(announce, context, idUser),
-                _offer(announce, context, idUser, _counterofferPriceCtrl),
+                //_counteroffer(announce, context, idUser),
+                //_offer(announce, context, idUser, _counterofferPriceCtrl),
                 SizedBox(height: 10),
                 Row(children: [
                   Text("Description : ",
@@ -174,13 +163,13 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (announce.idOrder != null) //S'il y a une commande sur cette annonce, on peut aller la voir.
+                     //if (announce.idOrder != null) //S'il y a une commande sur cette annonce, on peut aller la voir.
                       TextButton (
                       onPressed: () async {
-                      var order = await findById(announce.idOrder!); //On récupère la commande pour l'envoyer à la route.
+                      //var order = await findById(announce.idOrder!); //On récupère la commande pour l'envoyer à la route.
 
                       Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
-                        'order': order,
+                        //'order': order,
                         'idUser': idUser
                       },);},
                       child: Text(
@@ -198,7 +187,6 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       ),
                   ),
                       SizedBox(height: 10),
-                      if (announce.transact == 0) // Tant qu'il n'y a pas de commande ou de proposition, on peut supprimer l'annonce.
                       TextButton(
                         onPressed: () async {
                           var response = await deleteAnnounce(announce.id);
@@ -299,7 +287,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
   }
 }
 
-  Widget _order(Announce announce, BuildContext context, idUser, _counterofferPriceCtrl) {
+  /*Widget _order(Announce announce, BuildContext context, idUser, _counterofferPriceCtrl) {
     if ((announce.transact == 1) && (announce.idOrder == null)) {
       return Padding(
           padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
@@ -614,7 +602,6 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       Navigator.pushNamed(context, '/');
     }
   }
-  }
 
   _createOrderOrCounteroffer(Announce announce, BuildContext context, int idUser, TextEditingController priceController) async {
   // Création de l'objet order à envoyer au back
@@ -652,10 +639,7 @@ class _AnnounceDetail extends State<AnnounceDetail> {
       },); //newOrder
     }
   } else {
-    FinalPrice finalPrice = FinalPrice(
-        id: announce.finalPrice.id, proposition: double.parse(priceController.text), accept: 2, user: user);
-
-    var response = await updateFinalPrice(announce.id!, finalPrice, announce.transact!);
+    var response = await updateFinalPrice(announce.id!);
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Contre-proposition envoyée !')),
@@ -664,3 +648,4 @@ class _AnnounceDetail extends State<AnnounceDetail> {
     }
   }
 }
+}*/

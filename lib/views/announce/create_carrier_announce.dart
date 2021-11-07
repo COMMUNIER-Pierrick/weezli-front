@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Transportation.dart';
@@ -111,30 +110,25 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       Announce announce = Announce(
-        views: 0,
-        dateCreated: DateTime.now(),
         package: Package(
-          description: _descriptionCtrl.text,
           addressDeparture: Address(
               city: _placeDepartureCtrl.text,
               country: _countryDepartureCtrl.text),
-          datetimeDeparture: join(dateDeparture, timeDeparture),
-          transportation:
-              Transportation(id: _currentSelectedIndexTransportation),
-          size: sizes,
-          kgAvailable: double.parse(_weightCtrl.text),
           addressArrival: Address(
               city: _placeArrivalCtrl.text, country: _countryArrivalCtrl.text),
+          datetimeDeparture: join(dateDeparture, timeDeparture),
           dateTimeArrival: join(dateArrival, timeArrival),
+          kgAvailable: double.parse(_weightCtrl.text),
+          description: _descriptionCtrl.text,
+          transportation:
+          Transportation(id: _currentSelectedIndexTransportation),
+          size: sizes,
         ),
-        type: 2,
-        price: double.parse(_priceCtrl.text),
-        transact: transact,
+          views: 0,
+          type: 2,
+          price: double.parse(_priceCtrl.text),
+          dateCreated: DateTime.now(),
         userAnnounce: user,
-        finalPrice: FinalPrice (
-          accept: 1,
-          proposition: double.parse(_priceCtrl.text),
-          user: user)
       );
       var response = await createCarrierAnnounce(announce);
       if (response.statusCode == 200) {
@@ -272,7 +266,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                         for (var transportation
                                             in transportations)
                                           if (transportation.name !=
-                                              "non-identifier" && transportation.id < 5)
+                                              "non-identifier" && transportation.id < 4)
                                             _setTransportation(transportation)
                                       ]),
                                   Row(
@@ -282,7 +276,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                                         for (var transportation
                                         in transportations)
                                           if (transportation.name !=
-                                              "non-identifier" && transportation.id > 4)
+                                              "non-identifier" && transportation.id > 3)
                                             _setTransportation(transportation)
                                       ])]);
                                 }

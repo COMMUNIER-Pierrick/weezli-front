@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-
-import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/user.dart';
 
 import 'Announce.dart';
@@ -19,10 +17,8 @@ class Order {
     required this.status,
     this.validationCode,
     required this.dateOrder,
-    required this.user,
+    //required this.user,
     this.qrCode,
-    required this.finalPrice,
-
   });
 
   int? id;
@@ -30,9 +26,8 @@ class Order {
   Status status;
   int? validationCode;
   DateTime dateOrder;
-  User user;
+  //User user;
   String? qrCode;
-  FinalPrice finalPrice;
 
 
   factory Order.fromJson(Map<String, dynamic> json){
@@ -42,9 +37,8 @@ class Order {
         status: Status.fromJson(json["status"]),
         validationCode: json ["codeValidated"],
         dateOrder: DateTime.parse(json["dateOrder"]),
-        user: User.fromJson(json["buyer"]),
+        //user: User.fromJson(json["buyer"]),
         qrCode: json ["qrCode"],
-        finalPrice: FinalPrice.fromJson(json["finalPrice"])
     );
   }
 
@@ -55,7 +49,7 @@ class Order {
     "validation_code": validationCode,
     "date_order" : dateOrder,
     "id_announce" : announce,
-    "id_user" : user,
+    //"id_user" : user,
     "qr_code" : qrCode
   };
 }

@@ -137,17 +137,17 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.finalPrice.proposition.toString() + "€"),
+                  order.announce.price.toString() + "€"),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname!
+                  order.announce.userAnnounce.firstname! + " " + order.announce.userAnnounce.lastname!
                 ),
               SizedBox(
                 height: _separator,
               ),
-              if(order.user.id == idUser)
+              if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Column(
@@ -167,7 +167,7 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              if(order.user.id == idUser)
+              if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Text(

@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
-import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/user.dart';
@@ -96,10 +95,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
         ),
         type: 1,
         userAnnounce: user,
-          finalPrice: FinalPrice (
-              accept: 0,
-              proposition: 0,
-              user: user)
+
       );
       var response = await createSenderAnnounce(announce, imgList);
       var mapAnnounce = AnnouncesListDynamic.fromJson(jsonDecode(response.body)).announcesListDynamic;

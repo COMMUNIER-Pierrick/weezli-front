@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -136,7 +135,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                       Text("Montant: ",
                           style: Theme.of(context).textTheme.headline5),
                       Text(
-                        order.finalPrice.proposition.toString() + "€",
+                        order.announce.price.toString() + "€",
                       ),
                     ],
                   ),

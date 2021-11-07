@@ -19,6 +19,7 @@ import 'package:weezli/views/account/modifyProfile.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/account/phone_verification.dart';
 import 'package:weezli/views/paiement/paiement_view.dart';
+import 'package:weezli/views/propositions/search_propositions.dart';
 import './commons/weezly_colors.dart';
 import './views/announce/announce_detail.dart';
 import './views/announce/create_carrier_announce.dart';
@@ -86,6 +87,7 @@ void main() {
         Announces.routeName : (context) => Announces(),
         UserProfile.routeName : (context) => UserProfile(),
         Profile.routeName : (context) => Profile(),
+        SearchPropositions.routeName: (context) => SearchPropositions(),
        },
     ),
   );
