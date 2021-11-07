@@ -1,12 +1,9 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/PackageSize.dart';
-import 'package:weezli/model/user.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
 
 import 'colis_avis.dart';
 
@@ -26,7 +23,7 @@ class OrderDetailState extends State<OrderDetail> {
     final Size _mediaQuery = MediaQuery.of(context).size;
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Order order= arg['order'];
-    int idUser= arg['userId'];
+    int idUser= arg['idUser'];
 
     Row mix(IconData icon, String key, String value) {
       return Row(
@@ -140,17 +137,17 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.ticket, "Montant : ",
-                  order.finalPrice.proposition.toString() + "€"),
+                  order.announce.price.toString() + "€"),
               SizedBox(
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.finalPrice.user.firstname! + " " + order.finalPrice.user.lastname!
+                  order.announce.userAnnounce.firstname! + " " + order.announce.userAnnounce.lastname!
                 ),
               SizedBox(
                 height: _separator,
               ),
-              if(order.user.id == idUser)
+              if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Column(
@@ -170,7 +167,7 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              if(order.user.id == idUser)
+              if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Text(

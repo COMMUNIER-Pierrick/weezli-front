@@ -2,6 +2,7 @@ import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/message/message_view.dart';
 import 'package:weezli/views/home/home.dart';
+import 'package:weezli/views/propositions/search_propositions.dart';
 import '../search/search.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +15,11 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   final List<Widget> _widgetOptions = <Widget>[
     Home(),
     Search(),
-    Profile(),
+    SearchPropositions(),
     MessageView(),
     Profile(),
   ];

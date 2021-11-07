@@ -1,5 +1,3 @@
-
-
 import 'Address.dart';
 import 'PackageSize.dart';
 import 'Transportation.dart';
@@ -25,12 +23,11 @@ class Package {
     this.transportation,
     required this.description,
     required this.size,
-    price,
   });
 
   factory Package.fromJson(Map<String, dynamic> json) {
     return Package(
-      id: json["id"] as int,
+      id: json["id"],
       addressDeparture: Address.fromJson(json["addressDeparture"]),
       addressArrival: Address.fromJson(json["addressArrival"]),
       datetimeDeparture: (json['datetimeDeparture'] != null) ? DateTime.parse(

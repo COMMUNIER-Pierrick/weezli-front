@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/model/user.dart';
 
 import 'announce/search_announce_detail.dart';
 
@@ -39,14 +40,15 @@ class SearchResults {
     );
   }
 
-  Widget oneResult(BuildContext context, Announce announce) {
+  Widget oneResult(BuildContext context, Announce announce, User user) {
 
     String? sizesList = sizes(announce);
 
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, SearchAnnounceDetail.routeName,
-            arguments: announce.id);
+            arguments: { 'announce': announce,
+          'user': user });
       },
       child: Container(
         margin: EdgeInsets.fromLTRB(20, 5, 0, 5),

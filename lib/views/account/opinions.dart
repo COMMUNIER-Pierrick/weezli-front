@@ -267,9 +267,9 @@ class _AvisState extends State<Opinions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        opinion.order.user.firstname! +
+                        opinion.order.announce.userAnnounce.firstname! +
                             " " +
-                            opinion.order.user.lastname!,
+                            opinion.order.announce.userAnnounce.lastname!,
                         style: Theme
                             .of(context)
                             .textTheme

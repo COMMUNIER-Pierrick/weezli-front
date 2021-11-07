@@ -52,7 +52,6 @@ Future<Response> createCarrierAnnounce(Announce newAnnounce) async {
     resBody["packages"] = package;
     resBody["idType"] =  newAnnounce.type;
     resBody["price"] =  newAnnounce.price;
-    resBody["transact"] =  newAnnounce.transact;
     resBody["imgUrl"] =  '';
     resBody["dateCreated"] =  newAnnounce.dateCreated!.toIso8601String();
     resBody["userAnnounce"] = userAnnounce;
