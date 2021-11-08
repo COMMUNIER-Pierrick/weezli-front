@@ -30,8 +30,15 @@ import './views/formules/formules_view.dart';
 import './views/message/message_view.dart';
 import './views/resultat_recherche.dart';
 import './views/search/search.dart';
+import '.env.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
   runApp(
     MaterialApp(
       title: 'Navigation Basics',
@@ -87,8 +94,40 @@ void main() {
         Announces.routeName : (context) => Announces(),
         UserProfile.routeName : (context) => UserProfile(),
         Profile.routeName : (context) => Profile(),
+/* à checker */
+        '/success': (_) => SuccessPage(),
+        '/cancel': (_) => errorPage()
         SearchPropositions.routeName: (context) => SearchPropositions(),
+
        },
     ),
   );
+}
+
+class SuccessPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Success',
+          style: Theme.of(context).textTheme.headline1,
+        ),
+      ),
+    );
+  }
+}
+
+class errorPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Error',
+          style: TextStyle(color: Colors.red, fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
 }

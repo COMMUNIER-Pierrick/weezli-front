@@ -1,7 +1,8 @@
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/Formule.dart';
+import 'package:weezli/model/FinalPrice.dart';
+import 'package:weezli/model/Choice.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/Payment.dart';
@@ -53,8 +54,8 @@ class CardItem extends StatelessWidget {
         active: 1,
         payment: Payment(id: 5, name: 'RIB', IBAN: '46116465654'),
         urlProfilPicture: 'oiogdfpogkfdiojo',
-        formule: Formule(
-            id: 1, name: 'Formule 1', description: 'Formule 1', price: 5),
+        formule: Choice(
+            id: 1, name: 'Formule 1', description: 'Formule 1', price: 5, id_payment: ''),
         check: Check(
             id: 1,
             statusIdentity: 1,
