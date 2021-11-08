@@ -69,9 +69,6 @@ class _UserProfileState extends State<UserProfile> {
                           Navigator.pushNamed(context, "/");
                         })))
         ],
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
-            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
       ),
       body: SingleChildScrollView(
           child: Center(

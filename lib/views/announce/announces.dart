@@ -8,7 +8,9 @@ import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/widgets/bottomBar.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
+
 
 class Announces extends StatefulWidget {
   @override
@@ -143,39 +145,40 @@ class AnnouncesState extends State<Announces> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
-            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
         title: Text("Mes annonces"),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(70),
           child: _searchBar,
         ),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-                padding: EdgeInsets.all(20.0),
-                child: FutureBuilder(
-                    future: getAnnouncesList(idUser),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done &&
-                          snapshot.hasData) {
-                        List<Announce> _listAnnounces =
-                            snapshot.data as List<Announce>;
-                        return Column(
-                          children: [
-                            for (Announce item in _listAnnounces)
-                              _cardannounce(item, idUser),
-                          ],
-                        );
-                      } else
-                        return buildLoadingScreen();
-                    })),
-          ],
-        ),
-      ),
+      body:SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: FutureBuilder(
+                        future: getAnnouncesList(idUser),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done &&
+                              snapshot.hasData) {
+                            List<Announce> _listAnnounces =
+                                snapshot.data as List<Announce>;
+                            return Column(
+                              children: [
+                                for (Announce item in _listAnnounces)
+                                  _cardannounce(item, idUser),
+                              ],
+                            );
+                          } else
+                            return buildLoadingScreen();
+                        })),],
+            ),
+          ),
+ //     bottomNavigationBar: BottomBar(),
     );
   }
 }
+

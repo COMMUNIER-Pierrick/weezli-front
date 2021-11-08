@@ -18,4 +18,6 @@ class WeezlyColors {
   static const Color yellowgreen = Color.fromRGBO(226, 223, 4, 1);
   static const Color green = Color.fromRGBO(108, 164, 58, 1);
   static const Color facebook = Color.fromRGBO(59, 89, 153, 1);
+  static const Color red = Color.fromRGBO(248, 15, 15, 1);
+  static const Color orange = Color.fromRGBO(245, 103, 16, 1);
 }

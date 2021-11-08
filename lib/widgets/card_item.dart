@@ -63,19 +63,9 @@ class CardItem extends StatelessWidget {
             statusEmail : 1,
             code: 'lkjgfùdfgùjdfg'),
         moyenneAvis: 4),
-
     type: 2,
-    transact: 0,
-    price: 60, dateCreated: new DateTime.now(), finalPrice: FinalPrice (
-    user: User (
-      firstname: 'Noémie',
-      lastname: 'Contant'
-    ),
-    proposition: 30,
-    accept: 1
-  ),
-
-    //idOrder: 1,
+    price: 60, dateCreated: new DateTime.now(),
+    //proposition: 30,
   );
 
   @override

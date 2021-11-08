@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
@@ -105,11 +104,19 @@ class _SearchState extends State<Search> {
     else Navigator.pushNamed(context, "/login");
   }
 
-  Future<List <Announce>> getAnnouncesList() async {
+  Future<List<Announce>> getAnnouncesList() async {
     String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
     int type;
     searchType == "sending" ? type = 2 : type = 1;
-    return announcesList = await findByType(type);
+    announcesList = await findByType(type);
+    print(announcesList);
+    return announcesList;
+  }
+
+  Future<User?> getActualUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    return user;
   }
 
   @override
@@ -245,7 +252,7 @@ class _SearchState extends State<Search> {
                           _displayTextFilter(
                               'Moyen de transport : ${_filters['travelMode']}'),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -295,17 +302,17 @@ class _SearchState extends State<Search> {
             SizedBox(height: 20),
             Row(children: [
               FutureBuilder(
-                  future: getAnnouncesList(),
-                  builder: (context, snapshot) {
+                  future: Future.wait([getAnnouncesList(), getActualUser()]),
+                  builder: (context, AsyncSnapshot<List> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData) {
                       List<Announce> announcesList =
-                          snapshot.data as List<Announce>;
+                          snapshot.data![0] as List<Announce>;
+                      User user = snapshot.data![1] as User;
                       return Container(
                           child: Column(children: [
                         for (Announce announce in announcesList)
-                          if (announce.transact == 0)
-                          SearchResults().oneResult(context, announce)
+                          SearchResults().oneResult(context, announce, user)
                       ]));
                     }
                     else
