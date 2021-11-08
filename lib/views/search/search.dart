@@ -109,7 +109,6 @@ class _SearchState extends State<Search> {
     int type;
     searchType == "sending" ? type = 2 : type = 1;
     announcesList = await findByType(type);
-    print(announcesList);
     return announcesList;
   }
 

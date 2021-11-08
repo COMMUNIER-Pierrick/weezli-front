@@ -11,7 +11,6 @@ Future<void> saveData(str) async {
   var mapUser = UserDynamic
       .fromJson(parsed)
       .userDynamic;
-  print(mapUser);
   User user = User.fromJson(mapUser);
   final data = jsonDecode(str);
   await _storage.write(key: 'jwt', value: data["token"]);

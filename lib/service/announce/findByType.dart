@@ -17,9 +17,7 @@ Future<List<Announce>> findByType(int type) async {
   final parsed = jsonDecode(response.body);
 
   var announcesListMap = AnnouncesListMap.fromJson(parsed).list;
-  print(announcesListMap);
   announcesList = AnnouncesList.fromJson(announcesListMap).announcesList;
-  print(announcesList);
   return announcesList;
 }
 

@@ -101,7 +101,6 @@ class _LoginState extends State<Login> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Connexion réussie')),
                       );
-                      print(response.body);
                       saveData(response.body);
                       Navigator.pushNamed(context, '/');
                     } else {

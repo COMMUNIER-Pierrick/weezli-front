@@ -19,7 +19,6 @@ class _HomeState extends State<Home> {
   searchPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userStr = prefs.getString('user');
-    print(userStr);
     return userStr;
   }
 
