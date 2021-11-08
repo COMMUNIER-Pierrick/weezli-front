@@ -1,23 +1,23 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:weezli/model/Formule.dart';
+import 'package:weezli/model/Choice.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Formule>> readAllFormules() async {
+Future<List<Choice>> readAllFormules() async {
+  final String url = "http://10.0.2.2:5000/choice/all-choices";
 
   final Response response = await http.get(
-    Uri.parse("http://10.0.2.2:5000/formule/all-formules"),
+    Uri.parse(url),
     headers: <String, String>{
       "Content-Type": "application/json; charset=UTF-8",
       "Accept": "application/json",
     },
   );
-
-  List<Formule> recupAll;
+  List<Choice> choiceList = [];
   final parsed = jsonDecode(response.body);
-  recupAll = parsed.map<Formule>((json) => Formule.fromJson(json)).toList();
-  inspect(recupAll);
-  return recupAll;
-
+  var choices = ChoiceListMap.fromJson(parsed).list;
+  choices.remove(choices[0]);
+  choiceList = ChoiceList.fromJson(choices).choiceList;
+  return choiceList;
 }

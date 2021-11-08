@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:weezli/model/Formule.dart';
+import 'package:weezli/model/Choice.dart';
 import 'package:weezli/model/Payment.dart';
 
 import 'Address.dart';
@@ -40,7 +40,7 @@ class User {
   int? active;
   Payment? payment;
   String? urlProfilPicture;
-  Formule? formule;
+  Choice? formule;
   Check? check;
   List<Opinion>? opinions;
   num? moyenneAvis;
@@ -65,7 +65,7 @@ class User {
           : null,
       urlProfilPicture: json["url_profil_img"],
       formule:
-      (json['choice'] != null) ? Formule.fromJson(json["choice"]) : null,
+      (json['choice'] != null) ? Choice.fromJson(json["choice"]) : null,
       check: (json['check'] != null) ? Check.fromJson(json["check"]) : null,
       opinions: json["id_opinion"],
       moyenneAvis: json["average_opinion"],

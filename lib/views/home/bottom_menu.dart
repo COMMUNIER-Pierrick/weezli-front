@@ -1,4 +1,5 @@
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/views/account/modifyProfile.dart';
 import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/message/message_view.dart';
 import 'package:weezli/views/home/home.dart';
@@ -22,6 +23,7 @@ class _BottomMenuState extends State<BottomMenu> {
     Profile(),
     MessageView(),
     Profile(),
+    Personal()
   ];
 
   void _onItemTapped(int index) {
