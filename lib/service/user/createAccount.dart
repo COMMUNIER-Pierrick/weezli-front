@@ -8,16 +8,15 @@ Future<Response> createUser(User account) async {
   String str = "";
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
-
     var address = {};
     var resBodyAddress = {};
-    resBodyAddress ["city"] = account.address![0].city;
-    resBodyAddress["country"] = account.address![0].country;
     resBodyAddress["number"] = account.address![0].number;
     resBodyAddress["street"] = account.address![0].street;
-    resBodyAddress["zipCode"] = account.address![0].zipCode;
-    resBodyAddress["name"] = '';
     resBodyAddress["additionalAddress"] = '';
+    resBodyAddress["zipCode"] = account.address![0].zipCode;
+    resBodyAddress ["city"] = account.address![0].city;
+    resBodyAddress["country"] = account.address![0].country;
+    //resBodyAddress["name"] = '';
     resBodyAddress["idInfo"] = 3;
     address = resBodyAddress;
 

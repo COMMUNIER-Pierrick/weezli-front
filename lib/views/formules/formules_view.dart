@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:weezli/service/Formule/create_Formule.dart';
 import 'package:weezli/service/Formule/read_all.dart';
 import 'package:http/http.dart' as http;
-import 'package:weezli/service/card_payments/no_webhook_payment_screen.dart';
-import '../../service/checkout/server_stub.dart';
-import 'package:weezli/service/checkout/stripe_checkout.dart';
 
 class FormuleView extends StatefulWidget{
 
@@ -24,7 +21,6 @@ class FormuleViewState extends State<FormuleView>{
 
   String choice = "";
 
-  //late Map<String, dynamic> choices;
   bool dataOk = false;
   List list = [];
   List<Choice> _choiceList = [];
@@ -48,27 +44,9 @@ class FormuleViewState extends State<FormuleView>{
   void initState() {
     getAllFormules();
     super.initState();
-    //formuleListe = readAllFormules();
-    //print(formuleListe);
   }
 
   _readResult(){
-    NoWebhookPaymentScreen();
-    //setState(() async {
-
-      /*const url = "http://10.0.2.2:4242/create-checkout-session" ;
-      _controller.value = _controller.value.copyWith(text:_tf,);
-      valeur = _controller.text;
-      print(valeur);
-      var response = await http.post(
-          Uri.parse(url),
-          body : {"id" : valeur}
-      );
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-*/
-    //}
-    //);
   }
 
 
@@ -114,12 +92,7 @@ class FormuleViewState extends State<FormuleView>{
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              //child: Text(Formule.description),
             ),
-            /*Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [*/
             Text.rich(
                 TextSpan(
                     text: "${Choice.price}€",
@@ -134,11 +107,8 @@ class FormuleViewState extends State<FormuleView>{
             ),
             ElevatedButton(
               onPressed: () => {
-
              // _tf = "${Choice.id_payment}";
               _readResult()
-              //recupIdPrice("${Choice.id_payment}");
-              //redirectToCheckout(context);
               },
               child: Text("SOUSCRIRE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
               style: ElevatedButton.styleFrom(
@@ -155,5 +125,4 @@ class FormuleViewState extends State<FormuleView>{
       ),
     );
   }
-
 }

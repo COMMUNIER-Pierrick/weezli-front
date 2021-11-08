@@ -20,7 +20,7 @@ class User {
     this.active,
     this.payment,
     this.urlProfilPicture,
-    this.formule,
+    this.choice,
     this.check,
     this.opinions,
     this.moyenneAvis,
@@ -40,7 +40,7 @@ class User {
   int? active;
   Payment? payment;
   String? urlProfilPicture;
-  Choice? formule;
+  Choice? choice;
   Check? check;
   List<Opinion>? opinions;
   num? moyenneAvis;
@@ -52,7 +52,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-
       id: json["id"],
       firstname: json["firstname"],
       lastname: json["lastname"],
@@ -64,9 +63,8 @@ class User {
           ? Payment.fromJson(json["payment"])
           : null,
       urlProfilPicture: json["url_profil_img"],
-      formule:
-      (json['choice'] != null) ? Choice.fromJson(json["choice"]) : null,
-      check: (json['check'] != null) ? Check.fromJson(json["check"]) : null,
+      choice: (json['choice'] != null) ? Choice.fromJson(json["choice"]) : null,
+      check: (json['check'] != null) ?  Check.fromJson(json["check"]) : null,
       opinions: json["id_opinion"],
       moyenneAvis: json["average_opinion"],
       password: json["password"],

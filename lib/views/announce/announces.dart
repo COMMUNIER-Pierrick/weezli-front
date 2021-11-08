@@ -8,7 +8,6 @@ import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/widgets/bottomBar.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
 

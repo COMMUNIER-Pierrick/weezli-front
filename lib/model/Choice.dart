@@ -5,21 +5,28 @@ Choice choiceFromJSon(String str) => Choice.fromJson(json.decode(str));
 String choiceToJson(Choice data) => json.encode(data.toJson());
 
 class Choice{
-  final int id;
-  final String name;
-  final String? description;
-  final num? price;
-  final String id_payment;
 
-  Choice({required this.id,required this.name,required this.description,required this.price,required this.id_payment});
+   int id;
+   String name;
+   String description;
+   num price;
+   String id_payment;
+
+  Choice({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.id_payment
+  });
 
   factory Choice.fromJson(Map<String, dynamic> json) {
     return Choice(
         id: json['id'],
         name: json['name'],
-        description: json["description"],
-        price: json['price'],
-        id_payment: json['id_payment']
+        description: (json["description"] != null) ? json["description"] : null,
+        price: (json['price'] != null) ? json['price'] : null,
+        id_payment: (json['id_payment'] != null) ? json['id_payment'] : "",
     );
   }
 

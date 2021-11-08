@@ -1,7 +1,6 @@
 import 'package:weezli/model/Address.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Check.dart';
-import 'package:weezli/model/FinalPrice.dart';
 import 'package:weezli/model/Choice.dart';
 import 'package:weezli/model/Package.dart';
 import 'package:weezli/model/PackageSize.dart';
@@ -28,13 +27,13 @@ class CardItem extends StatelessWidget {
           number: 2,
           street: 'rue de Merville',
           zipCode: '59160',
-          city: 'France', name: 'maison'),
+          city: 'France'),
       addressArrival: Address(
           id: 45,
           number: 3,
           street: 'allée de la cour baleine',
           zipCode: '95500',
-          city: 'Madagascar', name: 'Chez les vieux'),
+          city: 'Madagascar'),
       datetimeDeparture: DateTime.parse('2021-08-20 17:30:04Z'),
       dateTimeArrival: DateTime.parse('2021-08-21 08:30:04Z'),
       kgAvailable: 1,
@@ -54,8 +53,8 @@ class CardItem extends StatelessWidget {
         active: 1,
         payment: Payment(id: 5, name: 'RIB', IBAN: '46116465654'),
         urlProfilPicture: 'oiogdfpogkfdiojo',
-        formule: Choice(
-            id: 1, name: 'Formule 1', description: 'Formule 1', price: 5, id_payment: ''),
+        choice: Choice(
+            id: 1, name: 'Formule 1', description: 'Formule 1', price: 5, id_payment: "1"),
         check: Check(
             id: 1,
             statusIdentity: 1,

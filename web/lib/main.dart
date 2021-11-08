@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'checkout/stripe_checkout.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -28,7 +26,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: RaisedButton(
-          onPressed: () => redirectToCheckout(context),
+          onPressed: () {},
           child: Text('Stripe Checkout in Flutter!'),
         ),
       ),

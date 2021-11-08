@@ -84,7 +84,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   dio:
     dependency: "direct main"
     description:
@@ -157,7 +157,7 @@ packages:
       name: flutter_stripe
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -459,21 +459,21 @@ packages:
       name: stripe_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
   stripe_ios:
     dependency: transitive
     description:
       name: stripe_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
   stripe_platform_interface:
     dependency: transitive
     description:
       name: stripe_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
   term_glyph:
     dependency: transitive
     description:
@@ -529,7 +529,7 @@ packages:
       name: webview_flutter_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.2.1"
   webview_flutter_platform_interface:
     dependency: transitive
     description:

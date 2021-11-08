@@ -2,7 +2,6 @@
 class Address {
   Address ({
     this.id,
-    this.name,
     this.number,
     this.street,
     this.additionalAddress,
@@ -13,7 +12,6 @@ class Address {
   });
 
   int? id;
-  String? name;
   int? number;
   String? street;
   String? additionalAddress;
@@ -24,7 +22,6 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
     id: json["id"],
-    name : json ["name"],
     number: json["number"],
     street: json["street"],
     additionalAddress: json["additional_address"],
@@ -36,7 +33,6 @@ class Address {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "name" : name,
     "number": number,
     "street": street,
     "additional_address": additionalAddress,
