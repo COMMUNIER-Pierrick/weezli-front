@@ -4,6 +4,7 @@ import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findByType.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';
@@ -98,10 +99,10 @@ class _SearchState extends State<Search> {
     User? user = getUserInfo(prefs);
     if (user != null) {
       searchType == "sending"
-          ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: user)
-          : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: user);
-    }
-    else Navigator.pushNamed(context, "/login");
+          ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: {'user': user})
+          : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: {'user': user});
+    }else
+    Navigator.pushNamed(context, '/login');
   }
 
   Future<List<Announce>> getAnnouncesList() async {
@@ -307,11 +308,15 @@ class _SearchState extends State<Search> {
                         snapshot.hasData) {
                       List<Announce> announcesList =
                           snapshot.data![0] as List<Announce>;
-                      User user = snapshot.data![1] as User;
+                      dynamic user = snapshot.data![1];
                       return Container(
                           child: Column(children: [
-                        for (Announce announce in announcesList)
-                          SearchResults().oneResult(context, announce, user)
+                            if(user != null)
+                              for (Announce announce in announcesList)
+                                SearchResults().oneResultConnect(context, announce, user)
+                            else
+                              for (Announce announce in announcesList)
+                                SearchResults().oneResultDisconnect(context, announce)
                       ]));
                     }
                     else

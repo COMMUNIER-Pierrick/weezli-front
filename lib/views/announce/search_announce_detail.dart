@@ -7,16 +7,20 @@ import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Order.dart';
+import 'package:weezli/model/Proposition.dart';
 import 'package:weezli/model/Status.dart';
+import 'package:weezli/model/StatusProposition.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/order/createOrder.dart';
+import 'package:weezli/service/proposition/createProposition.dart';
+import 'package:weezli/service/status/findStatusById.dart';
+import 'package:weezli/service/statusProposition/findStatusPropositionById.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weezli/views/orders/order_details.dart';
-
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
 import '../../widgets/avatar.dart';
@@ -40,8 +44,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
-    final height = (mediaQuery.size.height -
-        appBar.preferredSize.height -
+    final height = (mediaQuery.size.height - appBar.preferredSize.height -
         mediaQuery.padding.top);
     final arg = ModalRoute
         .of(context)!
@@ -50,6 +53,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     Announce announce = arg['announce'];
     User user = arg['user'];
     String? sizes = sizesList(announce.package.size);
+    final TextEditingController _offerPriceCtrl = TextEditingController(
+        text: announce.price.toString());
 
     return Scaffold(
         appBar: AppBar(
@@ -223,6 +228,12 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   "Commission : ",
                                   announce.price!.toStringAsFixed(2) + " €"),
                             SizedBox(height: 10),
+                            _buildRow(
+                              context,
+                              Icons.remove_red_eye_outlined,
+                              "Nombre de vues : ",
+                              announce.views.toString(),
+                            ),
                             /* if (announce.type == 2)
                             Container(
                               width: 225,
@@ -282,9 +293,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                         Container(
                           height: height * 0.1,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
                             ),
                             color: WeezlyColors.white,
                             boxShadow: [
@@ -310,7 +320,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   ),
                                 ElevatedButton(
                                     onPressed: () =>
-                                        _contact(announce, user.id!),
+                                        _contact(announce, user.id!,
+                                            _offerPriceCtrl),
                                     child: Text(
                                       "Contacter".toUpperCase(),
                                       style: TextStyle(
@@ -449,49 +460,35 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  _contact(Announce announce, int idUser) async {
+  _contact(Announce announce, int idUser,
+      TextEditingController _offerPriceCtrl) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(
         prefs); //Vérifie si on a quelque chose en sharedpreferences (et donc si l'user est connecté). Le redirige vers le login sinon.
     if (user == null)
       Navigator.pushNamed(context, "/login");
     else {
-      if (announce.type == 2) {
-        String buttonTitle = "Payer";
-        String text = "Ici bientôt une solution de paiement. ";
-        showDialog(
-            context: context, builder: (BuildContext context) {
-          return _buildPopupCounterOffer(
-              context,
-              announce,
-              announce.price,
-              buttonTitle,
-              text,
-              user,
-              idUser);
-        });
-      }
-      else {
-        String buttonTitle = "Proposition";
-        String text = "Vous pouvez faire une proposition de prix pour le transport";
-        showDialog(
-            context: context, builder: (BuildContext context) {
-          return _buildPopupCounterOffer(
-              context,
-              announce,
-              announce.price,
-              buttonTitle,
-              text,
-              user,
-              idUser);
-        });
-      }
+      String buttonTitle = "Proposition";
+      String text = "*Vous avez la possibiliter de faire une seule proposition en modifiant le prix avant de valider";
+      showDialog(
+          context: context, builder: (BuildContext context) {
+        return _buildPopupCounterOffer(
+            context,
+            announce,
+            announce.price,
+            buttonTitle,
+            text,
+            user,
+            idUser,
+            _offerPriceCtrl
+        );
+      });
     }
   }
 
   Widget _buildPopupCounterOffer(BuildContext context, Announce announce,
-      num? price, String buttonTitle, String text, User user, int idUser) {
-    var myController = TextEditingController();
+      num? price, String buttonTitle, String text, User user, int idUser,
+      TextEditingController _offerPriceCtrl) {
     return new Dialog(
       child: Container(
         width: MediaQuery
@@ -514,43 +511,29 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LimitedBox(
-                    maxWidth: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.7,
-                    child: Text(
-                      text,
-                      textAlign: TextAlign.center,
-                    ))
-              ],
-            ),
-            if (announce.type == 1)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.3,
-                    child: TextFormField(
-                      controller: myController,
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.euro),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
+                  child: TextFormField(
+                    controller: _offerPriceCtrl,
+                    onTap: () => _offerPriceCtrl.clear(),
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.euro),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -592,20 +575,104 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                     ),
-                    onPressed: () {},/* =>
-                        announce.type == 2 ? _setTransact(
-                        context, announce, user, idUser)
-                        : _setProposition(
-                        context, announce, user, myController),*/
+                    onPressed: () =>
+                        _createOrderOrOffer(
+                            announce, context, idUser, _offerPriceCtrl),
                     child: const Text("VALIDER"),
                   ),
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LimitedBox(
+                    maxWidth: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.7,
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                    ))
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  _createOrderOrOffer(Announce announce, BuildContext context, int idUser,
+      TextEditingController priceController) async {
+    // Récupération du statusProposition
+    //dynamic statusPropositionFuture = findStatusPropositionById(3);
+    StatusProposition statusProposition = await findStatusPropositionById(3);
+
+    // Récupération du Status
+    //dynamic status = findStatusById(1);
+    Status status = await findStatusById(1);
+
+    // Vérification si l'utilisateur est bien connecter
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user == null)
+      Navigator.pushNamed(context, "/login");
+    else if (announce.price == double.parse(priceController.text)) {
+      // Création de l'objet proposition à envoyer au back
+      Proposition proposition = Proposition(
+        announce: announce,
+        userProposition: user,
+        proposition: announce.price,
+        statusProposition: statusProposition,
+      );
+      var responseProposition = await createProposition(proposition);
+      if (responseProposition.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Proposition créée !')),
+        );
+
+        // Création de l'objet order à envoyer au back
+        Order order = Order(
+          announce: announce,
+          status: status,
+          dateOrder: DateTime.now(),
+        );
+        var response = await createOrder(
+            order); // Envoi de l'order au service et réception de la réponse
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Commande créée !')),
+          );
+          // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
+          var mapOrder = OrdersListDynamic
+              .fromJson(jsonDecode(response.body))
+              .ordersListDynamic;
+          Order newOrder = Order.fromJson(mapOrder);
+
+          Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+            'order': newOrder,
+            'userId': idUser
+          },); //newOrder
+        }
+      } else {
+        // Création de l'objet proposition à envoyer au back
+        Proposition proposition = Proposition(
+          announce: announce,
+          userProposition: user,
+          proposition: announce.price,
+          statusProposition: statusProposition,
+        );
+        // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
+        var response = await createProposition(proposition);
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('proposition envoyée !')),
+          );
+          Navigator.pushNamed(context, '/');
+        }
+      }
+    }
   }
 
 /*_setTransact(BuildContext context, Announce announce, User user, int idUser) async {

@@ -8,9 +8,9 @@ class Choice{
 
    int id;
    String name;
-   String description;
-   num price;
-   String id_payment;
+   String? description;
+   num? price;
+   String? id_payment;
 
   Choice({
     required this.id,
@@ -24,9 +24,9 @@ class Choice{
     return Choice(
         id: json['id'],
         name: json['name'],
-        description: (json["description"] != null) ? json["description"] : null,
+        description: (json['description'] != null) ? json['description'] : null,
         price: (json['price'] != null) ? json['price'] : null,
-        id_payment: (json['id_payment'] != null) ? json['id_payment'] : "",
+        id_payment: (json['id_payment'] != null) ? json['id_payment'] : null,
     );
   }
 

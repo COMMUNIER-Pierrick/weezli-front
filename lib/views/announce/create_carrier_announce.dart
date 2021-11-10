@@ -156,7 +156,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    User user = ModalRoute.of(context)!.settings.arguments as User;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    User user = arg['user'];
 
     return Scaffold(
       appBar: appBar,

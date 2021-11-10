@@ -118,7 +118,9 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    User user = ModalRoute.of(context)!.settings.arguments as User;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    User user = arg['user'];
+    //User user = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
