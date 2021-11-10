@@ -606,11 +606,9 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
   _createOrderOrOffer(Announce announce, BuildContext context, int idUser,
       TextEditingController priceController) async {
     // Récupération du statusProposition
-    //dynamic statusPropositionFuture = findStatusPropositionById(3);
     StatusProposition statusProposition = await findStatusPropositionById(3);
 
     // Récupération du Status
-    //dynamic status = findStatusById(1);
     Status status = await findStatusById(1);
 
     // Vérification si l'utilisateur est bien connecter
@@ -626,13 +624,14 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
         proposition: announce.price,
         statusProposition: statusProposition,
       );
-      var responseProposition = await createProposition(proposition);
-      if (responseProposition.statusCode == 200) {
+
+      var response = await createProposition(proposition);
+      if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Proposition créée !')),
         );
 
-        // Création de l'objet order à envoyer au back
+        /*// Création de l'objet order à envoyer au back
         Order order = Order(
           announce: announce,
           status: status,
@@ -642,20 +641,24 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
             order); // Envoi de l'order au service et réception de la réponse
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Commande créée !')),
+            const SnackBar(content: Text("Commande créée !")),
           );
-          // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
+        }
+        print(jsonDecode(response.body));
+          // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.*/
+        print(jsonDecode(response.body));
           var mapOrder = OrdersListDynamic
               .fromJson(jsonDecode(response.body))
               .ordersListDynamic;
+        print(mapOrder);
           Order newOrder = Order.fromJson(mapOrder);
+          print(newOrder);
 
           Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
             'order': newOrder,
             'userId': idUser
           },); //newOrder
-        }
-      } else {
+        }else {
         // Création de l'objet proposition à envoyer au back
         Proposition proposition = Proposition(
           announce: announce,

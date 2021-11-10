@@ -4,32 +4,23 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:weezli/model/Order.dart';
 
-Future<Response> createOrder(Order newOrder) async {
+Future<Response> createOrder(Order order) async {
   var str;
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
 
-    //On créé peu à peu les différents éléments du json
-
-    var announce = {};
-    announce["id"] = newOrder.announce.id;
-
-    var status = {};
-    status["id"] = newOrder.status.id;
-
     // Corps de l'order qui contient tous ses éléments
 
+    var newOrder = {};
+    newOrder["codeValidated"] = order.validationCode;
+    newOrder["status"] = order.status.id;
+    newOrder["announce"] = order.announce.id;
+    newOrder["dateOrder"] = order.dateOrder.toIso8601String();
+
     var resBody = {};
-    resBody["announce"] = announce;
-    resBody["status"] = status;
-    resBody["dateOrder"] = newOrder.dateOrder.toIso8601String();
-    resBody["qrCode"] = '';
+    resBody["Order"] = newOrder;
 
-    var order = {};
-
-    order["Order"] = resBody;
-
-    str = encoder.convert(order);
+    str = encoder.convert(resBody);
 
   } catch(e) {
     print(e);

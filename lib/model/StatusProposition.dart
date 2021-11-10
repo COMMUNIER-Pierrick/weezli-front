@@ -1,3 +1,10 @@
+
+import 'dart:convert';
+
+StatusProposition statusPropositionFromJSon(String str) => StatusProposition.fromJson(json.decode(str));
+
+String statusPropositionToJson(StatusProposition data) => json.encode(data.toJson());
+
 class StatusProposition {
   StatusProposition ({
     required this.id,
@@ -60,7 +67,7 @@ class StatusPropositionListDynamic{
 
   factory StatusPropositionListDynamic.fromJson(Map<String, dynamic> json){
     return StatusPropositionListDynamic(
-        statusPropositionListDynamic: json ["StatusProposition"]
+        statusPropositionListDynamic: json ["Status_proposition"]
     );
   }
 }
