@@ -289,8 +289,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                         style: TextStyle(height: 1.3),
                       ),
                       SizedBox(height: 10),
-                      if (user.id != announce.userAnnounce.id)
-                        Container(
+                      //if (user.id != announce.userAnnounce.id)
+                        /*Container(
                           height: height * 0.1,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
@@ -339,12 +339,71 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                           BorderRadius.circular(25)),
                                     ))
                               ]),
-                        )
+                        )*/
                     ]
                 )
             )
         )
     );
+  }
+
+  Widget _buildPopupcontact(Announce announce, User user, TextEditingController _offerPriceCtrl){
+
+    if (user.id != announce.userAnnounce.id) {
+      return
+      Container(
+        //height: height * 0.1,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+              Radius.circular(10)
+          ),
+          color: WeezlyColors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.26),
+              spreadRadius: 1,
+              blurRadius: 15,
+              offset:
+              Offset(0, 1), // changes position of shadow
+            )
+          ],
+        ),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              if ((announce.price != null) &&
+                  (announce.price != 0))
+                Text(
+                  announce.price!.toString() + " €",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
+              ElevatedButton(
+                  onPressed: () =>
+                      _contact(announce, user.id!,
+                          _offerPriceCtrl),
+                  child: Text(
+                    "Contacter".toUpperCase(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 50),
+                    primary: Theme
+                        .of(context)
+                        .buttonColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(25)),
+                  ))
+            ]),
+      );
+    }else{
+      return Row();
+    }
   }
 
   // Afficher les images sur la page
@@ -656,7 +715,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
 
           Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
             'order': newOrder,
-            'userId': idUser
+            'idUser': idUser
           },); //newOrder
         }else {
         // Création de l'objet proposition à envoyer au back

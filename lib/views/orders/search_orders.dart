@@ -2,6 +2,7 @@ import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
+import 'package:weezli/service/order/findOrdersByUser.dart';
 import 'package:weezli/service/order/findOrdersByUserSender.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _SearchOrdersState extends State<SearchOrders> {
 
 
   Future<List<Order>> getOrdersList(int idUser) async {
-    return listOrders = await findOrdersByUserSender(idUser);
+    return listOrders = await findOrdersByUser(idUser);
   }
 
   @override
@@ -146,30 +147,12 @@ class _SearchOrdersState extends State<SearchOrders> {
                     ),
                     Row(
                       children: [
-                        order.status.name == "Payé"
-                            ? Row(children: [
-                                Icon(
-                                  Icons.circle,
-                                  color: WeezlyColors.yellow,
-                                ),
-                                SizedBox(width: 10),
-                                Text("En cours"),
-                              ])
-                            : Row(children: [
-                                Icon(
-                                  Icons.circle,
-                                  color: WeezlyColors.green,
-                                ),
-                                SizedBox(width: 10),
-                                Text("Livré"),
-                              ])
-                      ],
-                    ),
+                        _status(order.status.name)
                   ],
                 )
               ],
             ),
-          ));
+          ])));
     }
 
     return Scaffold(
@@ -204,6 +187,49 @@ class _SearchOrdersState extends State<SearchOrders> {
         ),
       ),
     );
+  }
+
+  _status(String statut){
+    if(statut == "En cours"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.yellow,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }else if (statut == "Livré"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.orange,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }else if (statut == "Terminé"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.green,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }
   }
 }
 

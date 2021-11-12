@@ -19,10 +19,12 @@ class SearchPropositions extends StatefulWidget {
 class _SearchPropositionsState extends State<SearchPropositions> {
   final TextEditingController _searchController = TextEditingController();
 
-  List listPropositions = [];
+  List<Proposition> listPropositions = [];
 
   Future<List<Proposition>> getPropositionsList() async {
-    return listPropositions = await findAll();
+    listPropositions = await findAll();
+    print(listPropositions);
+    return listPropositions;
   }
 
   Future<User?> getActualUser() async {
@@ -178,13 +180,13 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                   builder: (context, AsyncSnapshot<List> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
                         snapshot.hasData) {
-                      List<Proposition> _listPropositions = snapshot.data![0] as List<Proposition>;
+                      List<Proposition> listPropositions = snapshot
+                          .data![0] as List<Proposition>;
                       User user = snapshot.data![1] as User;
-                      return Column(
-                        children: [
-                          for (Proposition item in _listPropositions) _cardProposition(item, user.id!),
-                        ],
-                      );
+                      return Container(
+                          child: Column(children: [
+                            for (Proposition proposition in listPropositions) _cardProposition(proposition, user.id!),
+                          ]));
                     } else
                       return buildLoadingScreen();
                   }),

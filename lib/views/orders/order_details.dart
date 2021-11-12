@@ -147,7 +147,7 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              if(order.announce.userAnnounce.id == idUser)
+              //if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Column(
@@ -166,19 +166,6 @@ class OrderDetailState extends State<OrderDetail> {
               ),
               SizedBox(
                 height: _separator,
-              ),
-              if(order.announce.userAnnounce.id == idUser)
-              Row(
-                children: [
-                  Text(
-                      "Code à transmettre au destinaire du colis uniquement",
-                      style: TextStyle (
-                        fontSize: 12,
-                      )),
-                  SizedBox(
-                    height: _separator,
-                  ),
-                ],
               ),
               Divider(
                 thickness: 2,
@@ -199,19 +186,7 @@ class OrderDetailState extends State<OrderDetail> {
               ),
               Row(
                 children: [
-                  Text("Statut : "),
-                  order.status.name == 'Payé'
-                      ? Text("Payé")
-                      : Text("Terminé"),
-                  order.status.name == 'En cours'
-                      ? Icon(
-                          Icons.circle,
-                          color: WeezlyColors.yellow,
-                        )
-                      : Icon(
-                          WeezlyIcon.check_circle,
-                          color: WeezlyColors.green,
-                        ),
+                  _status(order.status.name)
                 ],
               ),
               SizedBox(
@@ -260,4 +235,47 @@ Widget _opinion(Order order, BuildContext context) {
     return SizedBox(
       height: 0,
     );
+}
+
+_status(String statut){
+  if(statut == "En cours"){
+    return Row(
+        children: [
+          Row(children: [
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.yellow,
+            ),
+            SizedBox(width: 10),
+            Text(statut),
+          ]
+          )]
+    );
+  }else if (statut == "Livré"){
+    return Row(
+        children: [
+          Row(children: [
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.orange,
+            ),
+            SizedBox(width: 10),
+            Text(statut),
+          ]
+          )]
+    );
+  }else if (statut == "Terminé"){
+    return Row(
+        children: [
+          Row(children: [
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.green,
+            ),
+            SizedBox(width: 10),
+            Text(statut),
+          ]
+          )]
+    );
+  }
 }
