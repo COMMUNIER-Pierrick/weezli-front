@@ -14,7 +14,7 @@ Future<Response> createProposition(Proposition proposition) async {
     newProposition["id_announce"] = proposition.announce.id;
     newProposition["id_user"] = proposition.userProposition.id;
     newProposition["proposition"] = proposition.proposition;
-    newProposition["status_proposition"] = proposition.statusProposition.id;
+    newProposition["status_proposition"] = proposition.statusProposition;
 
     var resBody = {};
     resBody["Proposition"] = newProposition;

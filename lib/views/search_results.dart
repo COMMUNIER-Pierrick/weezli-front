@@ -76,7 +76,7 @@ class SearchResults {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/');
+        Navigator.pushNamed(context, '/login');
       },
       child: Container(
         margin: EdgeInsets.fromLTRB(20, 5, 0, 5),

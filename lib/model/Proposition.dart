@@ -26,9 +26,9 @@ class Proposition {
   factory Proposition.fromJson(Map<String, dynamic> json) {
     return Proposition(
         announce: Announce.fromJson(json["announce"]),
-        userProposition: User.fromJson(json["userProposition"]),
+        userProposition: User.fromJson(json["user"]),
         proposition: json["proposition"],
-        statusProposition: StatusProposition.fromJson(json["statusProposition"])
+        statusProposition: StatusProposition.fromJson(json["status_proposition"])
     );
   }
 
@@ -56,7 +56,7 @@ class PropositionsListMap {
   }
 }
 
-// Passe d'une liste dynamique à un objet map pour créer une annonce.
+// Passe d'une liste dynamique à un objet map pour créer une proposition.
 
 class PropositionsListDynamic {
   PropositionsListDynamic({
@@ -78,7 +78,7 @@ class PropositionsList {
 
   List<Proposition> propositionsList;
 
-  //Récupère une liste dynamique pour créer annonce par annonce, puis recréer une liste d'annonces.
+  //Récupère une liste dynamique pour créer proposition par proposition, puis recréer une liste de propositions.
 
   factory PropositionsList.fromJson(List<dynamic> parsedJson) {
     List<Proposition> propositions = [];

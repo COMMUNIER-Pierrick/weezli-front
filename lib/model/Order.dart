@@ -34,8 +34,8 @@ class Order {
     return Order(
         id: json["id"],
         validationCode: json ["codeValidated"],
-        status: Status.fromJson(json["status"]),
-        announce: Announce.fromJson(json["announce"]),
+        status: Status.fromJson(json["id_status"]),
+        announce: Announce.fromJson(json["id_announce"]),
         dateOrder: DateTime.parse(json["dateOrder"]),
         //user: User.fromJson(json["buyer"]),
         qrCode: json ["qrCode"],

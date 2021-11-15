@@ -289,8 +289,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                         style: TextStyle(height: 1.3),
                       ),
                       SizedBox(height: 10),
-                      //if (user.id != announce.userAnnounce.id)
-                        /*Container(
+                      if (user.id != announce.userAnnounce.id)
+                        Container(
                           height: height * 0.1,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(
@@ -339,7 +339,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                           BorderRadius.circular(25)),
                                     ))
                               ]),
-                        )*/
+                        )
                     ]
                 )
             )
@@ -705,13 +705,11 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
         }
         print(jsonDecode(response.body));
           // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.*/
-        print(jsonDecode(response.body));
+        //print(jsonDecode(response.body));
           var mapOrder = OrdersListDynamic
               .fromJson(jsonDecode(response.body))
               .ordersListDynamic;
-        print(mapOrder);
           Order newOrder = Order.fromJson(mapOrder);
-          print(newOrder);
 
           Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
             'order': newOrder,
