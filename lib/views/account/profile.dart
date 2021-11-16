@@ -10,6 +10,7 @@ import 'package:weezli/views/announce/announces.dart';
 import 'package:weezli/views/deliveries/search_deliveries.dart';
 import 'package:weezli/views/orders/search_orders.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/views/propositions/search_propositions.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
 class Profile extends StatefulWidget {
@@ -76,6 +77,7 @@ class _ProfileState extends State<Profile> {
 
     final List _list1 = [
       ["Profil personnel", UserProfile.routeName],
+      ["Mes propositions / contre-propositions", SearchPropositions.routeName],
       ["Mes commandes", SearchOrders.routeName],
       ["Mes livraisons", SearchDeliveries.routeName],
       ["Mes annonces", Announces.routeName],

@@ -1,11 +1,19 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/Proposition.dart';
+import 'package:weezli/model/StatusProposition.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/proposition/findAll.dart';
 import 'package:flutter/material.dart';
+import 'package:weezli/service/proposition/findAllByUser.dart';
+import 'package:weezli/service/proposition/updateProposition.dart';
+import 'package:weezli/service/statusProposition/findStatusPropositionById.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
 class SearchPropositions extends StatefulWidget {
@@ -22,8 +30,9 @@ class _SearchPropositionsState extends State<SearchPropositions> {
   List<Proposition> listPropositions = [];
 
   Future<List<Proposition>> getPropositionsList() async {
-    listPropositions = await findAll();
-    print(listPropositions);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    listPropositions = await findAllByUser(user!.id);
     return listPropositions;
   }
 
@@ -35,7 +44,10 @@ class _SearchPropositionsState extends State<SearchPropositions> {
 
   @override
   Widget build(BuildContext context) {
-    final Size _mediaQuery = MediaQuery.of(context).size;
+
+    final Size _mediaQuery = MediaQuery
+        .of(context)
+        .size;
     final Container _searchBar = Container(
       padding: EdgeInsets.only(
         bottom: 15.0,
@@ -73,6 +85,8 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     );
 
     GestureDetector _cardProposition(Proposition proposition, int idUser) {
+      final TextEditingController _counterOfferPriceCtrl = TextEditingController(
+          text: proposition.proposition.toString());
       return GestureDetector(
           onTap: () {
             /*Navigator.pushNamed(context, PropositionDetail.routeName,
@@ -90,76 +104,131 @@ class _SearchPropositionsState extends State<SearchPropositions> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
+                _title(proposition, idUser),
+                SizedBox(height: 10),
+                if(proposition.userProposition.id != idUser)
+                Column(
                   children: [
-                    //Text(order.announce.package.addressDeparture.city),
-                    Icon(Icons.arrow_right_alt),
-                    //Text(order.announce.package.addressArrival.city),
-                    Spacer(),
-                    Icon(
-                      WeezlyIcon.arrow_right_square,
-                      color: WeezlyColors.primary,
-                    ),
-                  ],
-                ),
-                Divider(
-                  color: WeezlyColors.black,
-                ),
-                Text(
-                  "Description:",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                /*Text(
-                  order.announce.package.description,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontSize: 13,
-                  ),
-                ),*/
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      WeezlyIcon.calendar2,
-                      color: WeezlyColors.primary,
-                      size: 15,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    //Text(format(order.announce.package.datetimeDeparture)),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text("Montant : ",
-                            style: Theme.of(context).textTheme.headline5),
-                        Text(
-                          proposition.proposition.toString() + "€",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        child: TextFormField(
+                          controller: _counterOfferPriceCtrl,
+                          onTap: () => _counterOfferPriceCtrl.clear(),
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.euro),
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.3,
+                        height: 35,
+                        child: RawMaterialButton(
+                          fillColor: WeezlyColors.white,
+                          textStyle: TextStyle(
+                            color: WeezlyColors.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(22.5),
+                              side: BorderSide(color: WeezlyColors.primary)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("ANNULER"),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.3,
+                        height: 35,
+                        child: RawMaterialButton(
+                          fillColor: WeezlyColors.primary,
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.5),
+                          ),
+                          onPressed: () =>
+                              _createOrderOrCounterOffer(
+                                  proposition, context, _counterOfferPriceCtrl),
+                          child: const Text("VALIDER"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LimitedBox(
+                          maxWidth: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.7,
+                          child: Text(
+                            "*Vous avez la possibiliter de faire une seule contre-proposition en modifiant le prix avant de valider",
+                            textAlign: TextAlign.center,
+                          ))
+                    ],
+                  )],
+                ),
+                if(proposition.userProposition.id == idUser)
+                Column(
+                  children: [
                     Row(
-                      children: [
-                        _status(proposition.statusProposition.name)
-                      ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Montant que vous avez proposer : " + proposition.proposition.toString() + "€")
+                          ]
                     ),
+                    SizedBox(height: 10),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Dans l'attente d'une réponse de sa part")
+                        ]
+                    )
                   ],
-                )
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _status(proposition.statusProposition.name)
+                  ],
+                ),
               ],
             ),
-          ));
+          ),
+      );
     }
 
     return Scaffold(
@@ -185,7 +254,8 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                       User user = snapshot.data![1] as User;
                       return Container(
                           child: Column(children: [
-                            for (Proposition proposition in listPropositions) _cardProposition(proposition, user.id!),
+                            for (Proposition proposition in listPropositions) _cardProposition(
+                                proposition, user.id!),
                           ]));
                     } else
                       return buildLoadingScreen();
@@ -195,6 +265,120 @@ class _SearchPropositionsState extends State<SearchPropositions> {
         ),
       ),
     );
+  }
+
+  _title(Proposition proposition, int idUser) {
+    if ((proposition.statusProposition.name == "Contre-proposition") &&
+        (proposition.userProposition.id == idUser)) {
+      return
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Contre-proposition reçu par :",
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(proposition.announce.userAnnounce.username!,
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        );
+    } else if ((proposition.statusProposition.name == "Contre-proposition") &&
+        (proposition.userProposition.id != idUser)) {
+      return
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Contre-proposition envoyer a :",
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(proposition.userProposition.username!,
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        );
+    } else if ((proposition.statusProposition.name == "Proposition") &&
+        (proposition.userProposition.id != idUser)) {
+      return
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Proposition reçu par :",
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(proposition.userProposition.username!,
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        );
+    } else if ((proposition.statusProposition.name == "Proposition") &&
+        (proposition.userProposition.id == idUser)) {
+      return
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Proposition envoyer a :",
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(proposition.announce.userAnnounce.username!,
+                  style: TextStyle(fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        );
+    }else{
+      return Column();// A supprimer une fois que l'on utilisera une list de proposition trier
+    }
   }
 
   _status(String statut){
@@ -250,6 +434,60 @@ class _SearchPropositionsState extends State<SearchPropositions> {
             ]
             )]
       );
+    }
+  }
+
+  _createOrderOrCounterOffer(Proposition proposition, BuildContext context, TextEditingController priceController) async{
+    // Récupération du statusProposition valider
+    StatusProposition statusPropositionValider = await findStatusPropositionById(3);
+
+    // Récupération du statusProposition contre-proposition
+    StatusProposition statusPropositionContreproposition = await findStatusPropositionById(2);
+
+    // Vérification si l'utilisateur est bien connecter
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user == null)
+      Navigator.pushNamed(context, "/login");
+    else if (proposition.proposition == double.parse(priceController.text)) {
+      // Modification de l'objet proposition à envoyer au back
+      Proposition newProposition = Proposition(
+        announce: proposition.announce,
+        userProposition: proposition.userProposition,
+        proposition: proposition.proposition,
+        statusProposition: statusPropositionValider,
+      );
+      var response = await updateProposition(newProposition);
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Proposition créée !')),
+        );
+        var mapOrder = OrdersListDynamic
+            .fromJson(jsonDecode(response.body))
+            .ordersListDynamic;
+        Order newOrder = Order.fromJson(mapOrder);
+
+        Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+          'order': newOrder,
+          'idUser': proposition.announce.userAnnounce.id
+        },); //newOrder
+      }else if (proposition.proposition != double.parse(priceController.text)) {
+        // Modification de l'objet proposition à envoyer au back
+        Proposition newProposition = Proposition(
+          announce: proposition.announce,
+          userProposition: proposition.userProposition,
+          proposition: double.parse(priceController.text),
+          statusProposition: statusPropositionContreproposition,
+        );
+        // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
+        var response = await updateProposition(newProposition);
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Contre-proposition envoyée !')),
+          );
+          Navigator.pushNamed(context, '/');
+        }
+      }
     }
   }
 }

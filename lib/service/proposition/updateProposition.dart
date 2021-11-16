@@ -9,16 +9,16 @@ Future<Response> updateProposition(Proposition proposition) async {
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   try {
 
-    var resBodyProposition = {};
-    resBodyProposition["id"] = proposition.announce;
-    resBodyProposition["accept"] = proposition.userProposition;
-    resBodyProposition["user"] = proposition.proposition;
-    resBodyProposition["proposition"] = proposition.statusProposition;
-
     var newProposition = {};
-    newProposition["Proposition"] = resBodyProposition;
+    newProposition["id_announce"] = proposition.announce.id;
+    newProposition["id_user"] = proposition.userProposition.id;
+    newProposition["proposition"] = proposition.proposition;
+    newProposition["status_proposition"] = proposition.statusProposition;
 
-    str = encoder.convert(newProposition);
+    var resBody = {};
+    resBody["Proposition"] = newProposition;
+
+    str = encoder.convert(resBody);
 
   } catch(e) {
     print(e);

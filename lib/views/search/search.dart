@@ -108,7 +108,7 @@ class _SearchState extends State<Search> {
   Future<List<Announce>> getAnnouncesList() async {
     String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
     int type;
-    searchType == "sending" ? type = 2 : type = 1;
+    searchType == "sending" ? type = 1 : type = 2;
     announcesList = await findByType(type);
     return announcesList;
   }

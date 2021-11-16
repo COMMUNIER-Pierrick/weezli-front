@@ -36,7 +36,7 @@ class Announce {
       package: Package.fromJson(json["packages"]),
       views: json["views"],
       type: json["idType"],
-      price: (json["price"] != null) ? json ["price"] : null,
+      price: (json["price"] != null) ? json ["price"] : null,// Supprimer le null une fois le prix implémenter sur la création des announces
       imgUrl: json["imgUrl"],
       dateCreated: DateTime.parse(json["dateCreated"]),
       userAnnounce: User.fromJson(json["userAnnounce"]),

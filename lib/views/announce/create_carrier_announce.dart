@@ -643,9 +643,6 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [CustomTitle("ANNONCE ENREGISTRÉE")],
             ),
-            Text(idUser.toString()),
-            if(idUser == null)
-              Text("null"),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
