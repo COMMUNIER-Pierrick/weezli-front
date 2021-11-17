@@ -564,8 +564,6 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     // Récupération du statusProposition contre-proposition
     StatusProposition statusPropositionProposition = await findStatusPropositionById(
         1);
-    print(announce.price);
-    print(int.parse(priceController.text));
 
     // Vérification si l'utilisateur est bien connecter
     final SharedPreferences prefs = await SharedPreferences.getInstance();

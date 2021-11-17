@@ -4,6 +4,7 @@ import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/views/account/profile.dart';
 
 import 'colis_avis.dart';
 
@@ -46,6 +47,9 @@ class OrderDetailState extends State<OrderDetail> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
         title: Text(order.announce.package.addressDeparture.city +
             " - " +
             order.announce.package.addressArrival.city),

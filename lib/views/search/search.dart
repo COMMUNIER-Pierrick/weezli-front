@@ -2,7 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/announce/findByType.dart';
+import 'package:weezli/service/announce/findByTypeConnect.dart';
+import 'package:weezli/service/announce/findByTypeDisconnect.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
@@ -109,7 +110,12 @@ class _SearchState extends State<Search> {
     String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
     int type;
     searchType == "sending" ? type = 1 : type = 2;
-    announcesList = await findByType(type);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if(user == null){
+      announcesList = await findByTypeDisconnect(type);
+    }else
+    announcesList = await findByTypeConnect(type,user.id!);
     return announcesList;
   }
 
@@ -125,6 +131,9 @@ class _SearchState extends State<Search> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, "/")),
         title: Text(searchType == "sending"
             ? "Recherche transporteur"
             : "Recherche paquet"),

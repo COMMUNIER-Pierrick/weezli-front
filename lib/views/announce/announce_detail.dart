@@ -121,19 +121,18 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
                 ]),
                 SizedBox(height: 10),
-                if (announce.type == 2)
-                  Row(
-                    children: [
-                      Icon(WeezlyIcon.ticket,
-                          size: 20, color: WeezlyColors.blue3),
-                      SizedBox(width: widthSeparator),
-                      Text("Commission de base : "),
-                      Text(announce.price!.toString() + " €",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Icon(WeezlyIcon.ticket,
+                        size: 20, color: WeezlyColors.blue3),
+                    SizedBox(width: widthSeparator),
+                    Text("Commission de base : "),
+                    Text(announce.price!.toString() + " €",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 10),
+                  ],
+                ),
                 SizedBox(height: 10),
                 Row(
                   children: [
@@ -159,34 +158,34 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                       child: Text(announce.package.description,
                           textAlign: TextAlign.justify))
                 ]),
-                  Column(
+                SizedBox(height: 25),
+                Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                     //if (announce.idOrder != null) //S'il y a une commande sur cette annonce, on peut aller la voir.
-                      TextButton (
-                      onPressed: () async {
-                      //var order = await findById(announce.idOrder!); //On récupère la commande pour l'envoyer à la route.
-
-                      Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
-                        //'order': order,
-                        'idUser': idUser
-                      },);},
-                      child: Text(
-                        "DETAIL DE LA COMMANDE",
-                        style: TextStyle(
-                          color: Colors.white,
+                    //if (announce. != null) //S'il y a une commande sur cette annonce, on peut aller la voir.
+                        TextButton (
+                          onPressed: () async {
+                        //var order = await findById(announce.idOrder!); //On récupère la commande pour l'envoyer à la route.
+                          Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
+                          //'order': order,
+                          'idUser': idUser},
+                          );
+                        },
+                          child: Text(
+                            "DETAIL DE LA COMMANDE",
+                            style: TextStyle(color: Colors.white,),
+                          ),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                            backgroundColor: WeezlyColors.primary,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.5),),
+                          ),
                         ),
-                      ),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
-                        backgroundColor: WeezlyColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22.5),
-                        ),
-                      ),
-                  ),
-                      SizedBox(height: 10),
+                    ]),
+                SizedBox(height: 5),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       TextButton(
                         onPressed: () async {
                           var response = await deleteAnnounce(announce.id);

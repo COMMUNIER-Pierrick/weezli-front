@@ -13,6 +13,7 @@ import 'package:weezli/service/proposition/findAllByUser.dart';
 import 'package:weezli/service/proposition/updateProposition.dart';
 import 'package:weezli/service/statusProposition/findStatusPropositionById.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
@@ -89,12 +90,9 @@ class _SearchPropositionsState extends State<SearchPropositions> {
           text: proposition.proposition.toString());
       return GestureDetector(
           onTap: () {
-            /*Navigator.pushNamed(context, PropositionDetail.routeName,
-                arguments: {
-                  'proposition': proposition,
-                  'idUser': idUser
-                },);*/
-          },
+            _viewProposition(proposition, idUser, _counterOfferPriceCtrl);
+                },
+
           child: Container(
             margin: EdgeInsets.only(bottom: 20),
             padding: EdgeInsets.all(10),
@@ -104,131 +102,42 @@ class _SearchPropositionsState extends State<SearchPropositions> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _title(proposition, idUser),
-                SizedBox(height: 10),
-                if(proposition.userProposition.id != idUser)
-                Column(
-                  children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          controller: _counterOfferPriceCtrl,
-                          onTap: () => _counterOfferPriceCtrl.clear(),
-                          decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.euro),
-                          ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width * 0.3,
-                        height: 35,
-                        child: RawMaterialButton(
-                          fillColor: WeezlyColors.white,
-                          textStyle: TextStyle(
-                            color: WeezlyColors.primary,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22.5),
-                              side: BorderSide(color: WeezlyColors.primary)),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text("ANNULER"),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width * 0.3,
-                        height: 35,
-                        child: RawMaterialButton(
-                          fillColor: WeezlyColors.primary,
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(22.5),
-                          ),
-                          onPressed: () =>
-                              _createOrderOrCounterOffer(
-                                  proposition, context, _counterOfferPriceCtrl),
-                          child: const Text("VALIDER"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LimitedBox(
-                          maxWidth: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.7,
-                          child: Text(
-                            "*Vous avez la possibiliter de faire une seule contre-proposition en modifiant le prix avant de valider",
-                            textAlign: TextAlign.center,
-                          ))
-                    ],
-                  )],
-                ),
-                if(proposition.userProposition.id == idUser)
-                Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Montant que vous avez proposer : " + proposition.proposition.toString() + "€")
-                          ]
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Dans l'attente d'une réponse de sa part")
-                        ]
-                    )
-                  ],
-                ),
-                SizedBox(height: 10),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _status(proposition.statusProposition.name)
-                  ],
-                ),
-              ],
-            ),
-          ),
-      );
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                        Flexible(
+                            child:
+                              Text(//"vgctcjgcjgcutgxcdtxgcjcgutdctudxjcdxgtgtd",
+                                proposition.announce.package.addressDeparture.city,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.indigo[900],
+                                    fontWeight: FontWeight.w500),
+                              ),
+                        ),
+                        //SizedBox(width: 7),
+                        Icon(Icons.arrow_right_alt),
+                        //SizedBox(width: 7),
+                        Flexible(
+                            child:
+                              Text(
+                                //"vgctcjgcjgcutgxcdtxgcjcgutdctudxjcdxgtgtd",
+                                proposition.announce.package.addressArrival.city,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.indigo[900],
+                                    fontWeight: FontWeight.w500),
+                              ),
+                        ),
+                        SizedBox(width: 7),
+                        Text(proposition.proposition.toString() + "€"),
+                        SizedBox(width: 7),
+                        _status(proposition.statusProposition.name)
+                ])
+            ]),
+          ));
     }
 
     return Scaffold(
@@ -267,7 +176,7 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     );
   }
 
-  _title(Proposition proposition, int idUser) {
+  _viewDetailProposition(Proposition proposition, int idUser, TextEditingController _counterOfferPriceCtrl, BuildContext context) {
     if ((proposition.statusProposition.name == "Contre-proposition") &&
         (proposition.userProposition.id == idUser)) {
       return
@@ -291,6 +200,89 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(proposition.proposition.toString() + "€",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
+                  height: 35,
+                  child: RawMaterialButton(
+                    fillColor: WeezlyColors.white,
+                    textStyle: TextStyle(
+                      color: WeezlyColors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.5),
+                        side: BorderSide(color: WeezlyColors.primary)),
+                    onPressed: () {
+                      _offerOrCounterOfferRefuse(proposition, context);
+                    },
+                    child: const Text("ANNULER"),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
+                  height: 35,
+                  child: RawMaterialButton(
+                    fillColor: WeezlyColors.primary,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                    ),
+                    onPressed: () =>
+                        _createOrderOrCounterOffer(
+                            proposition, context, _counterOfferPriceCtrl),
+                    child: const Text("VALIDER"),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LimitedBox(
+                    maxWidth: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.7,
+                    child: Text(
+                      "*Vous avez la possibiliter de faire une seule contre-proposition en modifiant le prix avant de valider",
+                      textAlign: TextAlign.center,
+                    ))
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _status(proposition.statusProposition.name)
               ],
             ),
           ],
@@ -320,6 +312,34 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                 ),
               ],
             ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child:
+                      Text("Montant que vous avez proposer : " + proposition.proposition.toString() + "€",
+                          textAlign: TextAlign.center)
+                  )
+                ]
+            ),
+            SizedBox(height: 10),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child:
+                      Text("Dans l'attente d'une réponse de sa part",
+                          textAlign: TextAlign.center)
+                  )
+                ]
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _status(proposition.statusProposition.name)
+              ],
+            ),
           ],
         );
     } else if ((proposition.statusProposition.name == "Proposition") &&
@@ -345,6 +365,101 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 120,
+                  child: TextFormField(
+                    controller: _counterOfferPriceCtrl,
+                    onTap: () => _counterOfferPriceCtrl.clear(),
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.euro),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
+                  height: 35,
+                  child: RawMaterialButton(
+                    fillColor: WeezlyColors.white,
+                    textStyle: TextStyle(
+                      color: WeezlyColors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.5),
+                        side: BorderSide(color: WeezlyColors.primary)),
+                    onPressed: () {
+                      _offerOrCounterOfferRefuse(proposition, context);
+                    },
+                    child: const Text("ANNULER"),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
+                  height: 35,
+                  child: RawMaterialButton(
+                    fillColor: WeezlyColors.primary,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                    ),
+                    onPressed: () =>
+                        _createOrderOrCounterOffer(
+                            proposition, context, _counterOfferPriceCtrl),
+                    child: const Text("VALIDER"),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LimitedBox(
+                    maxWidth: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.7,
+                    child: Text(
+                      "*Vous avez la possibiliter de faire une seule contre-proposition en modifiant le prix avant de valider",
+                      textAlign: TextAlign.center,
+                    ))
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _status(proposition.statusProposition.name)
               ],
             ),
           ],
@@ -374,10 +489,101 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                 ),
               ],
             ),
+            SizedBox(height: 10),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child:
+                      Text("Montant que vous avez proposer : " + proposition.proposition.toString() + "€",
+                          textAlign: TextAlign.center)
+                  )
+                ]
+            ),
+            SizedBox(height: 10),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child:
+                      Text("Dans l'attente d'une réponse de sa part",
+                          textAlign: TextAlign.center)
+                  )
+                ]
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _status(proposition.statusProposition.name)
+              ],
+            ),
           ],
         );
-    }else{
-      return Column();// A supprimer une fois que l'on utilisera une list de proposition trier
+    }else if(proposition.statusProposition.name == "Validé"){
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Prix accepter",
+                style: TextStyle(fontSize: 17,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,)
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                    child:
+                    Text("Montant sur lequel vous vous êtes mis d'accord : " + proposition.proposition.toString() + "€",
+                        textAlign: TextAlign.center)
+                )
+              ]
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _status(proposition.statusProposition.name)
+            ],
+          ),
+        ],
+      );
+    }else if(proposition.statusProposition.name == "Refusé"){
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Prix refuser",
+                style: TextStyle(fontSize: 17,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,)
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                    child:
+                    Text("Aucun accord trouver entre vous",
+                        textAlign: TextAlign.center)
+                )
+              ]
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _status(proposition.statusProposition.name)
+            ],
+          ),
+        ],
+      );
     }
   }
 
@@ -385,55 +591,117 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     if(statut == "Proposition"){
       return Row(
         children: [
-        Row(children: [
+          Text("Proposition"),
+          SizedBox(width: 10),
           Icon(
             Icons.circle,
             color: WeezlyColors.yellow,
           ),
-          SizedBox(width: 10),
-          Text("Proposition"),
           ]
-        )]
       );
     }else if (statut == "Contre-proposition"){
       return Row(
           children: [
-            Row(children: [
-              Icon(
-                Icons.circle,
-                color: WeezlyColors.orange,
-              ),
-              SizedBox(width: 10),
-              Text("Contre-proposition"),
+            Text("Contre-proposition"),
+            SizedBox(width: 10),
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.orange,
+            ),
             ]
-            )]
       );
     }else if (statut == "Validé"){
       return Row(
           children: [
-            Row(children: [
-              Icon(
-                Icons.circle,
-                color: WeezlyColors.green,
-              ),
-              SizedBox(width: 10),
-              Text("Validé"),
+            Text("Validé"),
+            SizedBox(width: 10),
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.green,
+            ),
             ]
-            )]
       );
     }else {
       return Row(
           children: [
-            Row(children: [
-              Icon(
-                Icons.circle,
-                color: WeezlyColors.red,
-              ),
-              SizedBox(width: 10),
-              Text("Refusé"),
+            Text("Refusé"),
+            SizedBox(width: 10),
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.red,
+            ),
             ]
-            )]
       );
+    }
+  }
+
+  _viewProposition(Proposition proposition, int idUser,
+      TextEditingController _counterOfferPriceCtrl) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(
+        prefs); //Vérifie si on a quelque chose en sharedpreferences (et donc si l'user est connecté). Le redirige vers le login sinon.
+    if (user == null)
+      Navigator.pushNamed(context, "/login");
+    else {
+      String text = "*Vous avez la possibiliter de faire une seule proposition en modifiant le prix avant de valider";
+      showDialog(
+          context: context, builder: (BuildContext context) {
+        return _buildPopupProposition(
+            context,
+            proposition,
+            text,
+            user,
+            idUser,
+            _counterOfferPriceCtrl
+        );
+      });
+    }
+  }
+
+  Widget _buildPopupProposition(BuildContext context, Proposition proposition, String text, User user, int idUser,
+      TextEditingController _counterOfferPriceCtrl){
+
+    return new Dialog(
+      child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width * 0.7,
+          padding: EdgeInsets.all(10),
+        child:
+        Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _viewDetailProposition(proposition, idUser, _counterOfferPriceCtrl, context),
+        ],
+      )
+    ));
+  }
+
+  _offerOrCounterOfferRefuse(Proposition proposition, BuildContext context) async {
+    // Récupération du statusProposition refuser
+    StatusProposition statusPropositionRefuser = await findStatusPropositionById(
+        4);
+
+    // Vérification si l'utilisateur est bien connecter
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user == null)
+      Navigator.pushNamed(context, "/login");
+    else {
+      // Modification de l'objet proposition à envoyer au back
+      Proposition newProposition = Proposition(
+        announce: proposition.announce,
+        userProposition: proposition.userProposition,
+        proposition: proposition.proposition,
+        statusProposition: statusPropositionRefuser,
+      );
+      var response = await updateProposition(newProposition);
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Modification enregistrer')),
+        );
+        Navigator.pushNamed(context, Profile.routeName);
+      }
     }
   }
 
@@ -443,13 +711,15 @@ class _SearchPropositionsState extends State<SearchPropositions> {
 
     // Récupération du statusProposition contre-proposition
     StatusProposition statusPropositionContreproposition = await findStatusPropositionById(2);
+    print(int.parse(priceController.text));
+    print(proposition.proposition);
 
     // Vérification si l'utilisateur est bien connecter
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(prefs);
     if (user == null)
       Navigator.pushNamed(context, "/login");
-    else if (proposition.proposition == double.parse(priceController.text)) {
+    else if (proposition.proposition == int.parse(priceController.text)) {
       // Modification de l'objet proposition à envoyer au back
       Proposition newProposition = Proposition(
         announce: proposition.announce,
@@ -471,7 +741,8 @@ class _SearchPropositionsState extends State<SearchPropositions> {
           'order': newOrder,
           'idUser': proposition.announce.userAnnounce.id
         },); //newOrder
-      }else if (proposition.proposition != double.parse(priceController.text)) {
+      }else {
+        print("coucou");
         // Modification de l'objet proposition à envoyer au back
         Proposition newProposition = Proposition(
           announce: proposition.announce,
@@ -479,6 +750,7 @@ class _SearchPropositionsState extends State<SearchPropositions> {
           proposition: double.parse(priceController.text),
           statusProposition: statusPropositionContreproposition,
         );
+        print(newProposition);
         // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
         var response = await updateProposition(newProposition);
         if (response.statusCode == 200) {
