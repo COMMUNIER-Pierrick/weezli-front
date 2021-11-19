@@ -5,6 +5,7 @@ import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/views/account/profile.dart';
+import 'package:weezli/views/announce/announce_detail.dart';
 
 import 'colis_avis.dart';
 
@@ -151,7 +152,6 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              //if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Column(
@@ -174,10 +174,32 @@ class OrderDetailState extends State<OrderDetail> {
               Divider(
                 thickness: 2,
               ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments: {'idUser': idUser, 'announce': order.announce}),
+                      child: Text(
+                        "VOIR L'ANNONCE",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                        backgroundColor: WeezlyColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.5),
+                        ),
+                      ),
+                    ),
+                    _opinion(order, context, idUser),
+                  ]
+              ),
               SizedBox(
                 height: _separator,
               ),
-              Text(
+              /*Text(
                 "Description",
                 style: Theme.of(context).textTheme.headline5,
               ),
@@ -187,8 +209,9 @@ class OrderDetailState extends State<OrderDetail> {
               Text(order.announce.package.description),
               SizedBox(
                 height: _separator,
-              ),
+              ),*/
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _status(order.status.name)
                 ],
@@ -200,6 +223,7 @@ class OrderDetailState extends State<OrderDetail> {
                 thickness: 2,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Trouver de l'aide"),
                   SizedBox(
@@ -208,7 +232,6 @@ class OrderDetailState extends State<OrderDetail> {
                   Icon(WeezlyIcon.help),
                 ],
               ),
-              _opinion(order, context),
             ],
           ),
         ),
@@ -228,13 +251,25 @@ _listSize(Order order){
   return sizes;
 }
 
-Widget _opinion(Order order, BuildContext context) {
+Widget _opinion(Order order, BuildContext context, int idUser) {
   if (order.status.name == "Terminé")
-    return ElevatedButton(
+    return TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, ColisAvis.routeName);
+          Navigator.pushNamed(context, ColisAvis.routeName, arguments: {'order': order, 'idUser': idUser});
         },
-        child: const Text('Mettre un avis'));
+        child: const Text('METTRE UN AVIS',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+        backgroundColor: WeezlyColors.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22.5),
+        ),
+      ),
+    );
   else
     return SizedBox(
       height: 0,

@@ -126,7 +126,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         ),
           views: 0,
           type: 2,
-          price: double.parse(_priceCtrl.text),
+          price: int.parse(_priceCtrl.text),
           dateCreated: DateTime.now(),
         userAnnounce: user,
       );
@@ -312,9 +312,6 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           Row(children: [
                             Text("Commission",
                                 style: Theme.of(context).textTheme.headline5),
-                            _buildTooltip(
-                              "Le prix est pour l'ensemble. Vous pouvez aussi laisser libre et attendre qu'un expéditeur vous fasse une offre.",
-                            ),
                           ]),
                           SizedBox(height: 5),
                           Row(

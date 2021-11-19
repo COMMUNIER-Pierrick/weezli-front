@@ -19,6 +19,7 @@ import 'package:weezli/views/account/modifyProfile.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/account/phone_verification.dart';
 import 'package:weezli/views/paiement/paiement_view.dart';
+import 'package:weezli/views/propositions/propositions_details.dart';
 import 'package:weezli/views/propositions/search_propositions.dart';
 import './commons/weezly_colors.dart';
 import './views/announce/announce_detail.dart';
@@ -91,6 +92,7 @@ void main() async {
         UserProfile.routeName : (context) => UserProfile(),
         Profile.routeName : (context) => Profile(),
         SearchPropositions.routeName: (context) => SearchPropositions(),
+        PropositionsDetails.routeName: (context) => PropositionsDetails(),
        },
     ),
   );

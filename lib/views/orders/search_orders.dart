@@ -89,9 +89,19 @@ class _SearchOrdersState extends State<SearchOrders> {
               children: [
                 Row(
                   children: [
-                    Text(order.announce.package.addressDeparture.city),
+                    Text(order.announce.package.addressDeparture.city,
+                      style: TextStyle(fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,),
                     Icon(Icons.arrow_right_alt),
-                    Text(order.announce.package.addressArrival.city),
+                    Text(order.announce.package.addressArrival.city,
+                      style: TextStyle(fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,),
                     Spacer(),
                     Icon(
                       WeezlyIcon.arrow_right_square,

@@ -241,8 +241,10 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               style: TextStyle(height: 1.3),
                             ),
                             SizedBox(height: 10),
+                            Divider(thickness: 2),
                             if (user.id != announce.userAnnounce.id)
                             Container(
+                              margin: EdgeInsets.all(5),
                               height: height * 0.1,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(
@@ -253,7 +255,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   BoxShadow(
                                     color: Color.fromRGBO(0, 0, 0, 0.26),
                                     spreadRadius: 1,
-                                    blurRadius: 15,
+                                    blurRadius: 5,
                                     offset:
                                     Offset(0, 1), // changes position of shadow
                                   )
@@ -262,8 +264,6 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  if ((announce.price != null) &&
-                                      (announce.price != 0))
                                     Text(
                                       announce.price!.toString() + " €",
                                       style: TextStyle(

@@ -5,7 +5,6 @@ import 'package:weezli/model/user.dart';
 import 'package:weezli/service/announce/findByTypeConnect.dart';
 import 'package:weezli/service/announce/findByTypeDisconnect.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
-import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
 import 'package:weezli/views/search_results.dart';

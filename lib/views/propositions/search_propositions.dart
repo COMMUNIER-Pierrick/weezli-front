@@ -1,20 +1,13 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
-import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/Proposition.dart';
-import 'package:weezli/model/StatusProposition.dart';
 import 'package:weezli/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/service/proposition/findAllByUser.dart';
-import 'package:weezli/service/proposition/updateProposition.dart';
-import 'package:weezli/service/statusProposition/findStatusPropositionById.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/profile.dart';
-import 'package:weezli/views/orders/order_details.dart';
+import 'package:weezli/views/propositions/propositions_details.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
 class SearchPropositions extends StatefulWidget {
@@ -86,12 +79,14 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     );
 
     GestureDetector _cardProposition(Proposition proposition, int idUser) {
-      final TextEditingController _counterOfferPriceCtrl = TextEditingController(
-          text: proposition.proposition.toString());
+
       return GestureDetector(
           onTap: () {
-            _viewProposition(proposition, idUser, _counterOfferPriceCtrl);
-                },
+            Navigator.pushNamed(context, PropositionsDetails.routeName, arguments: {
+              'proposition': proposition,
+              'idUser': idUser
+            },);
+            },
 
           child: Container(
             margin: EdgeInsets.only(bottom: 20),
@@ -111,6 +106,9 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                             child:
                               Text(//"vgctcjgcjgcutgxcdtxgcjcgutdctudxjcdxgtgtd",
                                 proposition.announce.package.addressDeparture.city,
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.indigo[900],
@@ -125,6 +123,9 @@ class _SearchPropositionsState extends State<SearchPropositions> {
                               Text(
                                 //"vgctcjgcjgcutgxcdtxgcjcgutdctudxjcdxgtgtd",
                                 proposition.announce.package.addressArrival.city,
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.indigo[900],
@@ -143,6 +144,9 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Mes Propositions"),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(70),
           child: _searchBar,
@@ -176,7 +180,7 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     );
   }
 
-  _viewDetailProposition(Proposition proposition, int idUser, TextEditingController _counterOfferPriceCtrl, BuildContext context) {
+  /*_viewDetailProposition(Proposition proposition, int idUser, TextEditingController _counterOfferPriceCtrl, BuildContext context) {
     if ((proposition.statusProposition.name == "Contre-proposition") &&
         (proposition.userProposition.id == idUser)) {
       return
@@ -585,7 +589,7 @@ class _SearchPropositionsState extends State<SearchPropositions> {
         ],
       );
     }
-  }
+  }*/
 
   _status(String statut){
     if(statut == "Proposition"){
@@ -635,7 +639,7 @@ class _SearchPropositionsState extends State<SearchPropositions> {
     }
   }
 
-  _viewProposition(Proposition proposition, int idUser,
+  /*_viewProposition(Proposition proposition, int idUser,
       TextEditingController _counterOfferPriceCtrl) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(
@@ -761,6 +765,6 @@ class _SearchPropositionsState extends State<SearchPropositions> {
         }
       }
     }
-  }
+  }*/
 }
 

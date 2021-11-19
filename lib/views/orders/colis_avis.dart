@@ -1,4 +1,5 @@
 import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/model/Order.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -14,6 +15,9 @@ class ColisAvis extends StatefulWidget {
 class _ColisAvisState extends State<ColisAvis> {
   @override
   Widget build(BuildContext context) {
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Order order= arg['order'];
+    int idUser= arg['idUser'];
     final Size _mediaQuery = MediaQuery.of(context).size;
     final double _separator = 20;
 
@@ -100,7 +104,7 @@ class _ColisAvisState extends State<ColisAvis> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, OrderDetail.routeName);
+                        Navigator.pushNamed(context, OrderDetail.routeName, arguments: {'order': order, 'idUser': idUser});
                       },
                       child: Text(
                         "ANNULER",
@@ -123,7 +127,7 @@ class _ColisAvisState extends State<ColisAvis> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22.5)),
                       onPressed: () {
-                        Navigator.pushNamed(context, OrderDetail.routeName);
+                        Navigator.pushNamed(context, OrderDetail.routeName, arguments: {'order': order, 'idUser': idUser});
                       },
                       child: const Text(
                         "NOTER",
