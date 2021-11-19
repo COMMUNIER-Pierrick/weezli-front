@@ -230,9 +230,10 @@ class OrderDetailState extends State<OrderDetail> {
 Widget _affichageAvis(_mediaQuery, order, context, idUser) {
   if (order.status.name == "Terminé") { //&& order.opinion.status == "Active"
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Avis",
                   style: Theme
@@ -243,6 +244,7 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
               ]),
           SizedBox(height: 5),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RatingBar.builder(
                 initialRating: 0,
@@ -269,6 +271,7 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
           ),
           SizedBox(height: 5),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("order.opinion.comment"),
             ],
