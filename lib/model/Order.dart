@@ -33,9 +33,9 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json){
     return Order(
         id: json["id"],
-        announce: Announce.fromJson(json["announce"]),
-        status: Status.fromJson(json["status"]),
         validationCode: json ["codeValidated"],
+        status: Status.fromJson(json["id_status"]),
+        announce: Announce.fromJson(json["id_announce"]),
         dateOrder: DateTime.parse(json["dateOrder"]),
         //user: User.fromJson(json["buyer"]),
         qrCode: json ["qrCode"],

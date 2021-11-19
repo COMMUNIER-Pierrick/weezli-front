@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:weezli/model/Proposition.dart';
 import 'package:weezli/model/user.dart';
 
 import 'Package.dart';
@@ -20,7 +19,6 @@ class Announce {
     this.imgUrl,
     this.dateCreated,
     required this.userAnnounce,
-    //required this.proposition
   });
 
   int? id;
@@ -31,19 +29,17 @@ class Announce {
   String? imgUrl;
   DateTime? dateCreated;
   User userAnnounce;
-  //Proposition proposition;
 
   factory Announce.fromJson(Map<String, dynamic> json) {
     return Announce(
       id: json["id"],
-      package: Package.fromJson(json["package"]),
+      package: Package.fromJson(json["packages"]),
       views: json["views"],
       type: json["idType"],
-      price: (json["price"] != null) ? json ["price"] : null,
+      price: (json["price"] != null) ? json ["price"] : null,// Supprimer le null une fois le prix implémenter sur la création des announces
       imgUrl: json["imgUrl"],
       dateCreated: DateTime.parse(json["dateCreated"]),
       userAnnounce: User.fromJson(json["userAnnounce"]),
-     // proposition: Proposition.fromJson(json["proposition"]),
     );
   }
 
@@ -57,7 +53,6 @@ class Announce {
         "imgUrl": imgUrl,
         "dateCreated": dateCreated,
         "userAnnounce": userAnnounce,
-        //"proposition": proposition
       };
 }
 

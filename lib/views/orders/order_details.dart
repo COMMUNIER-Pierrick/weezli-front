@@ -1,9 +1,12 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/PackageSize.dart';
+import 'package:weezli/views/account/profile.dart';
+import 'package:weezli/views/announce/announce_detail.dart';
 
 import 'colis_avis.dart';
 
@@ -46,6 +49,9 @@ class OrderDetailState extends State<OrderDetail> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, Profile.routeName)),
         title: Text(order.announce.package.addressDeparture.city +
             " - " +
             order.announce.package.addressArrival.city),
@@ -147,7 +153,6 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              if(order.announce.userAnnounce.id == idUser)
               Row(
                 children: [
                   Column(
@@ -167,60 +172,45 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),
-              if(order.announce.userAnnounce.id == idUser)
-              Row(
-                children: [
-                  Text(
-                      "Code à transmettre au destinaire du colis uniquement",
-                      style: TextStyle (
-                        fontSize: 12,
-                      )),
-                  SizedBox(
-                    height: _separator,
-                  ),
-                ],
-              ),
               Divider(
                 thickness: 2,
               ),
-              SizedBox(
-                height: _separator,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _status(order.status.name)
+                ],
               ),
-              Text(
-                "Description",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              SizedBox(
-                height: _separator,
-              ),
-              Text(order.announce.package.description),
               SizedBox(
                 height: _separator,
               ),
               Row(
-                children: [
-                  Text("Statut : "),
-                  order.status.name == 'Payé'
-                      ? Text("Payé")
-                      : Text("Terminé"),
-                  order.status.name == 'En cours'
-                      ? Icon(
-                          Icons.circle,
-                          color: WeezlyColors.yellow,
-                        )
-                      : Icon(
-                          WeezlyIcon.check_circle,
-                          color: WeezlyColors.green,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pushNamed(context, AnnounceDetail.routeName, arguments: {'idUser': idUser, 'announce': order.announce}),
+                      child: Text(
+                        "VOIR L'ANNONCE",
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                ],
-              ),
-              SizedBox(
-                height: _separator,
+                      ),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                        backgroundColor: WeezlyColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.5),
+                        ),
+                      ),
+                    ),
+                  ]
               ),
               Divider(
                 thickness: 2,
               ),
+              _affichageAvis(_mediaQuery, order, context, idUser),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Trouver de l'aide"),
                   SizedBox(
@@ -229,7 +219,6 @@ class OrderDetailState extends State<OrderDetail> {
                   Icon(WeezlyIcon.help),
                 ],
               ),
-              _opinion(order, context),
             ],
           ),
         ),
@@ -237,6 +226,90 @@ class OrderDetailState extends State<OrderDetail> {
     );
   }
 }
+
+Widget _affichageAvis(_mediaQuery, order, context, idUser) {
+  if (order.status.name == "Terminé") { //&& order.opinion.status == "Active"
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+              children: [
+                Text("Avis",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline5,
+                ),
+              ]),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              RatingBar.builder(
+                initialRating: 0,
+                //order.opinion.number
+                minRating: 1,
+                direction: Axis.horizontal,
+                ignoreGestures: true,
+                itemCount: 5,
+                itemSize: _mediaQuery.width < 321
+                    ? 15
+                    : 20,
+                itemPadding:
+                EdgeInsets.symmetric(horizontal: 1.0),
+                itemBuilder: (context, _) =>
+                    Icon(
+                      Icons.star,
+                      color: WeezlyColors.yellow,
+                    ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Text("order.opinion.comment"),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, ColisAvis.routeName,
+                          arguments: {'order': order, 'idUser': idUser}),
+                  child: Text(
+                    "MODIFIER",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    backgroundColor: WeezlyColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                    ),
+                  ),
+                )
+              ]),
+          SizedBox(height: 5),
+          Divider(
+            thickness: 2,
+          ),
+        ]);
+  } else {
+    return Column(
+      children: [
+        _opinion(order, context, idUser),
+      ],
+    );
+  }
+}
+
 
 _listSize(Order order){
   String? sizes;
@@ -249,15 +322,80 @@ _listSize(Order order){
   return sizes;
 }
 
-Widget _opinion(Order order, BuildContext context) {
-  if (order.status.name == "Terminé")
-    return ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, ColisAvis.routeName);
-        },
-        child: const Text('Mettre un avis'));
-  else
-    return SizedBox(
-      height: 0,
+Widget _opinion(Order order, BuildContext context, int idUser) {
+  if (order.status.name == "Terminé") {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, ColisAvis.routeName,
+                    arguments: {'order': order, 'idUser': idUser});
+              },
+              child: const Text('METTRE UN AVIS',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                backgroundColor: WeezlyColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22.5),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Divider(thickness: 2),
+      ],
     );
+  }else
+    return Row();
+}
+
+_status(String statut){
+  if(statut == "En cours"){
+    return Row(
+        children: [
+          Row(children: [
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.yellow,
+            ),
+            SizedBox(width: 10),
+            Text(statut),
+          ]
+          )]
+    );
+  }else if (statut == "Livré"){
+    return Row(
+        children: [
+          Row(children: [
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.orange,
+            ),
+            SizedBox(width: 10),
+            Text(statut),
+          ]
+          )]
+    );
+  }else if (statut == "Terminé"){
+    return Row(
+        children: [
+          Row(children: [
+            Icon(
+              Icons.circle,
+              color: WeezlyColors.green,
+            ),
+            SizedBox(width: 10),
+            Text(statut),
+          ]
+          )]
+    );
+  }
 }

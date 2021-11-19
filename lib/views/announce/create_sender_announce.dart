@@ -35,6 +35,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
   var _countryArrivalCtrl = TextEditingController();
   var _weightCtrl = TextEditingController();
   var _descriptionCtrl = TextEditingController();
+  var _priceCtrl = TextEditingController();
   DateTime dateDeparture = DateTime.now();
   List<int> _currentSelectedIndexSize = [];
   List<PackageSize> sizes = [];
@@ -94,6 +95,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
               city: _placeArrivalCtrl.text, country: _countryArrivalCtrl.text),
         ),
         type: 1,
+        price: int.parse(_priceCtrl.text),
         userAnnounce: user,
 
       );
@@ -118,7 +120,9 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    User user = ModalRoute.of(context)!.settings.arguments as User;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    User user = arg['user'];
+    //User user = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
@@ -206,6 +210,7 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
+
                             FutureBuilder(
                                 future: getSizes(),
                                 builder: (context, snapshot) {
@@ -224,6 +229,21 @@ class _CreateSenderAnnounceState extends State<CreateSenderAnnounce> {
                                   return buildLoadingScreen();
                                 }),
                             SizedBox(height: height * 0.01),
+                            Row(children: [
+                              Text("Commission",
+                                  style: Theme.of(context).textTheme.headline5),
+                            ]),
+                            SizedBox(height: 5),
+                            Row(
+                              //crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                    child: _field(
+                                        'number', 'Proposition en €', _priceCtrl,
+                                        field: 'price')),
+                              ],
+                            ),
+                            SizedBox(height:5),
                             _field('textarea', 'Description', _descriptionCtrl),
                             SizedBox(height: height * 0.03),
                             if(imgList.length < 5)

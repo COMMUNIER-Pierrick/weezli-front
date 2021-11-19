@@ -56,8 +56,7 @@ Future<Response> createSenderAnnounce(Announce newAnnounce, List <File> imgList)
     var resBody = {};
     resBody["packages"] = package;
     resBody["idType"] =  newAnnounce.type;
-    resBody["price"] =  '';
-    resBody["transact"] =  '';
+    resBody["price"] =  newAnnounce.price;
     resBody["imgUrl"] =  '';
     resBody["dateCreated"] =  newAnnounce.dateCreated!.toIso8601String();
     resBody["userAnnounce"] = userAnnounce;

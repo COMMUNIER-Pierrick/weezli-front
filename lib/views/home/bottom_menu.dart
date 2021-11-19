@@ -23,7 +23,6 @@ class _BottomMenuState extends State<BottomMenu> {
     SearchPropositions(),
     MessageView(),
     Profile(),
-    Personal()
   ];
 
   void _onItemTapped(int index) {

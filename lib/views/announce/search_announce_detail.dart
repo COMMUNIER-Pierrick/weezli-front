@@ -7,16 +7,17 @@ import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/Order.dart';
-import 'package:weezli/model/Status.dart';
+import 'package:weezli/model/Proposition.dart';
+import 'package:weezli/model/StatusProposition.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/order/createOrder.dart';
+import 'package:weezli/service/proposition/createProposition.dart';
+import 'package:weezli/service/statusProposition/findStatusPropositionById.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weezli/views/orders/order_details.dart';
-
 import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
 import '../../widgets/avatar.dart';
@@ -40,8 +41,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final appBar = AppBar();
-    final height = (mediaQuery.size.height -
-        appBar.preferredSize.height -
+    final height = (mediaQuery.size.height - appBar.preferredSize.height -
         mediaQuery.padding.top);
     final arg = ModalRoute
         .of(context)!
@@ -50,6 +50,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     Announce announce = arg['announce'];
     User user = arg['user'];
     String? sizes = sizesList(announce.package.size);
+    final TextEditingController _offerPriceCtrl = TextEditingController(
+        text: announce.price.toString());
 
     return Scaffold(
         appBar: AppBar(
@@ -223,94 +225,55 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   "Commission : ",
                                   announce.price!.toStringAsFixed(2) + " €"),
                             SizedBox(height: 10),
-                            /* if (announce.type == 2)
-                            Container(
-                              width: 225,
-                              child: TextButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        _buildPopupCounterOffer(
-                                            context, announce, price),
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "CONTRE-PROPOSITION",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: WeezlyColors.blue5,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 5),
-                                      child: Icon(
-                                        WeezlyIcon.arrow_right,
-                                        size: 13,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(22.5),
-                                  ),
-                                  backgroundColor: WeezlyColors.grey3,
-                                ),
-                              ),
-                            ),*/
-                          ],
-                        ),
-                      ),
-                      Divider(thickness: 2),
-                      SizedBox(height: 10),
-                      CustomTitle("A propos"),
-                      SizedBox(height: 10),
-                      Text(
-                        announce.package.description,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(height: 1.3),
-                      ),
-                      SizedBox(height: 10),
-                      if (user.id != announce.userAnnounce.id)
-                        Container(
-                          height: height * 0.1,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                            _buildRow(
+                              context,
+                              Icons.remove_red_eye_outlined,
+                              "Nombre de vues : ",
+                              announce.views.toString(),
                             ),
-                            color: WeezlyColors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromRGBO(0, 0, 0, 0.26),
-                                spreadRadius: 1,
-                                blurRadius: 15,
-                                offset:
-                                Offset(0, 1), // changes position of shadow
-                              )
-                            ],
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                if ((announce.price != null) &&
-                                    (announce.price != 0))
-                                  Text(
-                                    announce.price!.toString() + " €",
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                            Divider(thickness: 2),
+                            SizedBox(height: 10),
+                            CustomTitle("A propos"),
+                            SizedBox(height: 10),
+                            Text(
+                              announce.package.description,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(height: 1.3),
+                            ),
+                            SizedBox(height: 10),
+                            Divider(thickness: 2),
+                            if (user.id != announce.userAnnounce.id)
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              height: height * 0.1,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(10)
+                                ),
+                                color: WeezlyColors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.26),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset:
+                                    Offset(0, 1), // changes position of shadow
+                                  )
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                    Text(
+                                      announce.price!.toString() + " €",
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                 ElevatedButton(
                                     onPressed: () =>
-                                        _contact(announce, user.id!),
+                                        _contact(announce, user.id!,
+                                            _offerPriceCtrl),
                                     child: Text(
                                       "Contacter".toUpperCase(),
                                       style: TextStyle(
@@ -332,8 +295,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                     ]
                 )
             )
-        )
-    );
+        ])
+    )));
   }
 
   // Afficher les images sur la page
@@ -449,49 +412,35 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  _contact(Announce announce, int idUser) async {
+  _contact(Announce announce, int idUser,
+      TextEditingController _offerPriceCtrl) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(
         prefs); //Vérifie si on a quelque chose en sharedpreferences (et donc si l'user est connecté). Le redirige vers le login sinon.
     if (user == null)
       Navigator.pushNamed(context, "/login");
     else {
-      if (announce.type == 2) {
-        String buttonTitle = "Payer";
-        String text = "Ici bientôt une solution de paiement. ";
-        showDialog(
-            context: context, builder: (BuildContext context) {
-          return _buildPopupCounterOffer(
-              context,
-              announce,
-              announce.price,
-              buttonTitle,
-              text,
-              user,
-              idUser);
-        });
-      }
-      else {
-        String buttonTitle = "Proposition";
-        String text = "Vous pouvez faire une proposition de prix pour le transport";
-        showDialog(
-            context: context, builder: (BuildContext context) {
-          return _buildPopupCounterOffer(
-              context,
-              announce,
-              announce.price,
-              buttonTitle,
-              text,
-              user,
-              idUser);
-        });
-      }
+      String buttonTitle = "Proposition";
+      String text = "*Vous avez la possibiliter de faire une seule proposition en modifiant le prix avant de valider";
+      showDialog(
+          context: context, builder: (BuildContext context) {
+        return _buildPopupOffer(
+            context,
+            announce,
+            announce.price,
+            buttonTitle,
+            text,
+            user,
+            idUser,
+            _offerPriceCtrl
+        );
+      });
     }
   }
 
-  Widget _buildPopupCounterOffer(BuildContext context, Announce announce,
-      num? price, String buttonTitle, String text, User user, int idUser) {
-    var myController = TextEditingController();
+  Widget _buildPopupOffer(BuildContext context, Announce announce,
+      num? price, String buttonTitle, String text, User user, int idUser,
+      TextEditingController _offerPriceCtrl) {
     return new Dialog(
       child: Container(
         width: MediaQuery
@@ -514,43 +463,29 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LimitedBox(
-                    maxWidth: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.7,
-                    child: Text(
-                      text,
-                      textAlign: TextAlign.center,
-                    ))
-              ],
-            ),
-            if (announce.type == 1)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.3,
-                    child: TextFormField(
-                      controller: myController,
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.euro),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
+                  child: TextFormField(
+                    controller: _offerPriceCtrl,
+                    onTap: () => _offerPriceCtrl.clear(),
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.euro),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -592,14 +527,26 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22.5),
                     ),
-                    onPressed: () {},/* =>
-                        announce.type == 2 ? _setTransact(
-                        context, announce, user, idUser)
-                        : _setProposition(
-                        context, announce, user, myController),*/
+                    onPressed: () =>
+                        _createOrderOrOffer(
+                            announce, context, idUser, _offerPriceCtrl),
                     child: const Text("VALIDER"),
                   ),
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LimitedBox(
+                    maxWidth: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.7,
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                    ))
               ],
             ),
           ],
@@ -608,44 +555,61 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-/*_setTransact(BuildContext context, Announce announce, User user, int idUser) async {
+  _createOrderOrOffer(Announce announce, BuildContext context, int idUser,
+      TextEditingController priceController) async {
+    // Récupération du statusProposition
+    StatusProposition statusPropositionValider = await findStatusPropositionById(
+        3);
 
-    var response = await createTransactwithFinalPrice(announce);
-    if (response.statusCode == 200) {
-      Order order = Order(
-          status: Status(id: 1, name: 'Payé'),
-          dateOrder: DateTime.now(),
-          user: user,
-          announce: announce,
-          finalPrice: announce.finalPrice);
-      var response = await createOrder(order);
+    // Récupération du statusProposition contre-proposition
+    StatusProposition statusPropositionProposition = await findStatusPropositionById(
+        1);
+
+    // Vérification si l'utilisateur est bien connecter
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user == null) {
+      Navigator.pushNamed(context, "/login");
+    }else if (announce.price == int.parse(priceController.text)) {
+      // Création de l'objet proposition à envoyer au back
+      Proposition proposition = Proposition(
+        announce: announce,
+        userProposition: user,
+        proposition: announce.price,
+        statusProposition: statusPropositionValider,
+      );
+      var response = await createProposition(proposition);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Commande validée !')),
+          const SnackBar(content: Text('Commande créée !')),
         );
-        var mapOrder = OrdersListDynamic.fromJson(jsonDecode(response.body)).ordersListDynamic;
+        var mapOrder = OrdersListDynamic
+            .fromJson(jsonDecode(response.body))
+            .ordersListDynamic;
         Order newOrder = Order.fromJson(mapOrder);
 
         Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
-        'order': newOrder,
-        'idUser': idUser
-        },);
+          'order': newOrder,
+          'idUser': idUser
+        },); //newOrder
       }
-    }
-  }
-
-  _setProposition(BuildContext context, Announce announce, User user, TextEditingController priceController) async {
-
-    FinalPrice finalPrice = FinalPrice(id : announce.finalPrice.id, proposition: double.parse(priceController.text), accept: 0, user: user);
-    var transact = 1;
-
-    var response = await updateFinalPrice(announce.id!, finalPrice, transact);
-    if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Proposition envoyée !')),
+    }else{
+        // Modification de l'objet proposition à envoyer au back
+        Proposition proposition = Proposition(
+          announce: announce,
+          userProposition: user,
+          proposition: int.parse(priceController.text),
+          statusProposition: statusPropositionProposition,
         );
-        Navigator.pushNamed(context, '/');
+        print(proposition);
+        // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
+        var response = await createProposition(proposition);
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Proposition envoyée !')),
+          );
+          Navigator.pushNamed(context, '/');
+        }
       }
     }
-  }*/
 }

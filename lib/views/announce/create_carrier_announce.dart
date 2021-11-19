@@ -126,7 +126,7 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
         ),
           views: 0,
           type: 2,
-          price: double.parse(_priceCtrl.text),
+          price: int.parse(_priceCtrl.text),
           dateCreated: DateTime.now(),
         userAnnounce: user,
       );
@@ -156,7 +156,8 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
     final height = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    User user = ModalRoute.of(context)!.settings.arguments as User;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    User user = arg['user'];
 
     return Scaffold(
       appBar: appBar,
@@ -311,9 +312,6 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           Row(children: [
                             Text("Commission",
                                 style: Theme.of(context).textTheme.headline5),
-                            _buildTooltip(
-                              "Le prix est pour l'ensemble. Vous pouvez aussi laisser libre et attendre qu'un expéditeur vous fasse une offre.",
-                            ),
                           ]),
                           SizedBox(height: 5),
                           Row(
@@ -642,9 +640,6 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [CustomTitle("ANNONCE ENREGISTRÉE")],
             ),
-            Text(idUser.toString()),
-            if(idUser == null)
-              Text("null"),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,

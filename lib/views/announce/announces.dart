@@ -91,10 +91,16 @@ class AnnouncesState extends State<Announces> {
               ]),
               Row(children: [
                 Text(announce.package.addressDeparture.city,
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    softWrap: false,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Icon(Icons.arrow_right_alt),
                 Text(announce.package.addressArrival.city,
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    softWrap: false,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Spacer(),

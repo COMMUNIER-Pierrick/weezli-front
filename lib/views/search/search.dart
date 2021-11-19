@@ -2,7 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/announce/findByType.dart';
+import 'package:weezli/service/announce/findByTypeConnect.dart';
+import 'package:weezli/service/announce/findByTypeDisconnect.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/views/announce/create_carrier_announce.dart';
 import 'package:weezli/views/announce/create_sender_announce.dart';
@@ -98,17 +99,22 @@ class _SearchState extends State<Search> {
     User? user = getUserInfo(prefs);
     if (user != null) {
       searchType == "sending"
-          ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: user)
-          : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: user);
-    }
-    else Navigator.pushNamed(context, "/login");
+          ? Navigator.pushNamed(context, CreateSenderAnnounce.routeName, arguments: {'user': user})
+          : Navigator.pushNamed(context, CreateCarrierAnnounce.routeName, arguments: {'user': user});
+    }else
+    Navigator.pushNamed(context, '/login');
   }
 
   Future<List<Announce>> getAnnouncesList() async {
     String? searchType = ModalRoute.of(context)!.settings.arguments as String?;
     int type;
-    searchType == "sending" ? type = 2 : type = 1;
-    announcesList = await findByType(type);
+    searchType == "sending" ? type = 1 : type = 2;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if(user == null){
+      announcesList = await findByTypeDisconnect(type);
+    }else
+    announcesList = await findByTypeConnect(type,user.id!);
     return announcesList;
   }
 
@@ -124,6 +130,9 @@ class _SearchState extends State<Search> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: WeezlyColors.white),
+            onPressed: () => Navigator.pushNamed(context, "/")),
         title: Text(searchType == "sending"
             ? "Recherche transporteur"
             : "Recherche paquet"),
@@ -307,11 +316,15 @@ class _SearchState extends State<Search> {
                         snapshot.hasData) {
                       List<Announce> announcesList =
                           snapshot.data![0] as List<Announce>;
-                      User user = snapshot.data![1] as User;
+                      dynamic user = snapshot.data![1];
                       return Container(
                           child: Column(children: [
-                        for (Announce announce in announcesList)
-                          SearchResults().oneResult(context, announce, user)
+                            if(user != null)
+                              for (Announce announce in announcesList)
+                                SearchResults().oneResultConnect(context, announce, user)
+                            else
+                              for (Announce announce in announcesList)
+                                SearchResults().oneResultDisconnect(context, announce)
                       ]));
                     }
                     else
