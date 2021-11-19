@@ -205,36 +205,48 @@ class OrderDetailState extends State<OrderDetail> {
                     ),
                   ]
               ),
-              /*Text(
-                "Description",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              SizedBox(
-                height: _separator,
-              ),
-              Text(order.announce.package.description),
-              SizedBox(
-                height: _separator,
-              ),*/
-              _opinion(order, context, idUser),
-              SizedBox(
-                height: _separator,
-              ),
               Divider(
                 thickness: 2,
               ),
-              SizedBox(
-                height: _separator,
+              _affichageAvis(_mediaQuery, order, context, idUser),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Trouver de l'aide"),
+                  SizedBox(
+                    width: _separator,
+                  ),
+                  Icon(WeezlyIcon.help),
+                ],
               ),
-              Text(
-                "Avis",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              SizedBox(
-                height: _separator,
-              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget _affichageAvis(_mediaQuery, order, context, idUser) {
+  if (order.status.name == "Terminé") { //&& order.opinion.status == "Active"
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+              children: [
+                Text("Avis",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline5,
+                ),
+              ]),
+          SizedBox(height: 5),
+          Row(
+            children: [
               RatingBar.builder(
-                initialRating: 4,
+                initialRating: 0,
+                //order.opinion.number
                 minRating: 1,
                 direction: Axis.horizontal,
                 ignoreGestures: true,
@@ -253,56 +265,51 @@ class OrderDetailState extends State<OrderDetail> {
                   print(rating);
                 },
               ),
-              Text(
-                "l'avis se trouvera ici si il y en a deja un, sinon il faudra mettre un message pour proposer d'en mettre un. Par defaut si pas d'avis le "
-                    "status sera Pending"
-              ),
-              SizedBox(
-                height: _separator,
-              ),
-              SizedBox(
-                height: _separator,
-
-              child: RawMaterialButton(
-                fillColor: WeezlyColors.primary,
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(22.5),
-                ),
-                onPressed: () => test(),
-                child: const Text("MODIFIER"),
-                ),
-              ),
-              SizedBox(
-                height: _separator,
-              ),
-              Divider(
-                thickness: 2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Trouver de l'aide"),
-                  SizedBox(
-                    width: _separator,
-                  ),
-                  Icon(WeezlyIcon.help),
-                ],
-              ),
             ],
           ),
-        ),
-      ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Text("order.opinion.comment"),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, ColisAvis.routeName,
+                          arguments: {'order': order, 'idUser': idUser}),
+                  child: Text(
+                    "MODIFIER",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    backgroundColor: WeezlyColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.5),
+                    ),
+                  ),
+                )
+              ]),
+          SizedBox(height: 5),
+          Divider(
+            thickness: 2,
+          ),
+        ]);
+  } else {
+    return Column(
+      children: [
+        _opinion(order, context, idUser),
+      ],
     );
   }
-
-  /*pour la mise en place mais a supprimer*/
-  test() {}
 }
+
 
 _listSize(Order order){
   String? sizes;
@@ -316,25 +323,37 @@ _listSize(Order order){
 }
 
 Widget _opinion(Order order, BuildContext context, int idUser) {
-  if (order.status.name == "Terminé")
-    return TextButton(
-        onPressed: () {
-          Navigator.pushNamed(context, ColisAvis.routeName, arguments: {'order': order, 'idUser': idUser});
-        },
-        child: const Text('METTRE UN AVIS',
-          style: TextStyle(
-            color: Colors.white,
-          ),
+  if (order.status.name == "Terminé") {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, ColisAvis.routeName,
+                    arguments: {'order': order, 'idUser': idUser});
+              },
+              child: const Text('METTRE UN AVIS',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                backgroundColor: WeezlyColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22.5),
+                ),
+              ),
+            ),
+          ],
         ),
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
-        backgroundColor: WeezlyColors.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(22.5),
-        ),
-      ),
+        Divider(thickness: 2),
+      ],
     );
-  else
+  }else
     return Row();
 }
 
