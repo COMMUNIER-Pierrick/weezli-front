@@ -1,3 +1,4 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
@@ -222,6 +223,66 @@ class OrderDetailState extends State<OrderDetail> {
               Divider(
                 thickness: 2,
               ),
+              SizedBox(
+                height: _separator,
+              ),
+              Text(
+                "Avis",
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              SizedBox(
+                height: _separator,
+              ),
+              RatingBar.builder(
+                initialRating: 4,
+                minRating: 1,
+                direction: Axis.horizontal,
+                ignoreGestures: true,
+                itemCount: 5,
+                itemSize: _mediaQuery.width < 321
+                    ? 15
+                    : 20,
+                itemPadding:
+                EdgeInsets.symmetric(horizontal: 1.0),
+                itemBuilder: (context, _) =>
+                    Icon(
+                      Icons.star,
+                      color: WeezlyColors.yellow,
+                    ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ),
+              Text(
+                "l'avis se trouvera ici si il y en a deja un, sinon il faudra mettre un message pour proposer d'en mettre un. Par defaut si pas d'avis le "
+                    "status sera Pending"
+              ),
+              SizedBox(
+                height: _separator,
+              ),
+              SizedBox(
+                height: _separator,
+
+              child: RawMaterialButton(
+                fillColor: WeezlyColors.primary,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22.5),
+                ),
+                onPressed: () => test(),
+                child: const Text("MODIFIER"),
+                ),
+              ),
+              SizedBox(
+                height: _separator,
+              ),
+              Divider(
+                thickness: 2,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -238,6 +299,9 @@ class OrderDetailState extends State<OrderDetail> {
       ),
     );
   }
+
+  /*pour la mise en place mais a supprimer*/
+  test() {}
 }
 
 _listSize(Order order){
