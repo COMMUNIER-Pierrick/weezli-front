@@ -84,8 +84,7 @@ class _ProfileState extends State<Profile> {
       ["Paramètres", "/personal"],
     ];
     final List _list2 = [
-      ["Paiement et transactions", "/paiement"],
-      ["Détails du forfait", "/formules"],
+      ["Paiement et transactions", "/payment"],
     ];
     final List _list3 = [
       ["Aide", "/paiement"],
