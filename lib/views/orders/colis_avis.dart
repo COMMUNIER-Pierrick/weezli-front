@@ -23,7 +23,7 @@ class _ColisAvisState extends State<ColisAvis> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mes colis"),
+        title: Text("Mon avis"),
       ),
       body: SingleChildScrollView(
         child: Container(

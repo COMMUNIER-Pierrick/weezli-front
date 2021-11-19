@@ -176,6 +176,15 @@ class OrderDetailState extends State<OrderDetail> {
                 thickness: 2,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _status(order.status.name)
+                ],
+              ),
+              SizedBox(
+                height: _separator,
+              ),
+              Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextButton(
@@ -194,11 +203,7 @@ class OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                     ),
-                    _opinion(order, context, idUser),
                   ]
-              ),
-              SizedBox(
-                height: _separator,
               ),
               /*Text(
                 "Description",
@@ -211,12 +216,7 @@ class OrderDetailState extends State<OrderDetail> {
               SizedBox(
                 height: _separator,
               ),*/
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _status(order.status.name)
-                ],
-              ),
+              _opinion(order, context, idUser),
               SizedBox(
                 height: _separator,
               ),
@@ -335,9 +335,7 @@ Widget _opinion(Order order, BuildContext context, int idUser) {
       ),
     );
   else
-    return SizedBox(
-      height: 0,
-    );
+    return Row();
 }
 
 _status(String statut){
