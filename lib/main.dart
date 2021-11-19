@@ -3,6 +3,7 @@ import 'package:weezli/views/announce/announce_detail.dart';
 import 'package:weezli/views/announce/announces.dart';
 import 'package:weezli/views/announce/search_announce_detail.dart';
 import 'package:weezli/views/home/bottom_menu.dart';
+import 'package:weezli/views/information/info_weezli.dart';
 import 'package:weezli/views/orders/colis_avis.dart';
 import 'package:weezli/views/deliveries/delivery_details.dart';
 import 'package:weezli/views/orders/order_details.dart';
@@ -18,9 +19,10 @@ import 'package:weezli/views/account/email_verification.dart';
 import 'package:weezli/views/account/modifyProfile.dart';
 import 'package:weezli/views/account/userProfile.dart';
 import 'package:weezli/views/account/phone_verification.dart';
-import 'package:weezli/views/paiement/paiement_view.dart';
+import 'package:weezli/views/payment/payment.dart';
 import 'package:weezli/views/propositions/propositions_details.dart';
 import 'package:weezli/views/propositions/search_propositions.dart';
+import 'package:weezli/views/support/support.dart';
 import './commons/weezly_colors.dart';
 import './views/announce/announce_detail.dart';
 import './views/announce/create_carrier_announce.dart';
@@ -31,8 +33,6 @@ import './views/formules/formules_view.dart';
 import './views/message/message_view.dart';
 import './views/resultat_recherche.dart';
 import './views/search/search.dart';
-import '.env.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,9 +73,9 @@ void main() async {
         '/resultat': (context) => ResultatRecherche(),
         Search.routeName: (context) => Search(),
         MessageView.routeName: (context) => MessageView(),
-        '/paiement': (context) => PaiementView(),
-        '/formules': (context) => FormuleView(),
-        '/users': (context) => FormuleView(),
+        '/support': (context) => SupportView(),
+        '/info': (context) => InfoWeezliView(),
+        '/payment': (context) => PaymentView(),
         AnnounceDetail.routeName: (context) => AnnounceDetail(),
         SearchAnnounceDetail.routeName : (context) => SearchAnnounceDetail(),
         '/avis': (context) => Opinions(),

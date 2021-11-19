@@ -134,7 +134,7 @@ class _HomeState extends State<Home> {
       String text,
     ) {
       return InkWell(
-          onTap: () => Navigator.pushNamed(context, '/formules'),
+          onTap: () => Navigator.pushNamed(context, '/info'),
           child: Container(
             width: _mediaQuery.width * 0.9,
             height: 104,
@@ -175,7 +175,7 @@ class _HomeState extends State<Home> {
       String text,
     ) {
       return InkWell(
-        onTap: () => Navigator.pushNamed(context, '/formules'),
+        onTap: () => Navigator.pushNamed(context, '/support'),
         child: Container(
           padding: EdgeInsets.all(10.0),
           width: _mediaQuery.width * 0.9,
@@ -283,7 +283,7 @@ class _HomeState extends State<Home> {
                 child: buttonsRow,
               ),
               largeButton1("assets/images/comment.png", "COMMENT\nÇA MARCHE"),
-              largeButton2("assets/images/moyens2.png", "FORMULES"),
+              largeButton2("assets/images/moyens2.png", "SUPPORT"),
               FutureBuilder(
                 future: searchPrefs(),
                 builder: (context, snapshot) {
