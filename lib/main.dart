@@ -29,7 +29,6 @@ import './views/announce/create_carrier_announce.dart';
 import './views/announce/create_sender_announce.dart';
 import './views/authentication/login.dart';
 import './views/authentication/register.dart';
-import './views/formules/formules_view.dart';
 import './views/message/message_view.dart';
 import './views/resultat_recherche.dart';
 import './views/search/search.dart';
