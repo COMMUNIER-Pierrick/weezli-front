@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/Check.dart';
 import 'package:weezli/model/PackageSize.dart';
 import 'package:weezli/model/user.dart';
+import 'package:weezli/service/user/findCheckUser.dart';
 
 import 'announce/search_announce_detail.dart';
 
@@ -43,6 +46,7 @@ class SearchResults {
   Widget oneResultConnect(BuildContext context, Announce announce, User user) {
 
     String? sizesList = sizes(announce);
+    Check check = announce.userAnnounce.check!;
 
     return GestureDetector(
       onTap: () {
@@ -61,7 +65,7 @@ class SearchResults {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            contact(),
+            contact(check),
             packageInformations(announce, context, sizesList!),
             price(announce),
           ],
@@ -73,6 +77,7 @@ class SearchResults {
   Widget oneResultDisconnect(BuildContext context, Announce announce) {
 
     String? sizesList = sizes(announce);
+    Check check = announce.userAnnounce.check!;
 
     return GestureDetector(
       onTap: () {
@@ -90,7 +95,7 @@ class SearchResults {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            contact(),
+            contact(check),
             packageInformations(announce, context, sizesList!),
             price(announce),
           ],
@@ -99,7 +104,8 @@ class SearchResults {
     );
   }
 
-  Widget contact() {
+  Widget contact(Check check) {
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,16 +125,19 @@ class SearchResults {
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
+          if(check.statusPhone == 1)
             Icon(
               Icons.smartphone,
               size: 19,
             ),
             SizedBox(width: 2),
+            if(check.statusIdentity == 1)
             Icon(
               Icons.contact_phone_outlined,
               size: 19,
             ),
             SizedBox(width: 2),
+            if(check.statusEmail == 1)
             Icon(
               Icons.mail_outline,
               size: 19,
@@ -147,7 +156,7 @@ class SearchResults {
         children: [
           Row(children: [
             Text(
-              announce.userAnnounce.firstname!,
+              announce.userAnnounce.username!,
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -223,7 +232,6 @@ class SearchResults {
             announce.type == 2 ? sendIcon() : carryIcon(),
           ],
         ),
-        if (announce.type == 2)
         Row(children: [
           Text.rich(TextSpan(
               text: announce.price.toString(),
@@ -249,8 +257,8 @@ class SearchResults {
   Widget sendIcon() {
     return CircleAvatar(
       backgroundColor: Colors.blue,
-      child: SvgPicture.asset(
-        "assets/images/moyens.png",
+      child: Icon(
+        WeezlyIcon.delivery,
         color: Colors.white,
       ),
     );
@@ -259,6 +267,10 @@ class SearchResults {
   Widget carryIcon() {
     return CircleAvatar(
       backgroundColor: Colors.amber,
+      child: Icon(
+        WeezlyIcon.paper_plane_empty,
+        color: Colors.white,
+      ),
     );
   }
 }

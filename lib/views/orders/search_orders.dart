@@ -3,7 +3,6 @@ import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/service/order/findOrdersByUser.dart';
-import 'package:weezli/service/order/findOrdersByUserSender.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';

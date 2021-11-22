@@ -1,12 +1,9 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/service/order/findOrdersByUserCarrier.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
 import 'delivery_details.dart';

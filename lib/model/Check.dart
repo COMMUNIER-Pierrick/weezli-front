@@ -45,3 +45,57 @@ class Check {
       "filename": filename,
     };
   }
+// Récupère une liste dynamique à partir de la map renvoyée par le json.
+
+class ChecksListMap {
+  ChecksListMap({
+    required this.list,
+  });
+
+  List <dynamic> list;
+
+  factory ChecksListMap.fromJson(Map<String, dynamic> json) {
+    return ChecksListMap(
+        list: json ["Checks"]);
+  }
+}
+
+// Passe d'une liste dynamique à un objet map pour créer une check utilisateur.
+
+class ChecksListDynamic {
+  ChecksListDynamic({
+    required this.checksListDynamic,
+  });
+
+  Map <String, dynamic> checksListDynamic;
+
+  factory ChecksListDynamic.fromJson(Map<String, dynamic> json) {
+    return ChecksListDynamic(
+        checksListDynamic: json ["Check"]);
+  }
+}
+
+class ChecksList {
+  ChecksList({
+    required this.checksList,
+  });
+
+  List<Check> checksList;
+
+  //Récupère une liste dynamique pour créer check par check, puis recréer une liste de checks.
+
+  factory ChecksList.fromJson(List<dynamic> parsedJson) {
+    List<Check> checks = [];
+    parsedJson.forEach((element) {
+      var mapCheck = ChecksListDynamic
+          .fromJson(element)
+          .checksListDynamic;
+      Check check = Check.fromJson(mapCheck);
+      checks.add(check);
+    });
+
+    return new ChecksList(
+        checksList: checks
+    );
+  }
+}

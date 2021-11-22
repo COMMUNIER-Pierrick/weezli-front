@@ -125,11 +125,8 @@ class _AnnounceDetail extends State<AnnounceDetail> {
                     SizedBox(width: widthSeparator),
                     Text("Commission de base : "),
                     Text(announce.price!.toString() + " €",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                  ],
-                ),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                  ]),
                 SizedBox(height: 10),
                 Row(
                   children: [
