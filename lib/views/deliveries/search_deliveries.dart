@@ -136,27 +136,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      order.status.name == "Payé"
-                          ? Row(children: [
-                              Icon(
-                                Icons.circle,
-                                color: WeezlyColors.yellow,
-                              ),
-                              SizedBox(width: 10),
-                              Text("En cours"),
-                            ])
-                          : Row(children: [
-                              Icon(
-                                Icons.circle,
-                                color: WeezlyColors.green,
-                              ),
-                              SizedBox(width: 10),
-                              Text("Livré"),
-                            ])
-                    ],
-                  ),
+                 _status(order.status.name),
                 ],
               ),
             ],
@@ -197,6 +177,49 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
         ),
       ),
     );
+  }
+
+  _status(String statut){
+    if(statut == "En cours"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.yellow,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }else if (statut == "Livré"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.orange,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }else if (statut == "Terminé"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.green,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }
   }
 }
 
