@@ -6,6 +6,7 @@ import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/sizesList.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/model/Announce.dart';
+import 'package:weezli/model/Check.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/Proposition.dart';
 import 'package:weezli/model/StatusProposition.dart';
@@ -22,7 +23,7 @@ import '../../commons/weezly_colors.dart';
 import '../../widgets/custom_title.dart';
 import '../../widgets/avatar.dart';
 import '../../commons/weezly_icon_icons.dart';
-import '../../widgets/contact.dart';
+
 
 //Classe qui permet de faire un widget dynamique et appelle la classe qui fait le build
 
@@ -90,11 +91,10 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                         announce.userAnnounce.id);
                                   },
                                   child: CustomTitle(announce
-                                      .userAnnounce.firstname! +
-                                      " " +
-                                      announce.userAnnounce.lastname!),
+                                      .userAnnounce.username!
+                                      ),
                                 ),
-                                Contact(),
+                                contact(announce.userAnnounce.check!),
                                 SizedBox(height: 2),
                                 Container(
                                   padding: EdgeInsets.symmetric(
@@ -182,6 +182,26 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                               ],
                             ),
                             SizedBox(height: 10),
+                            if (announce.type == 1)
+                              Row(
+                                  children: [
+                                    Icon(WeezlyIcon.calendar2,
+                                        color: WeezlyColors.blue3),
+                                    SizedBox(width: 12),
+
+                                        Text("Date limite d'expédition : ",
+                                        ),
+
+                                        Flexible(
+                                            child:
+                                            Text(format2(announce.package.datetimeDeparture),
+                                              overflow: TextOverflow.fade,
+                                              maxLines: 1,
+                                              softWrap: false,
+                                                style: TextStyle(fontWeight: FontWeight.w700)
+                                            ),
+                                        ),
+                                      ]),
                             if (announce.type == 2)
                               Row(
                                 children: [
@@ -207,6 +227,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   )
                                 ],
                               ),
+                            SizedBox(height: 10),
                             _buildRow(context, WeezlyIcon.box,
                                 "Dimensions : ", sizes!),
                             SizedBox(height: 10),
@@ -218,7 +239,6 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                                   " kg",
                             ),
                             SizedBox(height: 10),
-                            if (announce.type == 2)
                               _buildRow(
                                   context,
                                   WeezlyIcon.ticket,
@@ -394,6 +414,7 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
           TextSpan(text: firstText),
           TextSpan(
             text: secondText,
+
             style: TextStyle(fontWeight: FontWeight.w700),
           ),
         ],
@@ -410,6 +431,33 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
         _buildCustomText(context, firstText, secondText)
       ],
     );
+  }
+
+  Widget contact(Check check) {
+
+    return
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            if(check.statusPhone == 1)
+              Icon(
+                Icons.smartphone,
+                size: 19,
+              ),
+            SizedBox(width: 2),
+            if(check.statusIdentity == 1)
+              Icon(
+                Icons.contact_phone_outlined,
+                size: 19,
+              ),
+            SizedBox(width: 2),
+            if(check.statusEmail == 1)
+              Icon(
+                Icons.mail_outline,
+                size: 19,
+              ),
+          ],
+        );
   }
 
   _contact(Announce announce, int idUser,

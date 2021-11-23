@@ -1,12 +1,9 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
-import 'package:weezli/model/user.dart';
 import 'package:weezli/service/order/findOrdersByUserCarrier.dart';
-import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 
 import 'delivery_details.dart';
@@ -139,27 +136,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      order.status.name == "Payé"
-                          ? Row(children: [
-                              Icon(
-                                Icons.circle,
-                                color: WeezlyColors.yellow,
-                              ),
-                              SizedBox(width: 10),
-                              Text("En cours"),
-                            ])
-                          : Row(children: [
-                              Icon(
-                                Icons.circle,
-                                color: WeezlyColors.green,
-                              ),
-                              SizedBox(width: 10),
-                              Text("Livré"),
-                            ])
-                    ],
-                  ),
+                 _status(order.status.name),
                 ],
               ),
             ],
@@ -200,6 +177,49 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
         ),
       ),
     );
+  }
+
+  _status(String statut){
+    if(statut == "En cours"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.yellow,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }else if (statut == "Livré"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.orange,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }else if (statut == "Terminé"){
+      return Row(
+          children: [
+            Row(children: [
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.green,
+              ),
+              SizedBox(width: 10),
+              Text(statut),
+            ]
+            )]
+      );
+    }
   }
 }
 

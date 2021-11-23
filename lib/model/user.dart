@@ -64,7 +64,7 @@ class User {
           : null,
       urlProfilPicture: json["url_profil_img"],
       choice: (json['choice'] != null) ? Choice.fromJson(json["choice"]) : null,
-      check: (json['check'] != null) ?  Check.fromJson(json["check"]) : null,
+      check: (json['check'] != null) ? Check.fromJson(json["check"]) : null,
       opinions: json["id_opinion"],
       moyenneAvis: json["average_opinion"],
       password: json["password"],

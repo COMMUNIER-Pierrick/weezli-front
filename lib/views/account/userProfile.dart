@@ -28,7 +28,6 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   Future<User?> getUser(int userId) async {
     User? user = await userById(userId);
-    print(user);
     return user;
   }
 

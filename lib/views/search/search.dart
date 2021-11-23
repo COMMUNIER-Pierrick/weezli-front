@@ -261,39 +261,39 @@ class _SearchState extends State<Search> {
                               'Moyen de transport : ${_filters['travelMode']}'),
                       ],
                     ),
+                    Container(
+                        child:
+                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          ElevatedButton(
+                              onPressed: _saveForm,
+                              child: Text('Rechercher'.toUpperCase()),
+                              style: ElevatedButton.styleFrom(
+                                shape: StadiumBorder(),
+                                primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
+                                    .yellowgreen,
+                                padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
+                                elevation: 5,
+                              )),
+                        ])),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Container(
                 child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                  onPressed: _saveForm,
-                  child: Text('Rechercher'.toUpperCase()),
-                  style: ElevatedButton.styleFrom(
-                    shape: StadiumBorder(),
-                    primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
-                        .yellowgreen,
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
-                    elevation: 5,
-                  )),
-            ])),
-            Container(
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                  onPressed: _createAnnounce,
-                  child: Text('Créer une annonce'.toUpperCase()),
-                  style: ElevatedButton.styleFrom(
-                    shape: StadiumBorder(),
-                    primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
-                        .blue6,
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
-                    elevation: 5,
-                  )),
-            ])),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  ElevatedButton(
+                      onPressed: _createAnnounce,
+                      child: Text('Créer une annonce'.toUpperCase()),
+                      style: ElevatedButton.styleFrom(
+                        shape: StadiumBorder(),
+                        primary: /*searchType == "sending" ? WeezlyColors.blue2:*/ WeezlyColors
+                            .blue6,
+                        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 11),
+                        elevation: 5,
+                      )),
+                ])),
             const SizedBox(height: 20),
             Row(
               children: [
