@@ -149,9 +149,7 @@ class _SearchOrdersState extends State<SearchOrders> {
                       children: [
                         Text("Montant : ",
                             style: Theme.of(context).textTheme.headline5),
-                        Text(
-                          order.announce.price.toString() + "€",
-                        ),
+                        Text(order.announce.price.toString() + "€",),
                       ],
                     ),
                     Row(

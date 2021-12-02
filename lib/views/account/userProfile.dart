@@ -49,7 +49,6 @@ class _UserProfileState extends State<UserProfile> {
         .of(context)!
         .settings
         .arguments as int;
-    BottomMenu bottomMenu = BottomMenu();
 
     return Scaffold(
       appBar: AppBar(
@@ -109,7 +108,8 @@ class _UserProfileState extends State<UserProfile> {
                                   .moyenneAvis! != 0))
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(context, "/avis");
+                                    Navigator.pushNamed(context, "/avis",
+                                    arguments: {"User": user});
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(20.0),
@@ -139,6 +139,7 @@ class _UserProfileState extends State<UserProfile> {
                                               .toDouble(),
                                           direction: Axis.horizontal,
                                           ignoreGestures: true,
+                                          allowHalfRating: true,
                                           itemCount: 5,
                                           itemSize: _mediaQuery.width < 321
                                               ? 15

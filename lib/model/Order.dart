@@ -1,14 +1,9 @@
 import 'dart:convert';
 
-import 'package:weezli/model/user.dart';
-
 import 'Announce.dart';
+import 'Opinion.dart';
 import 'Status.dart';
 
-
-Order orderFromJson(String str) => Order.fromJson(json.decode(str));
-
-String orderToJson(Order data) => json.encode(data.toJson());
 
 class Order {
   Order({
@@ -17,8 +12,8 @@ class Order {
     required this.status,
     this.validationCode,
     required this.dateOrder,
-    //required this.user,
     this.qrCode,
+    required this.opinions,
   });
 
   int? id;
@@ -26,19 +21,18 @@ class Order {
   Status status;
   int? validationCode;
   DateTime dateOrder;
-  //User user;
   String? qrCode;
-
+  List<Opinion> opinions;
 
   factory Order.fromJson(Map<String, dynamic> json){
     return Order(
-        id: json["id"],
-        validationCode: json ["codeValidated"],
-        status: Status.fromJson(json["id_status"]),
-        announce: Announce.fromJson(json["id_announce"]),
-        dateOrder: DateTime.parse(json["dateOrder"]),
-        //user: User.fromJson(json["buyer"]),
-        qrCode: json ["qrCode"],
+      id: json["id"],
+      validationCode: json ["codeValidated"],
+      status: Status.fromJson(json["id_status"]),
+      announce: Announce.fromJson(json["id_announce"]),
+      dateOrder: DateTime.parse(json["dateOrder"]),
+      qrCode: json ["qrCode"],
+      opinions: OpinionsList.fromJson(json["opinions"]).opinionsList,
     );
   }
 
@@ -49,8 +43,8 @@ class Order {
     "validation_code": validationCode,
     "date_order" : dateOrder,
     "id_announce" : announce,
-    //"id_user" : user,
-    "qr_code" : qrCode
+    "qr_code" : qrCode,
+    "opinions" : opinions,
   };
 }
 

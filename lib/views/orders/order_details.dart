@@ -2,6 +2,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Opinion.dart';
 import 'package:weezli/model/Order.dart';
 import 'package:flutter/material.dart';
 import 'package:weezli/model/PackageSize.dart';
@@ -27,6 +28,7 @@ class OrderDetailState extends State<OrderDetail> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Order order= arg['order'];
     int idUser= arg['idUser'];
+    Opinion opinionUser = opinion(order, idUser);
 
     Row mix(IconData icon, String key, String value) {
       return Row(
@@ -148,8 +150,7 @@ class OrderDetailState extends State<OrderDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.delivery, "Transporteur : ",
-                  order.announce.userAnnounce.firstname! + " " + order.announce.userAnnounce.lastname!
-                ),
+                  order.announce.userAnnounce.firstname! + " " + order.announce.userAnnounce.lastname!),
               SizedBox(
                 height: _separator,
               ),
@@ -208,7 +209,7 @@ class OrderDetailState extends State<OrderDetail> {
               Divider(
                 thickness: 2,
               ),
-              _affichageAvis(_mediaQuery, order, context, idUser),
+              _affichageAvis(_mediaQuery, order, context, idUser, opinionUser),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -227,8 +228,18 @@ class OrderDetailState extends State<OrderDetail> {
   }
 }
 
-Widget _affichageAvis(_mediaQuery, order, context, idUser) {
-  if (order.status.name == "Terminé") { //&& order.opinion.status == "Active"
+opinion(Order order, int idUser){
+
+  for (Opinion opinion in order.opinions) {
+    if (opinion.idUserOpinion == idUser) {
+      return opinion;
+    }
+  }
+}
+
+Widget _affichageAvis(_mediaQuery, order, context, idUser, opinionUser) {
+
+  if (order.status.name == "Terminé" && opinionUser.status == "Active"){
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -247,12 +258,11 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RatingBar.builder(
-                initialRating: 0,
-                //order.opinion.number
-                minRating: 1,
+                initialRating: opinionUser.number.toDouble(),
                 direction: Axis.horizontal,
                 ignoreGestures: true,
                 itemCount: 5,
+                allowHalfRating: true,
                 itemSize: _mediaQuery.width < 321
                     ? 15
                     : 20,
@@ -264,7 +274,7 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
                       color: WeezlyColors.yellow,
                     ),
                 onRatingUpdate: (rating) {
-                  print(rating);
+                  opinionUser.number = rating;
                 },
               ),
             ],
@@ -273,7 +283,10 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("order.opinion.comment"),
+              Flexible(
+                child: Text(opinionUser.comment,
+                textAlign: TextAlign.center),
+              ),
             ],
           ),
           SizedBox(height: 5),
@@ -283,7 +296,7 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
                 TextButton(
                   onPressed: () =>
                       Navigator.pushNamed(context, ColisAvis.routeName,
-                          arguments: {'order': order, 'idUser': idUser}),
+                          arguments: {'order': order, 'idUser': idUser, 'opinionUser': opinionUser}),
                   child: Text(
                     "MODIFIER",
                     style: TextStyle(
@@ -307,7 +320,7 @@ Widget _affichageAvis(_mediaQuery, order, context, idUser) {
   } else {
     return Column(
       children: [
-        _opinion(order, context, idUser),
+        _opinion(order, context, idUser, opinionUser),
       ],
     );
   }
@@ -325,7 +338,7 @@ _listSize(Order order){
   return sizes;
 }
 
-Widget _opinion(Order order, BuildContext context, int idUser) {
+Widget _opinion(Order order, BuildContext context, int idUser, Opinion opinionUser) {
   if (order.status.name == "Terminé") {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -336,7 +349,7 @@ Widget _opinion(Order order, BuildContext context, int idUser) {
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, ColisAvis.routeName,
-                    arguments: {'order': order, 'idUser': idUser});
+                    arguments: {'order': order, 'idUser': idUser, 'opinionUser': opinionUser});
               },
               child: const Text('METTRE UN AVIS',
                 style: TextStyle(

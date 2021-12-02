@@ -91,6 +91,7 @@ class User {
       "dateOfBirthday": this.dateOfBirthday != null
           ? this.dateOfBirthday!.toIso8601String()
           : null,
+      "average_opinion": this.moyenneAvis
     };
   }
 

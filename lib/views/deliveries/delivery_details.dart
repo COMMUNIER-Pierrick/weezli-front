@@ -100,7 +100,7 @@ class DeliveryDetailState extends State<DeliveryDetail> {
                 height: _separator,
               ),
               mix(WeezlyIcon.calendar2, "Date de départ : ",
-                  format(order.announce.package.datetimeDeparture)),
+              format(order.announce.package.datetimeDeparture)),
               SizedBox(
                 height: _separator,
               ),

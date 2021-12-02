@@ -131,9 +131,7 @@ class _SearchDeliveriesState extends State<SearchDeliveries> {
                     children: [
                       Text("Montant: ",
                           style: Theme.of(context).textTheme.headline5),
-                      Text(
-                        order.announce.price.toString() + "€",
-                      ),
+                      Text(order.announce.price.toString() + "€",),
                     ],
                   ),
                  _status(order.status.name),

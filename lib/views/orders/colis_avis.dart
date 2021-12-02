@@ -1,5 +1,13 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
+import 'package:weezli/model/Opinion.dart';
 import 'package:weezli/model/Order.dart';
+import 'package:weezli/model/user.dart';
+import 'package:weezli/service/opinion/modifyOpinion.dart';
+import 'package:weezli/service/user/getUserInfo.dart';
+import 'package:weezli/service/user/updateAverageOpinion.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -18,8 +26,13 @@ class _ColisAvisState extends State<ColisAvis> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     Order order= arg['order'];
     int idUser= arg['idUser'];
+    Opinion opinionUser = arg['opinionUser'];
     final Size _mediaQuery = MediaQuery.of(context).size;
     final double _separator = 20;
+    dynamic note = opinionUser.number;
+    final TextEditingController _commentController = TextEditingController(
+        text: opinionUser.comment
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +52,7 @@ class _ColisAvisState extends State<ColisAvis> {
                 height: _separator,
               ),
               RatingBar(
-                initialRating: 0,
+                initialRating: opinionUser.number.toDouble(),
                 direction: Axis.horizontal,
                 itemCount: 5,
                 itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
@@ -59,7 +72,7 @@ class _ColisAvisState extends State<ColisAvis> {
                   ),
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
+                  note = rating;
                 },
               ),
               SizedBox(
@@ -70,6 +83,8 @@ class _ColisAvisState extends State<ColisAvis> {
                 color: WeezlyColors.grey1,
                 child: TextFormField(
                   maxLines: 5,
+                  controller: _commentController,
+                  onTap: () => _commentController.clear(),
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -126,9 +141,9 @@ class _ColisAvisState extends State<ColisAvis> {
                       ),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22.5)),
-                      onPressed: () {
-                        Navigator.pushNamed(context, OrderDetail.routeName, arguments: {'order': order, 'idUser': idUser});
-                      },
+                      onPressed: () => _modifyOpinion(opinionUser, note, _commentController, idUser, order),
+                        //Navigator.pushNamed(context, OrderDetail.routeName, arguments: {'order': order, 'idUser': idUser});
+
                       child: const Text(
                         "NOTER",
                         textAlign: TextAlign.center,
@@ -142,5 +157,38 @@ class _ColisAvisState extends State<ColisAvis> {
         ),
       ),
     );
+  }
+
+
+  _modifyOpinion(Opinion opinionUser, dynamic note,
+      TextEditingController _commentController, int idUser, Order order) async {
+    // Vérification si l'utilisateur est bien connecter
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    User? user = getUserInfo(prefs);
+    if (user == null) {
+      Navigator.pushNamed(context, "/login");
+    } else {
+      // Création de l'objet opinion à envoyer au back pour être mis a jour
+      Opinion opinion = Opinion(
+          id: opinionUser.id,
+          number: note,
+          comment: _commentController.text,
+          idUser: opinionUser.idUser,
+          status: "Active",
+          idUserOpinion: opinionUser.idUserOpinion,
+          idTypes: opinionUser.idTypes
+      );
+      var responseOpinion = await modifyOpinion(opinion);
+      if (responseOpinion.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Avis modifiée !')),
+        );
+
+        /*Navigator.pushNamed(context, Profile.routeName, arguments: {
+          'idUser': idUser
+        },
+        );*/ //newOrder
+      }
+    }
   }
 }
