@@ -16,7 +16,7 @@ Future<Response> createUser(User account) async {
     resBodyAddress["zipCode"] = account.address![0].zipCode;
     resBodyAddress ["city"] = account.address![0].city;
     resBodyAddress["country"] = account.address![0].country;
-    //resBodyAddress["name"] = '';
+    resBodyAddress["name"] = '';
     resBodyAddress["idInfo"] = 3;
     address = resBodyAddress;
 
@@ -31,7 +31,6 @@ Future<Response> createUser(User account) async {
     var user = {};
     user["User"] = resBody;
     str = encoder.convert(user);
-    print(str);
   } catch(e) {
     print(e);
   }

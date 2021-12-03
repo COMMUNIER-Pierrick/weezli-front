@@ -7,12 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/format.dart';
 import 'package:weezli/commons/weezly_colors.dart';
 import 'package:weezli/commons/weezly_icon_icons.dart';
+import 'package:weezli/model/Opinion.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/authentication/logout.dart';
+import 'package:weezli/service/opinion/findOpinionsReceivedByUser.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
 import 'package:weezli/service/user/userById.dart';
-import 'package:weezli/views/account/profile.dart';
-import 'package:weezli/views/home/bottom_menu.dart';
 import 'package:weezli/widgets/build_loading_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +26,9 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+  List<Opinion> listOpinions = [];
+
   Future<User?> getUser(int userId) async {
     User? user = await userById(userId);
     return user;
@@ -38,6 +41,11 @@ class _UserProfileState extends State<UserProfile> {
       return user.id;
     } else
       return null;
+  }
+
+  Future<List<Opinion>> getOpinionsList(int idUser) async {
+    listOpinions = await findOpinionsReceivedByUser(idUser);
+    return listOpinions;
   }
 
   @override
@@ -75,13 +83,14 @@ class _UserProfileState extends State<UserProfile> {
                 child: Column(
                   children: [
                     FutureBuilder(
-                        future: Future.wait([getUser(userId), getActualUser()]),
+                        future: Future.wait([getUser(userId), getActualUser(), getOpinionsList(userId)]),
                         builder: (context, AsyncSnapshot<List> snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done &&
                               snapshot.hasData) {
                             User user = snapshot.data![0] as User;
                             int? actualUserId = snapshot.data![1];
+                            List<Opinion> listOpinions = snapshot.data![2] as List<Opinion>;
                             return Column(children: [
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -96,8 +105,9 @@ class _UserProfileState extends State<UserProfile> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  //if()
                                   Text(
-                                    user.firstname!,
+                                    user.username!,
                                     style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.bold),
@@ -109,7 +119,7 @@ class _UserProfileState extends State<UserProfile> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.pushNamed(context, "/avis",
-                                    arguments: {"User": user});
+                                        arguments: {"User": user, "listOpinions": listOpinions});
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(20.0),

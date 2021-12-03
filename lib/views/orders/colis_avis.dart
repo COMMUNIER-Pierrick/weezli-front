@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weezli/commons/weezly_colors.dart';
@@ -7,7 +6,7 @@ import 'package:weezli/model/Order.dart';
 import 'package:weezli/model/user.dart';
 import 'package:weezli/service/opinion/modifyOpinion.dart';
 import 'package:weezli/service/user/getUserInfo.dart';
-import 'package:weezli/service/user/updateAverageOpinion.dart';
+import 'package:weezli/views/account/profile.dart';
 import 'package:weezli/views/orders/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -142,8 +141,6 @@ class _ColisAvisState extends State<ColisAvis> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(22.5)),
                       onPressed: () => _modifyOpinion(opinionUser, note, _commentController, idUser, order),
-                        //Navigator.pushNamed(context, OrderDetail.routeName, arguments: {'order': order, 'idUser': idUser});
-
                       child: const Text(
                         "NOTER",
                         textAlign: TextAlign.center,
@@ -184,10 +181,10 @@ class _ColisAvisState extends State<ColisAvis> {
           const SnackBar(content: Text('Avis modifiée !')),
         );
 
-        /*Navigator.pushNamed(context, Profile.routeName, arguments: {
+        Navigator.pushNamed(context, Profile.routeName, arguments: {
           'idUser': idUser
         },
-        );*/ //newOrder
+        ); //newOrder
       }
     }
   }

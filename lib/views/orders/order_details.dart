@@ -110,7 +110,6 @@ class OrderDetailState extends State<OrderDetail> {
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       )
-                    //Theme.of(context).textTheme.headline5,
                   ),
                 ],
               ),
@@ -132,7 +131,6 @@ class OrderDetailState extends State<OrderDetail> {
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       )
-                      //Theme.of(context).textTheme.headline5,
                   ),
                 ],
               ),

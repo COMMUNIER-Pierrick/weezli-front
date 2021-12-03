@@ -5,7 +5,7 @@ import 'package:weezli/model/Opinion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:weezli/model/user.dart';
-import 'package:weezli/service/opinion/findOpinionsReceivedByUser.dart';
+import 'package:weezli/service/user/userById.dart';
 import 'package:weezli/widgets/buildLoadingScreen.dart';
 
 class Opinions extends StatefulWidget {
@@ -17,16 +17,14 @@ class Opinions extends StatefulWidget {
 
 class _AvisState extends State<Opinions> {
 
-  List<Opinion> listOpinions = [];
-
-  Future<List<Opinion>> getOpinionsList(int idUser) async {
-    listOpinions = await findOpinionsReceivedByUser(idUser);
-    return listOpinions;
-  }
-
-  Future<User> userById(int idUser) async {
-    User userComment = await userById(idUser);
-    return userComment;
+  Future<List<User>> getListUsersPostedOpinion(
+      List<Opinion> listOpinions) async {
+    List<User> listUsers = [];
+    for (Opinion opinion in listOpinions) {
+      User user = await userById(opinion.idUserOpinion);
+      listUsers.add(user);
+    }
+    return listUsers;
   }
 
   @override
@@ -39,117 +37,7 @@ class _AvisState extends State<Opinions> {
         .settings
         .arguments as Map;
     User user = arg['User'];
-
-    Widget _opinionCard(Opinion opinion) {
-
-      int idUserComment = opinion.idUserOpinion;
-
-      _userComment(int idUserComment) async{
-        dynamic userComment = userById(idUserComment);
-        return userComment;
-      }
-
-      dynamic userComment = _userComment(idUserComment) as User;
-      print(userComment);
-
-      return Container(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-        ),
-        child: Column(
-          children: [
-            FutureBuilder(
-              future: userById(opinion.idUserOpinion),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
-                  User userComment = snapshot.data as User;
-                }
-                return Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'https://picsum.photos/200'),
-                          radius: 30,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                //opinion.order.announce.userAnnounce.firstname! +
-                                " ", //+
-                                //opinion.order.announce.userAnnounce.lastname!,
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .headline5,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Text("",
-                                    //opinion.order.announce.package.addressDeparture.city,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  Icon(Icons.arrow_right_alt),
-                                  Text("",
-                                    //opinion.order.announce.package.addressArrival.city,
-                                  ),
-                                ],
-                              ),
-                              Text(opinion.comment ?? ""),
-                              Container(
-                                width: 40,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: WeezlyColors.yellow,
-                                  borderRadius: BorderRadius.circular(22.5),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      WeezlyIcon.star,
-                                      size: 10,
-                                    ),
-                                    Text(opinion.number.toString(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Divider(
-                      thickness: 2,
-                      color: WeezlyColors.grey2,
-                    ),
-                  ],
-                );
-              })
-      ]));
-    }
+    List<Opinion> listOpinions = arg["listOpinions"];
 
     return Scaffold(
       appBar: AppBar(
@@ -159,78 +47,183 @@ class _AvisState extends State<Opinions> {
           child: Column(
               children: [
                 FutureBuilder(
-                    future: getOpinionsList(user.id!),
+                    future: getListUsersPostedOpinion(listOpinions),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
-                        List<Opinion> listOpinions = snapshot.data as List<Opinion>;
-                        }
+                        List<User> listUsersComment = snapshot.data as List<User>;
                         return Column(
-                          children: [
-                            SizedBox(height: 20),
-                            Text(
-                              user.username!,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .headline5,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(20.0),
-                              padding: const EdgeInsets.all(10.0),
-                              width: _mediaQuery.width * 0.50,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: WeezlyColors.black),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(22.5),
+                            children: [
+                              SizedBox(height: 20),
+                              Text(
+                                user.username!,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .headline5,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(20.0),
+                                padding: const EdgeInsets.all(10.0),
+                                width: _mediaQuery.width * 0.50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: WeezlyColors.black),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(22.5),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    const Text(
+                                      "Avis: ",
+                                      style: TextStyle(
+                                        color: WeezlyColors.primary,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    RatingBar.builder(
+                                      initialRating: user.moyenneAvis!.toDouble(),
+                                      direction: Axis.horizontal,
+                                      ignoreGestures: true,
+                                      itemCount: 5,
+                                      allowHalfRating: true,
+                                      itemSize: _mediaQuery.width < 321 ? 15 : 20,
+                                      itemPadding: EdgeInsets.symmetric(
+                                          horizontal: 1.0),
+                                      itemBuilder: (context, _) =>
+                                          Icon(
+                                            Icons.star,
+                                            color: WeezlyColors.yellow,
+                                          ),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  const Text(
-                                    "Avis: ",
-                                    style: TextStyle(
-                                      color: WeezlyColors.primary,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  RatingBar.builder(
-                                    initialRating: user.moyenneAvis!.toDouble(),
-                                    direction: Axis.horizontal,
-                                    ignoreGestures: true,
-                                    itemCount: 5,
-                                    allowHalfRating: true,
-                                    itemSize: _mediaQuery.width < 321 ? 15 : 20,
-                                    itemPadding: EdgeInsets.symmetric(
-                                        horizontal: 1.0),
-                                    itemBuilder: (context, _) =>
-                                        Icon(
-                                          Icons.star,
-                                          color: WeezlyColors.yellow,
-                                        ),
-                                    onRatingUpdate: (rating) {
-                                      print(rating);
-                                    },
-                                  ),
-                                ],
+                              Text(listOpinions.length.toString() + " avis"),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    left: 20.0, right: 20.0),
+                                child: Divider(
+                                  thickness: 2,
+                                ),
                               ),
-                            ),
-                            Text(listOpinions.length.toString() + " avis"),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 20.0, right: 20.0),
-                              child: Divider(
-                                thickness: 2,
-                              ),
-                            ),
-                            for (Opinion opinion in listOpinions)_opinionCard(opinion)
-                          ],
-                        );
+                              _affichageListOpinons(listOpinions, listUsersComment)
+                            ]);
+                      }else
+                        return buildLoadingScreen();
                     }),
               ])
       ),
     );
+  }
+
+  Container _opinionCard(Opinion opinion, User userComment) {
+    return Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://picsum.photos/200'),
+                  radius: 30,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        userComment.firstname! +
+                            " " +
+                            userComment.lastname!,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5,
+                      ),
+                      Row(
+                        children: [
+                          _affichageRole(opinion)
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(opinion.comment),
+                      Container(
+                        width: 40,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: WeezlyColors.yellow,
+                          borderRadius: BorderRadius.circular(22.5),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceEvenly,
+                          children: [
+                            Icon(
+                              WeezlyIcon.star,
+                              size: 10,
+                            ),
+                            Text(opinion.number.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(
+              thickness: 2,
+              color: WeezlyColors.grey2,
+            ),
+          ],
+        ));
+  }
+
+  Widget _affichageListOpinons(List<Opinion> listOpinions, List<User> listUsersComment) {
+    for (int i = 0; i < listOpinions.length; i++) {
+      return _opinionCard(listOpinions[i], listUsersComment[i]);
+    }
+    return Row();
+  }
+
+  Widget _affichageRole(Opinion opinion){
+
+    if(opinion.idTypes == 2){
+      return Text("Transporteur",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      );
+    }else{
+      return Text("Expéditeur",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      );
+    }
   }
 }
