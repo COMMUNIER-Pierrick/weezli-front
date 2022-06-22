@@ -25,7 +25,6 @@ class PropositionsDetails extends StatefulWidget {
 
 class _PropositionsDetailsState extends State<PropositionsDetails> {
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -104,7 +103,7 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
                       children: [
                         Flexible(
                             child:
-                            Text("Montant que vous avez proposer : " + proposition.proposition.toString() + "€",
+                            Text("Montant que vous avez proposé : " + proposition.proposition.toString() + "€",
                                 textAlign: TextAlign.center)
                         )
                       ]
@@ -134,7 +133,7 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Prix accepter",
+                        Text("Prix accepté",
                           style: TextStyle(fontSize: 17,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,)
@@ -202,16 +201,16 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
     String pseudoTitle = "";
 
     if ((proposition.statusProposition.name == "Proposition") && (proposition.userProposition.id == idUser)){
-      title = "Proposition envoyer a :";
+      title = "Proposition envoyé à :";
       pseudoTitle = proposition.announce.userAnnounce.username!;
     }else if ((proposition.statusProposition.name == "Contre-proposition") && (proposition.userProposition.id != idUser)){
-      title = "Contre-proposition envoyer a :";
+      title = "Contre-proposition envoyé à :";
       pseudoTitle = proposition.userProposition.username!;
     }else if ((proposition.statusProposition.name == "Contre-proposition") && (proposition.userProposition.id == idUser)) {
-      title = "Contre-proposition reçu de la part de :";
+      title = "Contre-proposition reçue de la part de :";
       pseudoTitle = proposition.announce.userAnnounce.username!;
     }else{
-      title = "Proposition reçu de la part de :";
+      title = "Proposition reçue de la part de :";
       pseudoTitle = proposition.userProposition.username!;
     }
 
@@ -266,16 +265,17 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
             ]
       );
     }else if (statut == "Validé"){
-      return Row(
-          children: [
-            Text("Validé"),
-            SizedBox(width: 10),
-            Icon(
-              Icons.circle,
-              color: WeezlyColors.green,
-            ),
+      return
+        Row(
+            children: [
+              Text("Validé"),
+              SizedBox(width: 10),
+              Icon(
+                Icons.circle,
+                color: WeezlyColors.green,
+              ),
             ]
-      );
+        );
     }else {
       return Row(
           children: [
@@ -305,12 +305,12 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
 
     if ((proposition.statusProposition.name == "Contre-proposition") &&
         (proposition.userProposition.id == idUser)){
-      title = "Contre-proposition reçu par :";
+      title = "Contre-proposition reçue par :";
       pseudoTitle = proposition.announce.userAnnounce.username!;
     }
     if ((proposition.statusProposition.name == "Proposition") &&
         (proposition.userProposition.id != idUser)) {
-      title = "Proposition reçu par :";
+      title = "Proposition reçue par :";
       pseudoTitle = proposition.userProposition.username!;
     }
 
@@ -490,7 +490,7 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
       var response = await updateProposition(newProposition);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Modification enregistrer')),
+          const SnackBar(content: Text('Modification enregistrée')),
         );
         Navigator.pushNamed(context, Profile.routeName);
       }
@@ -498,9 +498,6 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
   }
 
   _createOrderOrCounterOffer(Proposition proposition, BuildContext context, TextEditingController priceController) async{
-
-    print(int.parse(priceController.text));
-    print(proposition.proposition);
 
     // Vérification si l'utilisateur est bien connecter
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -533,7 +530,6 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
         },);
       }//newOrder
       }else {
-        print("coucou");
         // Récupération du statusProposition contre-proposition
         StatusProposition statusPropositionContreproposition = await findStatusPropositionById(2);
         // Modification de l'objet proposition à envoyer au back
@@ -543,7 +539,6 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
           proposition: int.parse(priceController.text),
           statusProposition: statusPropositionContreproposition,
         );
-        print(newProposition);
         // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
         var response = await updateProposition(newProposition);
         if (response.statusCode == 200) {
@@ -555,5 +550,3 @@ class _PropositionsDetailsState extends State<PropositionsDetails> {
       }
     }
   }
-
-

@@ -462,9 +462,9 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
 
   _contact(Announce announce, int idUser,
       TextEditingController _offerPriceCtrl) async {
+    // Vérifie si on a quelque chose en sharedpreferences (et donc si l'user est connecté).
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    User? user = getUserInfo(
-        prefs); //Vérifie si on a quelque chose en sharedpreferences (et donc si l'user est connecté). Le redirige vers le login sinon.
+    User? user = getUserInfo(prefs);
     if (user == null)
       Navigator.pushNamed(context, "/login");
     else {
@@ -516,7 +516,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                       .of(context)
                       .size
                       .width * 0.3,
-                  child: TextFormField(
+                  child:
+                  TextFormField(
                     controller: _offerPriceCtrl,
                     onTap: () => _offerPriceCtrl.clear(),
                     decoration: InputDecoration(
@@ -565,7 +566,8 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
                       .size
                       .width * 0.3,
                   height: 35,
-                  child: RawMaterialButton(
+                  child:
+                  RawMaterialButton(
                     fillColor: WeezlyColors.primary,
                     textStyle: TextStyle(
                       color: Colors.white,
@@ -603,61 +605,58 @@ class _SearchAnnounceDetail extends State<SearchAnnounceDetail> {
     );
   }
 
-  _createOrderOrOffer(Announce announce, BuildContext context, int idUser,
-      TextEditingController priceController) async {
-    // Récupération du statusProposition
-    StatusProposition statusPropositionValider = await findStatusPropositionById(
-        3);
-
-    // Récupération du statusProposition contre-proposition
-    StatusProposition statusPropositionProposition = await findStatusPropositionById(
-        1);
-
-    // Vérification si l'utilisateur est bien connecter
+  _createOrderOrOffer(Announce announce, BuildContext context, int idUser, TextEditingController priceController) async {
+    // Récupération du statusProposition valider.
+    StatusProposition statusPropositionValider = await findStatusPropositionById(3);
+    // Récupération du statusProposition contre-proposition.
+    StatusProposition statusPropositionProposition = await findStatusPropositionById(1);
+    // Vérification si l'utilisateur est bien connecter.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     User? user = getUserInfo(prefs);
     if (user == null) {
       Navigator.pushNamed(context, "/login");
     }else if (announce.price == int.parse(priceController.text)) {
-      // Création de l'objet proposition à envoyer au back
+      // Création de l'objet proposition à envoyer au back.
       Proposition proposition = Proposition(
         announce: announce,
         userProposition: user,
         proposition: announce.price,
         statusProposition: statusPropositionValider,
       );
+      // Envoie de la proposition via le service createProposition.
       var response = await createProposition(proposition);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Commande créée !')),
         );
+        // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
         var mapOrder = OrdersListDynamic
             .fromJson(jsonDecode(response.body))
             .ordersListDynamic;
         Order newOrder = Order.fromJson(mapOrder);
-
+        // Redirection de l'utilisateur vers l'affichage du detail de la commande.
         Navigator.pushNamed(context, OrderDetail.routeName, arguments: {
           'order': newOrder,
           'idUser': idUser
         },); //newOrder
       }
     }else{
-        // Modification de l'objet proposition à envoyer au back
-        Proposition proposition = Proposition(
-          announce: announce,
-          userProposition: user,
-          proposition: int.parse(priceController.text),
-          statusProposition: statusPropositionProposition,
+      // Création de l'objet proposition à envoyer au back.
+      Proposition proposition = Proposition(
+        announce: announce,
+        userProposition: user,
+        proposition: int.parse(priceController.text),
+        statusProposition: statusPropositionProposition,
+      );
+      // Envoie de la proposition via le service createProposition.
+      var response = await createProposition(proposition);
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Proposition envoyée !')),
         );
-        print(proposition);
-        // On récupère le json renvoyé et on le convertit en objet order pour l'envoyer à la route.
-        var response = await createProposition(proposition);
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Proposition envoyée !')),
-          );
-          Navigator.pushNamed(context, '/');
-        }
+        // Redirection de l'utilisateur sur la page d'accueil.
+        Navigator.pushNamed(context, '/');
       }
     }
+  }
 }

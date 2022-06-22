@@ -254,32 +254,24 @@ class _CreateCarrierAnnounce extends State<CreateCarrierAnnounce> {
                           FutureBuilder(
                               future: getTransportations(),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                        ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  List<Transportation> transportations =
-                                      snapshot.data as List<Transportation>;
+                                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                                  List<Transportation> transportations = snapshot.data as List<Transportation>;
                                   return Column(
-                                    children:[ Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        for (var transportation
-                                            in transportations)
-                                          if (transportation.name !=
-                                              "non-identifier" && transportation.id < 4)
-                                            _setTransportation(transportation)
-                                      ]),
-                                  Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                      children: [
-                                        for (var transportation
-                                        in transportations)
-                                          if (transportation.name !=
-                                              "non-identifier" && transportation.id > 3)
-                                            _setTransportation(transportation)
-                                      ])]);
+                                      children:[
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            for (var transportation in transportations)
+                                              if (transportation.name != "non-identifier" && transportation.id < 4)
+                                                _setTransportation(transportation)
+                                          ]),
+                                        Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              for (var transportation in transportations)
+                                                if (transportation.name != "non-identifier" && transportation.id > 3)
+                                                  _setTransportation(transportation)
+                                            ])]);
                                 }
                                 return buildLoadingScreen();
                               }),
@@ -658,7 +650,7 @@ Widget _buildPopupSavedCarrierAnnounce(BuildContext context, Announce? announce,
                     'announce': announce,
                     'idUser': idUser
                   },),
-                  child: const Text("VOIR L'ANNONCE"),
+                  child: const Text("VOIRE L'ANNONCE"),
                 ),
               ),
             ]),
